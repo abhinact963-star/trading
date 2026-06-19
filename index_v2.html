@@ -31,7 +31,7 @@ h1.title .accent{color:var(--amber);}
 .pips-card .bar{height:5px;border-radius:3px;background:var(--surface-2);overflow:hidden;}
 .pips-card .bar-fill{height:100%;background:linear-gradient(90deg,var(--bull),var(--amber));width:0%;transition:width .5s;}
 .pips-card .sub{font-size:11px;color:var(--text-dim);margin-top:6px;}
-.map-row{max-width:1180px;margin:0 auto;padding:0 28px 30px;display:flex;gap:7px;flex-wrap:wrap;}
+.map-row{max-width:1180px;margin:0 auto;padding:0 28px 30px;display:none;}
 .pill{font-family:var(--mono);font-size:11px;padding:6px 12px;border-radius:999px;border:1px solid var(--border);color:var(--text-dim);background:var(--surface);cursor:pointer;}
 .pill:hover{color:var(--text);border-color:var(--text-dim);}.pill.new::after{content:" new";color:var(--violet);font-size:9px;}
 </style>
@@ -39,7 +39,7 @@ h1.title .accent{color:var(--amber);}
 .workspace{max-width:1180px;margin:0 auto;padding:0 28px 80px;display:grid;grid-template-columns:250px 1fr;gap:24px;}
 @media(max-width:860px){.workspace{grid-template-columns:1fr;padding:0 16px 60px;}}
 aside.nav{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px;align-self:start;position:sticky;top:16px;max-height:calc(100vh - 32px);overflow-y:auto;font-size:13px;}
-@media(max-width:860px){aside.nav{position:static;max-height:none;}}
+@media(max-width:860px){aside.nav{position:static;max-height:220px;overflow-y:auto;border-radius:8px;margin-bottom:12px;}}
 .ng{margin-bottom:2px;}.ng-t{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);padding:10px 9px 4px;}
 .ni{display:flex;align-items:center;justify-content:space-between;padding:7px 9px;border-radius:5px;cursor:pointer;color:var(--text-dim);}
 .ni:hover{background:var(--surface-2);color:var(--text);}.ni.active{background:var(--surface-2);color:var(--text);box-shadow:inset 2px 0 0 var(--amber);}
@@ -91,28 +91,31 @@ x.fillStyle='#080C12';x.fillRect(0,0,w,h);
 x.strokeStyle='rgba(35,44,61,.5)';x.lineWidth=0.5;
 for(let i=0;i<w;i+=50){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke();}
 for(let i=0;i<h;i+=35){x.beginPath();x.moveTo(0,i);x.lineTo(w,i);x.stroke();}
+// Override clearRect to also redraw background
+const origClear=x.clearRect.bind(x);
+x.clearRect=function(a,b,cw,ch){origClear(a,b,cw,ch);x.fillStyle='#080C12';x.fillRect(0,0,w,h);x.strokeStyle='rgba(35,44,61,.5)';x.lineWidth=0.5;for(let i=0;i<w;i+=50){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke();}for(let i=0;i<h;i+=35){x.beginPath();x.moveTo(0,i);x.lineTo(w,i);x.stroke();}};
 return{c,x,W:w,H:h};}
 
 /* === SHARED CANDLE UTILITIES === */
 function drawCandle(x,cx,bw,o,h,l,c,p2y){
-  const bull=c>=o;x.strokeStyle=bull?'#34D6C4':'#FF6B81';x.fillStyle=bull?'rgba(52,214,196,.8)':'rgba(255,107,129,.8)';
-  x.lineWidth=1;x.beginPath();x.moveTo(cx+bw/2,p2y(h));x.lineTo(cx+bw/2,p2y(l));x.stroke();
-  const top=Math.min(p2y(o),p2y(c)),bH=Math.max(2,Math.abs(p2y(c)-p2y(o)));
+  const bull=c>=o;x.strokeStyle=bull?'#34D6C4':'#FF6B81';x.fillStyle=bull?'rgba(52,214,196,.85)':'rgba(255,107,129,.85)';
+  x.lineWidth=1.2;x.beginPath();x.moveTo(cx+bw/2,p2y(h));x.lineTo(cx+bw/2,p2y(l));x.stroke();
+  const top=Math.min(p2y(o),p2y(c)),bH=Math.max(4,Math.abs(p2y(c)-p2y(o)));
   x.fillRect(cx,top,bw,bH);
 }
 function genCandles(n,start,vol){
-  const cd=[];let p=start||100;vol=vol||2;
+  const cd=[];let p=start||100;vol=vol||4;
   for(let i=0;i<n;i++){const o=p,mv=(Math.random()-.48)*vol,c=o+mv;
-  const h=Math.max(o,c)+Math.random()*vol*.5,l=Math.min(o,c)-Math.random()*vol*.5;
+  const h=Math.max(o,c)+Math.random()*vol*.4,l=Math.min(o,c)-Math.random()*vol*.4;
   cd.push({o,h,l,c});p=c;}return cd;
 }
-function chartScale(candles,H,pad=15){
-  const all=candles.flatMap(c=>[c.h,c.l]);const mx=Math.max(...all),mn=Math.min(...all);
-  const rng=mx-mn||1;return p=>pad+(mx-p)/rng*(H-pad*2);
+function chartScale(candles,H,pad){
+  pad=pad||18;const all=candles.flatMap(c=>[c.h,c.l]);const mx=Math.max(...all),mn=Math.min(...all);
+  const rng=(mx-mn)||1;return p=>pad+(mx-p)/rng*(H-pad*2);
 }
 function drawCandleChart(x,W,H,candles,opts){
-  opts=opts||{};const p2y=chartScale(candles,H,opts.pad||15);
-  const gap=W/candles.length,bw=Math.max(3,gap*.65);
+  opts=opts||{};const p2y=chartScale(candles,H,opts.pad||18);
+  const gap=W/candles.length,bw=Math.max(5,gap*.6);
   candles.forEach((cd,i)=>{const cx=i*gap+(gap-bw)/2;drawCandle(x,cx,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
   return{p2y,gap,bw};
 }
@@ -125,14 +128,6 @@ function drawZone(x,W,y1,y2,color,label){
   x.fillStyle=color;x.fillRect(0,y1,W,y2-y1);
   if(label){x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText(label,8,y1-4);}
 }
-
-/* Helper: draw a candle */
-function drawCandle(x,cx,bw,o,c2,h,l,scale,baseY,baseP){
-const bull=c2>=o;const yO=baseY-(o-baseP)*scale,yC=baseY-(c2-baseP)*scale,yH=baseY-(h-baseP)*scale,yL=baseY-(l-baseP)*scale;
-x.strokeStyle=bull?'#34D6C4':'#FF6B81';x.fillStyle=bull?'rgba(52,214,196,.8)':'rgba(255,107,129,.8)';x.lineWidth=1.5;
-x.beginPath();x.moveTo(cx+bw/2,yH);x.lineTo(cx+bw/2,yL);x.stroke();
-x.fillRect(cx,Math.min(yO,yC),bw,Math.max(2,Math.abs(yC-yO)));
-return{yO,yC,yH,yL,bull};}
 
 /* Helper: draw grid (call after clearRect for animated canvases) */
 function drawGrid(x,W,H){
@@ -151,7 +146,7 @@ const M=[
 /* ===== MODULE 1: THE JAPANESE ORIGINS & TRADING PHILOSOPHY ===== */
 {id:'m1',g:'Foundations',t:'Origins & Philosophy of Candlestick Trading',b:'The history of Japanese candlestick analysis — Munehisa Homma, the Dojima Rice Exchange, and the psychological principles behind reading price.',
 topics:[
-{h:'Munehisa Homma — Father of Candlestick Charts',d:'In the 1700s, Munehisa Homma became the most successful rice trader in Japan. He developed candlestick techniques at the Dojima Rice Exchange in Osaka. He understood that <b>human emotions drive markets</b> — fear and greed create predictable price patterns. His trading records reportedly showed over 100 consecutive winning trades.',a:'whatIsTrade'},
+{h:'Munehisa Homma — Father of Candlestick Charts',d:'In the 1700s, Munehisa Homma became the most successful rice trader in Japan. He developed candlestick techniques at the Dojima Rice Exchange in Osaka. He understood that <b>human emotions drive markets</b> — fear and greed create predictable price patterns. His trading records reportedly showed over 100 consecutive winning trades.',a:null},
 {h:'The Dojima Rice Exchange',d:'The world\'s first futures market. Rice coupons (futures contracts) were traded on speculation. Homma studied years of weather, price, and psychological data to develop his methods. He communicated rice prices from Osaka to Sakata using a network of men on rooftops — the first "ticker system."',a:null},
 {h:'The Core Principle: Markets Are Driven by Human Emotion',d:'Candlestick analysis is built on one idea: <b>price reflects the collective emotion of all participants</b>. Fear creates selling pressure (long upper wicks, red bodies). Greed creates buying pressure (long lower wicks, green bodies). Indecision creates small bodies and dojis. Every candle tells an emotional story.',a:'bullBear'},
 {h:'Why Candlesticks Work Across All Markets',d:'Whether stocks, forex, crypto, or commodities — the patterns work because they reflect universal human psychology. Greed and fear don\'t change whether you\'re trading rice in 1750 or Bitcoin today. The time frame doesn\'t matter either — the psychology repeats from 1-minute to monthly charts.',a:'tfContext'},
@@ -211,7 +206,7 @@ quiz:[
 /* ===== MODULE 4: MARKET STRUCTURE & THE 4 STAGES ===== */
 {id:'m4',g:'Candlestick Bible',t:'Market Structure & The Four Stages',b:'Trending vs ranging, how to identify what the market is doing RIGHT NOW, and the four repeating stages every market cycles through.',
 topics:[
-{h:'The Two States of Any Market',d:'At any moment, a market is either <b>TRENDING</b> (making directional progress) or <b>RANGING</b> (going sideways in a box). Your entire approach changes based on which state you are in. Trading a range strategy in a trend = losses. Trading a trend strategy in a range = losses.',a:'uptrend'},
+{h:'The Two States of Any Market',d:'At any moment, a market is either <b>TRENDING</b> (making directional progress) or <b>RANGING</b> (going sideways in a box). Your entire approach changes based on which state you are in. Trading a range strategy in a trend = losses. Trading a trend strategy in a range = losses.',a:'range'},
 {h:'Trending Market — How to Identify',d:'<b>Uptrend</b>: series of higher highs + higher lows. Each pullback holds above the prior low. <b>Downtrend</b>: series of lower highs + lower lows. Each rally fails below prior high. If you can draw a clear staircase of HH/HL or LH/LL, you are in a trend.',a:'uptrend'},
 {h:'Ranging Market — How to Identify',d:'Price bounces between a clear <b>ceiling (resistance)</b> and <b>floor (support)</b> without making new directional progress. The highs are roughly equal. The lows are roughly equal. If you cannot see a staircase, you are in a range.',a:'range'},
 {h:'The Trap: Treating Ranges as Trends',d:'Most traders lose money by <b>buying breakouts that fail</b> in a range or <b>fighting the trend</b> trying to pick tops/bottoms. Step 1 of ANY analysis: determine if you are in a trend or a range FIRST. Everything else follows from this.',a:null},
@@ -814,99 +809,85 @@ x.fillText('Touch 1',touches[0][0]-10,touches[0][1]+16);x.fillText('Touch 2',tou
 x.strokeStyle='#E7EAF0';x.lineWidth=1.5;x.beginPath();
 x.moveTo(20,145);x.lineTo(80,125);x.lineTo(130,105);x.lineTo(200,95);x.lineTo(270,75);x.lineTo(350,60);x.lineTo(450,40);x.stroke();},
 
-roleReversal(el){const{x,W,H}=mc(el,520,180);let f=0;const level=90;
-function draw(){x.clearRect(0,0,W,H);x.strokeStyle='#F2B84B';x.setLineDash([4,3]);x.lineWidth=1.5;x.beginPath();x.moveTo(0,level);x.lineTo(W,level);x.stroke();x.setLineDash([]);
-const t=f%180;x.strokeStyle='#34D6C4';x.lineWidth=2;x.beginPath();
-for(let i=0;i<=Math.min(t*3,W);i++){let y;
-if(i<130)y=level+15+Math.sin(i/25)*12;else if(i<180)y=level+15-(i-130)*.7;
-else if(i<280)y=level-15+Math.sin((i-180)/20)*8;else if(i<340)y=level-15+(i-280)*.4;
-else y=level-5-Math.sin((i-340)/15)*6-(i-340)*.04;
-i===0?x.moveTo(i,y):x.lineTo(i,y);}x.stroke();
-x.fillStyle='#8C97AC';x.font='10px IBM Plex Mono,monospace';
-if(t<40)x.fillText('Resistance holds...',10,level-12);else if(t<60)x.fillText('Breakout!',180,level-30);
-else x.fillText('Old resistance = new support (role reversal)',150,level+18);f++;}
-draw();setInterval(draw,35);},
+roleReversal(el){const{x,W,H}=mc(el,520,200);
+// Candles below resistance, then breakout, then retest from above
+const candles=[];let p=95;
+for(let i=0;i<10;i++){const o=p,mv=(Math.random()-.5)*2;let c=o+mv;if(c>104)c=103;const h=Math.min(105,Math.max(o,c)+Math.random()),l=Math.min(o,c)-Math.random()*1.5;candles.push({o,h,l,c});p=c;}
+for(let i=0;i<4;i++){const o=p,c=o+2+Math.random()*1.5;const h=c+Math.random(),l=o-Math.random();candles.push({o,h,l,c});p=c;}
+for(let i=0;i<5;i++){const o=p,mv=(Math.random()-.6)*2;const c=Math.max(105,o+mv);const h=Math.max(o,c)+Math.random(),l=Math.min(o,c)-Math.random()*1.5;candles.push({o,h,l,c});p=c;}
+for(let i=0;i<6;i++){const o=p,c=o+1+Math.random()*2;const h=c+Math.random(),l=o-Math.random();candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawHLine(x,W,p2y(105),'#F2B84B','Resistance → becomes Support',true);
+x.fillStyle='#F2B84B';x.font='10px IBM Plex Mono,monospace';x.fillText('Role Reversal: broken resistance = new support on retest',80,H-5);},
 
-roundNums(el){const{x,W,H}=mc(el,520,140);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
-const levels=[{p:100,l:'100.00'},{p:50,l:'50.00'},{p:150,l:'150.00'}];
-x.fillStyle='#8C97AC';x.fillText('Round numbers as psychological S/R',120,14);
-[50,100,150].forEach((n,i)=>{const y=30+i*35;x.strokeStyle='rgba(156,140,255,.4)';x.setLineDash([3,3]);x.beginPath();x.moveTo(0,y);x.lineTo(W,y);x.stroke();x.setLineDash([]);
-x.fillStyle='#9C8CFF';x.fillText(n+'.00',W-45,y-3);});
-x.strokeStyle='#E7EAF0';x.lineWidth=1.5;x.beginPath();
-const pts=[[10,95],[80,65],[150,70],[200,35],[250,38],[320,65],[400,68],[480,100]];
-pts.forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();},
+roundNums(el){const{x,W,H}=mc(el,520,160);
+const candles=genCandles(30,98,2);const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawHLine(x,W,p2y(100),'#9C8CFF','100.00 (round number)',true);
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Round numbers act as psychological S/R',160,H-5);},
 
-mtfSR(el){const{x,W,H}=mc(el,520,140);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
-x.fillStyle='#FF6B81';x.fillText('Daily Resistance (thick)',10,14);
-x.strokeStyle='#FF6B81';x.lineWidth=3;x.beginPath();x.moveTo(0,40);x.lineTo(W,40);x.stroke();
-x.fillStyle='#F2B84B';x.fillText('4H level',10,64);
-x.strokeStyle='#F2B84B';x.lineWidth=1.5;x.setLineDash([4,3]);x.beginPath();x.moveTo(0,70);x.lineTo(W,70);x.stroke();x.setLineDash([]);
-x.fillStyle='#8C97AC';x.fillText('15m level',10,94);
-x.strokeStyle='#8C97AC';x.lineWidth=1;x.setLineDash([2,4]);x.beginPath();x.moveTo(0,100);x.lineTo(W,100);x.stroke();x.setLineDash([]);
-x.fillStyle='#E7EAF0';x.fillText('Higher TF levels carry more weight → thicker = stronger',100,H-8);},
+mtfSR(el){const{x,W,H}=mc(el,520,180);
+const candles=genCandles(30,100,2.5);const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawHLine(x,W,p2y(108),'#FF6B81','Daily Resistance',false);
+drawHLine(x,W,p2y(104),'#F2B84B','4H level',true);
+drawHLine(x,W,p2y(96),'#34D6C4','Daily Support',false);
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Higher TF levels (thick) carry more weight than lower TF',100,H-5);},
 /* --- TREND --- */
 uptrend(el){const{x,W,H}=mc(el,520,200);
-const candles=[];let p=80;for(let i=0;i<25;i++){const bias=0.8;const o=p,mv=(Math.random()-.5+bias)*2.5,c=o+mv;const h=Math.max(o,c)+Math.random()*1.5,l=Math.min(o,c)-Math.random()*1.5;candles.push({o,h,l,c});p=c;}
-const p2y=chartScale(candles,H);const gap=W/candles.length,bw=Math.max(4,gap*.6);
+const candles=[];let p=80;for(let i=0;i<20;i++){const bias=1.2;const o=p,mv=(Math.random()-.3)*4+bias,c=o+mv;const h=Math.max(o,c)+Math.random()*2,l=Math.min(o,c)-Math.random()*2;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(6,gap*.65);
 candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
-// Mark HH/HL
 x.font='10px IBM Plex Mono,monospace';
-const swings=[[5,'HL'],[8,'HH'],[12,'HL'],[16,'HH'],[20,'HL'],[24,'HH']];
-swings.forEach(([i,lbl])=>{const cd=candles[i];const isH=lbl==='HH';const py=isH?p2y(cd.h)-10:p2y(cd.l)+14;
-x.fillStyle=isH?'#34D6C4':'#F2B84B';x.fillText(lbl,i*gap+2,py);});
+[[4,'HL'],[7,'HH'],[10,'HL'],[14,'HH'],[17,'HL'],[19,'HH']].forEach(([i,lbl])=>{if(candles[i]){const cd=candles[i];const isH=lbl==='HH';const py=isH?p2y(cd.h)-10:p2y(cd.l)+14;
+x.fillStyle=isH?'#34D6C4':'#F2B84B';x.fillText(lbl,i*gap+2,py);}});
 x.fillStyle='#34D6C4';x.font='11px IBM Plex Mono,monospace';x.fillText('UPTREND: Higher Highs + Higher Lows',140,H-6);},
 
 downtrend(el){const{x,W,H}=mc(el,520,200);
-const candles=[];let p=120;for(let i=0;i<25;i++){const bias=-0.8;const o=p,mv=(Math.random()-.5+bias)*2.5,c=o+mv;const h=Math.max(o,c)+Math.random()*1.5,l=Math.min(o,c)-Math.random()*1.5;candles.push({o,h,l,c});p=c;}
-const p2y=chartScale(candles,H);const gap=W/candles.length,bw=Math.max(4,gap*.6);
+const candles=[];let p=120;for(let i=0;i<20;i++){const bias=-1.2;const o=p,mv=(Math.random()-.7)*4+bias,c=o+mv;const h=Math.max(o,c)+Math.random()*2,l=Math.min(o,c)-Math.random()*2;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(6,gap*.65);
 candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
 x.font='10px IBM Plex Mono,monospace';
-const swings=[[4,'LH'],[8,'LL'],[12,'LH'],[16,'LL'],[20,'LH'],[24,'LL']];
-swings.forEach(([i,lbl])=>{const cd=candles[i];const isL=lbl==='LH';const py=isL?p2y(cd.h)-10:p2y(cd.l)+14;
-x.fillStyle=isL?'#FF6B81':'#F2B84B';x.fillText(lbl,i*gap+2,py);});
+[[3,'LH'],[7,'LL'],[10,'LH'],[14,'LL'],[17,'LH'],[19,'LL']].forEach(([i,lbl])=>{if(candles[i]){const cd=candles[i];const isL=lbl==='LH';const py=isL?p2y(cd.h)-10:p2y(cd.l)+14;
+x.fillStyle=isL?'#FF6B81':'#F2B84B';x.fillText(lbl,i*gap+2,py);}});
 x.fillStyle='#FF6B81';x.font='11px IBM Plex Mono,monospace';x.fillText('DOWNTREND: Lower Highs + Lower Lows',140,H-6);},
 
-range(el){const{x,W,H}=mc(el,520,180);
-const candles=[];let p=100;for(let i=0;i<30;i++){const o=p,mv=(Math.random()-.5)*3,c=Math.max(92,Math.min(108,o+mv));const h=Math.min(110,Math.max(o,c)+Math.random()*1.5),l=Math.max(90,Math.min(o,c)-Math.random()*1.5);candles.push({o,h,l,c});p=c;}
-const p2y=chartScale(candles,H,20);const gap=W/candles.length,bw=Math.max(3,gap*.6);
+range(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=100;for(let i=0;i<25;i++){const o=p,mv=(Math.random()-.5)*6;let c=Math.max(88,Math.min(112,o+mv));const h=Math.min(114,Math.max(o,c)+Math.random()*3),l=Math.max(86,Math.min(o,c)-Math.random()*3);candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,20);const gap=W/candles.length,bw=Math.max(5,gap*.65);
 candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
-drawHLine(x,W,p2y(109),'#FF6B81','Resistance',true);drawHLine(x,W,p2y(91),'#34D6C4','Support',true);
+drawHLine(x,W,p2y(112),'#FF6B81','Resistance',true);drawHLine(x,W,p2y(88),'#34D6C4','Support',true);
 x.fillStyle='#F2B84B';x.font='11px IBM Plex Mono,monospace';x.fillText('RANGE: No directional progress',160,H-6);},
 
-maTrend(el){const{x,W,H}=mc(el,520,160);let prices=[100];for(let i=0;i<60;i++)prices.push(prices[prices.length-1]+(Math.random()-.4)*2);
-x.clearRect(0,0,W,H);const max=Math.max(...prices)+3,min=Math.min(...prices)-3,s=130/((max-min)||1);
-x.strokeStyle='#E7EAF0';x.lineWidth=1;x.beginPath();prices.forEach((p,i)=>x.lineTo(i*8.5,10+(max-p)*s));x.stroke();
-function plotEma(period,color){let e=prices[0];x.strokeStyle=color;x.lineWidth=1.5;x.beginPath();
-prices.forEach((p,i)=>{e+=(p-e)*(2/(period+1));if(i>=period)x.lineTo(i*8.5,10+(max-e)*s);});x.stroke();}
+maTrend(el){const{x,W,H}=mc(el,520,180);
+const candles=genCandles(35,90,2);const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.5);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+function plotEma(period,color){let e=candles[0].c;x.strokeStyle=color;x.lineWidth=1.5;x.beginPath();candles.forEach((cd,i)=>{e+=(cd.c-e)*(2/(period+1));if(i>=period)x.lineTo(i*gap+gap/2,p2y(e));});x.stroke();}
 plotEma(9,'#34D6C4');plotEma(21,'#F2B84B');plotEma(50,'#9C8CFF');
-x.fillStyle='#34D6C4';x.font='9px IBM Plex Mono,monospace';x.fillText('9 EMA',W-50,20);
-x.fillStyle='#F2B84B';x.fillText('21 EMA',W-50,32);x.fillStyle='#9C8CFF';x.fillText('50 EMA',W-50,44);
-x.fillStyle='#8C97AC';x.fillText('EMAs stacked = strong trend',10,H-4);},
+x.fillStyle='#34D6C4';x.font='9px IBM Plex Mono,monospace';x.fillText('9',W-25,20);x.fillStyle='#F2B84B';x.fillText('21',W-25,32);x.fillStyle='#9C8CFF';x.fillText('50',W-25,44);
+x.fillStyle='#8C97AC';x.fillText('EMAs stacked in order = strong trend',10,H-4);},
 
-drawTrendline(el){this.trendlineSR(el);},channels(el){const{x,W,H}=mc(el,520,180);let f=0;
-function draw(){x.clearRect(0,0,W,H);x.strokeStyle='#F2B84B';x.lineWidth=1.5;x.setLineDash([4,3]);
-x.beginPath();x.moveTo(20,150);x.lineTo(500,50);x.stroke();x.beginPath();x.moveTo(20,105);x.lineTo(500,5);x.stroke();x.setLineDash([]);
-x.strokeStyle='#34D6C4';x.lineWidth=2;x.beginPath();const n=Math.min(70,f);
-for(let i=0;i<=n;i++){const midY=150-(i/70)*100;x.lineTo(20+i*6.8,midY+Math.sin(i/7)*20);}x.stroke();
-x.fillStyle='#8C97AC';x.font='10px IBM Plex Mono,monospace';x.fillText('Ascending channel (parallel lines)',160,H-6);f=(f+1)%80;}draw();setInterval(draw,60);},
+drawTrendline(el){this.trendlineSR(el);},channels(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=90;for(let i=0;i<25;i++){const base=90+i*1.2;const wave=Math.sin(i/4)*5;const o=base+wave,c=base+wave+(Math.random()-.5)*2;const h=Math.max(o,c)+Math.random()*1.5,l=Math.min(o,c)-Math.random()*1.5;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+// Channel lines
+x.strokeStyle='#F2B84B';x.setLineDash([4,3]);x.lineWidth=1.5;
+x.beginPath();x.moveTo(0,p2y(92));x.lineTo(W,p2y(92+25*1.2+6));x.stroke();
+x.beginPath();x.moveTo(0,p2y(88));x.lineTo(W,p2y(88+25*1.2+6));x.stroke();x.setLineDash([]);
+x.fillStyle='#F2B84B';x.font='9px IBM Plex Mono,monospace';x.fillText('Ascending channel (parallel lines)',150,H-5);},
 
-exhaustion(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
-x.fillStyle='#8C97AC';x.fillText('Trend exhaustion: shrinking bodies + RSI divergence',40,14);
-const candles=[{s:20},{s:18},{s:15},{s:10},{s:6},{s:3},{s:2}];let y=140;
-candles.forEach((c,i)=>{const cx=40+i*65;y-=c.s+5;
-x.fillStyle='#34D6C4';x.fillRect(cx,y,40,c.s*2);
-x.fillStyle='#F2B84B';x.font='9px IBM Plex Mono,monospace';if(i>=4)x.fillText('↓',cx+15,y-8);});
-x.fillStyle='#FF6B81';x.fillText('Bodies shrinking → momentum fading',100,H-8);},
+exhaustion(el){const{x,W,H}=mc(el,520,180);
+const candles=[];let p=90;for(let i=0;i<20;i++){const shrink=Math.max(0.3,2-i*0.1);const o=p,c=o+shrink*(Math.random()-.3);const h=Math.max(o,c)+shrink*0.5,l=Math.min(o,c)-shrink*0.3;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+x.fillStyle='#FF6B81';x.font='10px IBM Plex Mono,monospace';x.fillText('Bodies shrinking → momentum fading → exhaustion',100,H-5);},
 
-mtfTrend(el){const{x,W,H}=mc(el,520,140);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
-x.fillStyle='rgba(52,214,196,.08)';x.fillRect(10,10,240,120);x.fillStyle='rgba(242,184,75,.08)';x.fillRect(270,10,240,120);
-x.fillStyle='#34D6C4';x.fillText('HTF: Daily (trend direction)',30,24);
-x.strokeStyle='#34D6C4';x.lineWidth=2;x.beginPath();x.moveTo(30,110);x.lineTo(230,30);x.stroke();
-x.fillStyle='#F2B84B';x.fillText('LTF: 15m (entry timing)',290,24);
-x.strokeStyle='#F2B84B';x.lineWidth=1.5;x.beginPath();
-const pts=[[290,90],[320,70],[340,80],[360,55],[380,65],[420,40],[460,50],[490,30]];
-pts.forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
-x.fillStyle='#E7EAF0';x.fillText('Trade WITH the HTF direction',180,H-4);},
+mtfTrend(el){const{x,W,H}=mc(el,520,180);
+const candles=genCandles(30,90,2.2);const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+x.fillStyle='#8C97AC';x.font='10px IBM Plex Mono,monospace';x.fillText('HTF trend = direction | LTF = entry timing',120,H-5);},
 /* --- MARKET STRUCTURE CORE --- */
 swingHL(el){const{x,W,H}=mc(el,520,180);
 const candles=genCandles(25,100,3);const p2y=chartScale(candles,H);const gap=W/candles.length,bw=Math.max(3,gap*.6);
@@ -1169,63 +1150,78 @@ x.fillStyle='rgba(52,214,196,.25)';x.fillRect(200,50,80,30);x.strokeStyle='#34D6
 x.fillStyle='#8C97AC';x.fillText('Daily zone (wide)',60,36);x.fillStyle='#34D6C4';x.fillText('Refined OB on 15m (tight entry)',200,95);
 x.fillStyle='#F2B84B';x.fillText('Zoom LTF to refine = tighter entry = better R:R',100,H-6);},
 /* --- MODULE 8: CHART PATTERNS --- */
-ascTriangle(el){const{x,W,H}=mc(el,520,180);let f=0;function draw(){x.clearRect(0,0,W,H);
-x.strokeStyle='#FF6B81';x.setLineDash([4,3]);x.lineWidth=1.5;x.beginPath();x.moveTo(30,50);x.lineTo(450,50);x.stroke();x.setLineDash([]);
-x.strokeStyle='#34D6C4';x.setLineDash([4,3]);x.beginPath();x.moveTo(30,160);x.lineTo(400,55);x.stroke();x.setLineDash([]);
-x.strokeStyle='#E7EAF0';x.lineWidth=2;x.beginPath();const pts=[[30,160],[80,52],[130,135],[190,51],[240,110],[300,50],[350,85],[400,49]];
-const n=Math.min(pts.length,2+Math.floor(f/15));pts.slice(0,n).forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
-if(n>=pts.length){x.strokeStyle='#34D6C4';x.lineWidth=3;x.beginPath();x.moveTo(400,49);x.lineTo(460,25);x.lineTo(500,15);x.stroke();x.fillStyle='#F2B84B';x.font='11px IBM Plex Mono,monospace';x.fillText('BREAKOUT',430,40);}
-f=(f+1)%140;}draw();setInterval(draw,60);},
+ascTriangle(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=92;for(let i=0;i<22;i++){const resistance=108;const supportBase=90+i*0.7;const o=p,mv=(Math.random()-.5)*3;let c=o+mv;if(c>resistance)c=resistance-Math.random();if(c<supportBase)c=supportBase+Math.random();const h=Math.min(resistance+0.5,Math.max(o,c)+Math.random()),l=Math.max(supportBase-0.5,Math.min(o,c)-Math.random());candles.push({o,h,l,c});p=c;}
+for(let i=0;i<4;i++){const o=p,c=o+2+Math.random()*2;const h=c+Math.random(),l=o-Math.random();candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawHLine(x,W,p2y(108),'#FF6B81','Flat resistance',true);
+x.fillStyle='#34D6C4';x.font='10px IBM Plex Mono,monospace';x.fillText('Ascending Triangle: rising lows + flat resistance → breakout UP',60,H-5);},
 
-descTriangle(el){const{x,W,H}=mc(el,520,180);x.clearRect(0,0,W,H);
-x.strokeStyle='#34D6C4';x.setLineDash([4,3]);x.lineWidth=1.5;x.beginPath();x.moveTo(30,140);x.lineTo(450,140);x.stroke();x.setLineDash([]);
-x.strokeStyle='#FF6B81';x.setLineDash([4,3]);x.beginPath();x.moveTo(30,30);x.lineTo(400,135);x.stroke();x.setLineDash([]);
-x.strokeStyle='#E7EAF0';x.lineWidth=2;x.beginPath();
-[[30,30],[80,138],[130,55],[190,139],[240,80],[300,140],[350,105],[400,141]].forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
-x.strokeStyle='#FF6B81';x.lineWidth=3;x.beginPath();x.moveTo(400,141);x.lineTo(470,165);x.stroke();
-x.fillStyle='#FF6B81';x.font='11px IBM Plex Mono,monospace';x.fillText('BREAKDOWN',430,H-10);},
+descTriangle(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=108;for(let i=0;i<22;i++){const support=92;const resistBase=110-i*0.7;const o=p,mv=(Math.random()-.5)*3;let c=o+mv;if(c<support)c=support+Math.random();if(c>resistBase)c=resistBase-Math.random();const h=Math.min(resistBase+0.5,Math.max(o,c)+Math.random()),l=Math.max(support-0.5,Math.min(o,c)-Math.random());candles.push({o,h,l,c});p=c;}
+for(let i=0;i<4;i++){const o=p,c=o-2-Math.random()*2;const h=o+Math.random(),l=c-Math.random();candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawHLine(x,W,p2y(92),'#34D6C4','Flat support',true);
+x.fillStyle='#FF6B81';x.font='10px IBM Plex Mono,monospace';x.fillText('Descending Triangle: falling highs + flat support → breakdown',60,H-5);},
 
-symTriangle(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);
-x.strokeStyle='#F2B84B';x.setLineDash([4,3]);x.lineWidth=1.5;x.beginPath();x.moveTo(20,20);x.lineTo(380,75);x.stroke();x.beginPath();x.moveTo(20,140);x.lineTo(380,85);x.stroke();x.setLineDash([]);
-x.strokeStyle='#E7EAF0';x.lineWidth=2;x.beginPath();[[20,140],[70,25],[130,130],[180,35],[230,110],[280,50],[320,90],[360,60]].forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
-x.fillStyle='#8C97AC';x.font='10px IBM Plex Mono,monospace';x.fillText('Converging — direction unknown until breakout',120,H-6);},
+symTriangle(el){const{x,W,H}=mc(el,520,180);
+const candles=[];let p=100;for(let i=0;i<25;i++){const squeeze=Math.max(0.5,4-i*0.15);const o=p,mv=(Math.random()-.5)*squeeze;const c=o+mv;const h=Math.max(o,c)+Math.random()*squeeze*0.4,l=Math.min(o,c)-Math.random()*squeeze*0.4;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+x.fillStyle='#F2B84B';x.font='10px IBM Plex Mono,monospace';x.fillText('Symmetrical Triangle: compression → wait for breakout direction',80,H-5);},
 
-flags(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
-x.strokeStyle='#34D6C4';x.lineWidth=3;x.beginPath();x.moveTo(30,140);x.lineTo(150,30);x.stroke();
-x.strokeStyle='#8C97AC';x.lineWidth=1.5;x.beginPath();x.moveTo(150,30);x.lineTo(200,50);x.lineTo(240,40);x.lineTo(280,55);x.stroke();
-x.strokeStyle='#34D6C4';x.lineWidth=3;x.beginPath();x.moveTo(280,55);x.lineTo(420,10);x.stroke();
-x.fillStyle='#F2B84B';x.fillText('Pole',70,90);x.fillText('Flag',200,70);x.fillText('Continuation',350,30);},
+flags(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=85;for(let i=0;i<8;i++){const o=p,c=o+3+Math.random()*2;const h=c+Math.random(),l=o-Math.random();candles.push({o,h,l,c});p=c;}
+for(let i=0;i<8;i++){const o=p,c=o-0.8+Math.random()*0.5;const h=Math.max(o,c)+Math.random()*0.8,l=Math.min(o,c)-Math.random()*0.8;candles.push({o,h,l,c});p=c;}
+for(let i=0;i<7;i++){const o=p,c=o+2.5+Math.random()*2;const h=c+Math.random(),l=o-Math.random();candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+x.fillStyle='#34D6C4';x.font='10px IBM Plex Mono,monospace';x.fillText('Bull Flag: impulse → consolidation → continuation',100,H-5);},
 
-wedges(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
-x.fillStyle='#8C97AC';x.fillText('Falling Wedge (bullish)',30,14);x.fillText('Rising Wedge (bearish)',300,14);
-x.strokeStyle='#34D6C4';x.setLineDash([3,3]);x.beginPath();x.moveTo(30,30);x.lineTo(200,90);x.stroke();x.beginPath();x.moveTo(30,130);x.lineTo(200,100);x.stroke();x.setLineDash([]);
-x.strokeStyle='#34D6C4';x.lineWidth=2;x.beginPath();x.moveTo(200,95);x.lineTo(240,60);x.stroke();
-x.strokeStyle='#FF6B81';x.setLineDash([3,3]);x.beginPath();x.moveTo(280,130);x.lineTo(450,70);x.stroke();x.beginPath();x.moveTo(280,80);x.lineTo(450,60);x.stroke();x.setLineDash([]);
-x.strokeStyle='#FF6B81';x.lineWidth=2;x.beginPath();x.moveTo(450,65);x.lineTo(490,100);x.stroke();},
+wedges(el){const{x,W,H}=mc(el,520,180);
+const candles=[];let p=90;for(let i=0;i<25;i++){const o=p,mv=(Math.random()-.5)*2+0.3;const squeeze=Math.max(0.3,3-i*0.1);const c=o+mv*squeeze/3;const h=Math.max(o,c)+Math.random()*squeeze*0.4,l=Math.min(o,c)-Math.random()*squeeze*0.4;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+x.fillStyle='#F2B84B';x.font='10px IBM Plex Mono,monospace';x.fillText('Wedge: converging trendlines → counter-trend breakout',100,H-5);},
 
-headShoulders(el){const{x,W,H}=mc(el,520,180);const pts=[[20,140],[80,80],[130,120],[200,35],[270,120],[330,80],[390,120],[440,140],[500,160]];let n=1;
-function draw(){x.clearRect(0,0,W,H);x.strokeStyle='#E7EAF0';x.lineWidth=2.5;x.beginPath();pts.slice(0,n+1).forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
-if(n>=6){x.strokeStyle='#F2B84B';x.setLineDash([4,3]);x.lineWidth=1.5;x.beginPath();x.moveTo(130,120);x.lineTo(450,120);x.stroke();x.setLineDash([]);x.fillStyle='#F2B84B';x.font='10px IBM Plex Mono,monospace';x.fillText('Neckline',440,118);}
-const labels=['','LS','','Head','','RS','','Break',''];x.font='10px IBM Plex Mono,monospace';
-pts.slice(1,n+1).forEach((p,i)=>{if(labels[i+1]){x.fillStyle='#8C97AC';x.fillText(labels[i+1],p[0]-10,p[1]-10);}});}
-draw();setInterval(()=>{n=n>=pts.length-1?1:n+1;draw();},900);},
+headShoulders(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=95;
+const path=[1,1.5,2,1.5,0.5,-0.5,-1,0,1,2,3,3.5,3,2,0.5,-1,-0.5,0,0.5,1.5,1.5,1,0,-0.5,-1.5,-2,-2.5,-3];
+path.forEach(mv=>{const o=p,c=o+mv+Math.random()*.5-.25;const h=Math.max(o,c)+Math.random(),l=Math.min(o,c)-Math.random();candles.push({o,h,l,c});p=c;});
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.5);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+const necklineY=p2y(candles[7].l);drawHLine(x,W,necklineY,'#F2B84B','Neckline',true);
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('LS',5*gap,p2y(candles[4].h)-8);x.fillText('Head',10*gap,p2y(candles[11].h)-8);x.fillText('RS',19*gap,p2y(candles[20].h)-8);
+x.fillStyle='#FF6B81';x.font='10px IBM Plex Mono,monospace';x.fillText('Head & Shoulders → neckline break = bearish reversal',80,H-5);},
 
-invHS(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);
-const pts=[[20,40],[80,100],[130,60],[200,140],[270,60],[330,100],[390,60],[450,30]];
-x.strokeStyle='#E7EAF0';x.lineWidth=2.5;x.beginPath();pts.forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
-x.strokeStyle='#F2B84B';x.setLineDash([4,3]);x.beginPath();x.moveTo(130,60);x.lineTo(400,60);x.stroke();x.setLineDash([]);
-x.fillStyle='#34D6C4';x.font='10px IBM Plex Mono,monospace';x.fillText('Inverse H&S — neckline break = bullish',140,H-6);},
+invHS(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=105;
+const path=[-1,-1.5,-2,-1.5,-0.5,0.5,1,0,-1,-2,-3,-3.5,-3,-2,-0.5,1,0.5,0,-0.5,-1.5,-1.5,-1,0,0.5,1.5,2,2.5,3];
+path.forEach(mv=>{const o=p,c=o+mv+Math.random()*.5-.25;const h=Math.max(o,c)+Math.random(),l=Math.min(o,c)-Math.random();candles.push({o,h,l,c});p=c;});
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.5);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+x.fillStyle='#34D6C4';x.font='10px IBM Plex Mono,monospace';x.fillText('Inverse H&S → neckline break = bullish reversal',100,H-5);},
 
-doubleTopBot(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
-x.fillStyle='#8C97AC';x.fillText('Double Top (bearish)',60,14);x.fillText('Double Bottom (bullish)',310,14);
-x.strokeStyle='#FF6B81';x.lineWidth=2;x.beginPath();[[20,120],[80,30],[140,80],[200,30],[260,120]].forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
-x.strokeStyle='#34D6C4';x.lineWidth=2;x.beginPath();[[280,40],[340,130],[400,80],[460,130],[510,40]].forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();},
+doubleTopBot(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=95;
+const path=[1,2,2.5,2,1,-1,-2,-1.5,0,1,2,2.5,2,1,-1,-2,-3,-3.5,-3];
+path.forEach(mv=>{const o=p,c=o+mv+Math.random()*.4-.2;const h=Math.max(o,c)+Math.random()*.8,l=Math.min(o,c)-Math.random()*.8;candles.push({o,h,l,c});p=c;});
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+const topLvl=Math.max(...candles.slice(2,5).map(c=>c.h),Math.max(...candles.slice(9,13).map(c=>c.h)));
+drawHLine(x,W,p2y(topLvl),'#FF6B81','Double Top (EQH)',true);
+x.fillStyle='#FF6B81';x.font='10px IBM Plex Mono,monospace';x.fillText('Double Top: two equal peaks → breakdown',140,H-5);},
 
-cupHandle(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
-x.strokeStyle='#34D6C4';x.lineWidth=2.5;x.beginPath();
-for(let i=0;i<=60;i++){const angle=Math.PI+i/60*Math.PI;x.lineTo(40+i*5,70+Math.sin(angle)*50);}
-x.lineTo(340,70);x.lineTo(360,80);x.lineTo(380,75);x.lineTo(400,50);x.lineTo(460,20);x.stroke();
-x.fillStyle='#F2B84B';x.fillText('Cup',150,140);x.fillText('Handle',350,95);x.fillText('Breakout',420,15);},
+cupHandle(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=105;
+for(let i=0;i<12;i++){const curve=-Math.sin(i/11*Math.PI)*8;const o=p,c=o+curve/6+Math.random()-.5;const h=Math.max(o,c)+Math.random(),l=Math.min(o,c)-Math.random();candles.push({o,h,l,c});p=c;}
+for(let i=0;i<4;i++){const o=p,c=o-0.5+Math.random()*.3;const h=Math.max(o,c)+Math.random()*.5,l=Math.min(o,c)-Math.random()*.5;candles.push({o,h,l,c});p=c;}
+for(let i=0;i<5;i++){const o=p,c=o+2+Math.random();const h=c+Math.random(),l=o-Math.random()*.5;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+x.fillStyle='#34D6C4';x.font='10px IBM Plex Mono,monospace';x.fillText('Cup & Handle → breakout',180,H-5);},
 
 rectangle(el){this.range(el);},
 
@@ -1335,37 +1331,158 @@ fearGreed(el){this.riskPct(el);},fomo(el){this.riskPct(el);},revenge(el){this.ri
 confBias(el){this.riskPct(el);},lossAversion(el){this.riskPct(el);},journal(el){this.riskPct(el);},processOutcome(el){this.riskPct(el);},
 
 /* --- MODULE 15-17: ICT/WYCKOFF/ELLIOTT, OPTIONS, ALGO --- */
-wyckoff(el){const{x,W,H}=mc(el,520,180);const pts=[[20,90],[80,130],[140,90],[200,130],[240,150],[280,130],[340,90],[400,70],[480,30]];
-const labels=['','Support','Resist','Support','SPRING','Rally','Test','SOS','Mark-up'];let n=1;
-function draw(){x.clearRect(0,0,520,180);x.strokeStyle='rgba(242,184,75,.3)';x.setLineDash([4,3]);x.lineWidth=1;
-x.beginPath();x.moveTo(0,90);x.lineTo(380,90);x.stroke();x.beginPath();x.moveTo(0,130);x.lineTo(380,130);x.stroke();x.setLineDash([]);
-x.fillStyle='rgba(52,214,196,.05)';x.fillRect(0,90,380,40);
-x.strokeStyle='#E7EAF0';x.lineWidth=2.5;x.beginPath();pts.slice(0,n+1).forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
-x.font='9px IBM Plex Mono,monospace';pts.slice(1,n+1).forEach((p,i)=>{const lbl=labels[i+1];x.fillStyle=lbl==='SPRING'?'#FF6B81':lbl==='Mark-up'?'#34D6C4':'#8C97AC';x.fillText(lbl,p[0]-18,p[1]+(p[1]>100?14:-8));});}
-draw();setInterval(()=>{n=n>=pts.length-1?1:n+1;draw();},900);},
+wyckoff(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=100;
+// Accumulation range with spring
+for(let i=0;i<8;i++){const o=p,mv=(Math.random()-.5)*2;let c=Math.max(95,Math.min(105,o+mv));const h=Math.min(106,Math.max(o,c)+Math.random()),l=Math.max(94,Math.min(o,c)-Math.random());candles.push({o,h,l,c});p=c;}
+// Spring (false break below)
+candles.push({o:p,h:p+0.5,l:91,c:p-1});p=p-1;candles.push({o:p,h:p+3,l:p-0.5,c:p+2.5});p=p+2.5;
+// Markup
+for(let i=0;i<10;i++){const o=p,c=o+1.5+Math.random()*1.5;const h=c+Math.random(),l=o-Math.random()*.5;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawZone(x,W,p2y(106),p2y(94),'rgba(140,151,172,.06)','Accumulation Range');
+x.fillStyle='#FF6B81';x.font='10px IBM Plex Mono,monospace';x.fillText('SPRING',8*gap,p2y(91)+14);
+x.fillStyle='#34D6C4';x.fillText('Markup →',14*gap,p2y(candles[14].h)-10);
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Wyckoff: Range → Spring (trap) → Markup',120,H-5);},
 
 killZones(el){this.sessions(el);},judaSwing(el){this.po3(el);},silverBullet(el){this.po3(el);},ote(el){this.fibRetrace(el);},
 wyckoffAccum(el){this.wyckoff(el);},wyckoffDist(el){this.wyckoff(el);},springUpthrust(el){this.wyckoff(el);},
-elliott(el){const{x,W,H}=mc(el,520,180);const pts=[[20,150],[80,80],[120,115],[180,40],[220,90],[300,20],[360,60],[420,40],[480,70]];
-const labels=['','1','2','3','4','5','A','B','C'];const colors=['','#34D6C4','#8C97AC','#34D6C4','#8C97AC','#34D6C4','#FF6B81','#8C97AC','#FF6B81'];let n=1;
-function draw(){x.clearRect(0,0,520,180);x.strokeStyle='#E7EAF0';x.lineWidth=2.5;x.beginPath();pts.slice(0,n+1).forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
-x.font='13px IBM Plex Mono,monospace';pts.slice(1,n+1).forEach((p,i)=>{x.fillStyle=colors[i+1];x.fillText(labels[i+1],p[0]-4,p[1]-10);});}
-draw();setInterval(()=>{n=n>=pts.length-1?1:n+1;draw();},800);},
+elliott(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=90;
+// Wave 1 up
+for(let i=0;i<5;i++){const o=p,c=o+2+Math.random();const h=c+Math.random()*.5,l=o-Math.random()*.5;candles.push({o,h,l,c});p=c;}
+// Wave 2 down
+for(let i=0;i<3;i++){const o=p,c=o-1.5-Math.random()*.5;const h=o+Math.random()*.5,l=c-Math.random()*.5;candles.push({o,h,l,c});p=c;}
+// Wave 3 up (longest)
+for(let i=0;i<7;i++){const o=p,c=o+2.5+Math.random()*1.5;const h=c+Math.random()*.5,l=o-Math.random()*.3;candles.push({o,h,l,c});p=c;}
+// Wave 4 down
+for(let i=0;i<3;i++){const o=p,c=o-1.2-Math.random()*.5;const h=o+Math.random()*.5,l=c-Math.random()*.5;candles.push({o,h,l,c});p=c;}
+// Wave 5 up (weaker)
+for(let i=0;i<4;i++){const o=p,c=o+1+Math.random();const h=c+Math.random()*.5,l=o-Math.random()*.5;candles.push({o,h,l,c});p=c;}
+// A-B-C correction
+for(let i=0;i<3;i++){const o=p,c=o-2-Math.random();const h=o+Math.random()*.5,l=c-Math.random()*.5;candles.push({o,h,l,c});p=c;}
+for(let i=0;i<2;i++){const o=p,c=o+1+Math.random()*.5;const h=c+Math.random()*.5,l=o-Math.random()*.3;candles.push({o,h,l,c});p=c;}
+for(let i=0;i<3;i++){const o=p,c=o-1.5-Math.random();const h=o+Math.random()*.5,l=c-Math.random()*.5;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(2,gap*.5);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+// Wave labels
+x.font='12px IBM Plex Mono,monospace';
+x.fillStyle='#34D6C4';x.fillText('1',4.5*gap,p2y(candles[4].h)-8);x.fillText('3',14*gap,p2y(candles[14].h)-8);x.fillText('5',21*gap,p2y(candles[21].h)-8);
+x.fillStyle='#8C97AC';x.fillText('2',7*gap,p2y(candles[7].l)+14);x.fillText('4',17*gap,p2y(candles[17].l)+14);
+x.fillStyle='#FF6B81';x.fillText('A',24*gap,p2y(candles[24].l)+14);x.fillText('B',26*gap,p2y(candles[26].h)-8);x.fillText('C',29*gap,p2y(candles[29].l)+14);
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Elliott: 5 impulse waves + 3 corrective (A-B-C)',100,H-5);},
 elliottRules(el){this.elliott(el);},fibElliott(el){this.elliott(el);},
 
-callPut(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
-const cx=260,midY=80;x.strokeStyle='#232C3D';x.beginPath();x.moveTo(0,midY);x.lineTo(W,midY);x.stroke();x.beginPath();x.moveTo(cx,0);x.lineTo(cx,H);x.stroke();
-x.strokeStyle='#34D6C4';x.lineWidth=2.5;x.beginPath();for(let px=-50;px<=50;px++){const pnl=Math.max(-10,px-10);x.lineTo(cx+px*4,midY-pnl*3);}x.stroke();
-x.strokeStyle='#FF6B81';x.lineWidth=2.5;x.beginPath();for(let px=-50;px<=50;px++){const pnl=Math.max(-10,-px+10);x.lineTo(cx+px*4,midY-pnl*3);}x.stroke();
-x.fillStyle='#34D6C4';x.fillText('CALL (profit if price UP)',350,30);x.fillStyle='#FF6B81';x.fillText('PUT (profit if price DOWN)',50,30);},
+callPut(el){const{x,W,H}=mc(el,520,200);
+// Candle chart with strike price and ITM/OTM zones
+const candles=genCandles(25,95,4);const p2y=chartScale(candles,H,20);const gap=W/candles.length,bw=Math.max(5,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+const strike=100;drawHLine(x,W,p2y(strike),'#F2B84B','Strike Price: 100',true);
+drawZone(x,W,p2y(120),p2y(strike),'rgba(52,214,196,.06)','CALL profits here (above strike)');
+drawZone(x,W,p2y(strike),p2y(80),'rgba(255,107,129,.06)','PUT profits here (below strike)');
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Call = right to buy at strike | Put = right to sell at strike',80,H-5);},
 
-premComp(el){this.callPut(el);},iv(el){this.callPut(el);},ivRank(el){this.callPut(el);},
-delta(el){this.callPut(el);},theta(el){this.callPut(el);},gamma(el){this.callPut(el);},vega(el){this.callPut(el);},
-nakedShort(el){this.callPut(el);},creditSpread(el){this.callPut(el);},debitSpread(el){this.callPut(el);},
-ironCondor(el){this.callPut(el);},straddle(el){this.callPut(el);},ivCrush(el){this.callPut(el);},
+premComp(el){const{x,W,H}=mc(el,520,180);
+const candles=genCandles(20,100,3.5);const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(5,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawHLine(x,W,p2y(100),'#F2B84B','Strike: 100',true);
+drawHLine(x,W,p2y(103),'#34D6C4','Breakeven: Strike + Premium',true);
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Premium = Intrinsic (ITM amount) + Time Value',120,H-5);},
+
+iv(el){const{x,W,H}=mc(el,520,180);
+// Show candles with expanding volatility
+const candles=[];let p=100;for(let i=0;i<25;i++){const vol=1+Math.abs(Math.sin(i/8))*5;const o=p,mv=(Math.random()-.5)*vol,c=o+mv;const h=Math.max(o,c)+Math.random()*vol*.3,l=Math.min(o,c)-Math.random()*vol*.3;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(5,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+x.fillStyle='#F2B84B';x.font='10px IBM Plex Mono,monospace';x.fillText('← Low IV (small candles)',20,14);x.fillText('High IV (big candles) →',330,14);
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Higher IV = bigger expected moves = more expensive options',80,H-5);},
+
+ivRank(el){this.iv(el);},
+
+delta(el){const{x,W,H}=mc(el,520,180);
+const candles=genCandles(20,100,4);const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(5,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawHLine(x,W,p2y(100),'#F2B84B','ATM (delta ≈ 0.50)',true);
+drawHLine(x,W,p2y(108),'#34D6C4','Deep ITM Call (delta ≈ 0.90)',true);
+drawHLine(x,W,p2y(92),'#FF6B81','OTM Call (delta ≈ 0.15)',true);
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Delta = price change per $1 move in underlying',120,H-5);},
+
+theta(el){const{x,W,H}=mc(el,520,180);
+// Show candles getting smaller toward expiry (time running out)
+const candles=[];let p=100;for(let i=0;i<20;i++){const decay=Math.max(1,4-i*0.15);const o=p,mv=(Math.random()-.5)*decay,c=o+mv;const h=Math.max(o,c)+Math.random()*decay*.3,l=Math.min(o,c)-Math.random()*decay*.3;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(5,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawHLine(x,W,p2y(100),'#F2B84B','Strike',true);
+x.fillStyle='#FF6B81';x.font='10px IBM Plex Mono,monospace';x.fillText('← DTE: 30 days',20,14);x.fillText('Expiry →',W-70,14);
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Theta: option loses value daily as expiry approaches (accelerates)',60,H-5);},
+
+gamma(el){this.delta(el);},vega(el){this.iv(el);},
+
+nakedShort(el){const{x,W,H}=mc(el,520,180);
+const candles=genCandles(20,100,4);const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(5,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawHLine(x,W,p2y(106),'#FF6B81','Short Call Strike (sold here)',false);
+drawZone(x,W,p2y(120),p2y(106),'rgba(255,107,129,.1)','LOSS ZONE (unlimited risk)');
+drawZone(x,W,p2y(106),p2y(80),'rgba(52,214,196,.06)','Profit zone (keep premium)');
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Naked short: collect premium but unlimited risk if price goes past strike',30,H-5);},
+
+creditSpread(el){const{x,W,H}=mc(el,520,180);
+const candles=genCandles(20,100,3.5);const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(5,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawHLine(x,W,p2y(105),'#FF6B81','Short strike (sold)',false);
+drawHLine(x,W,p2y(110),'#34D6C4','Long strike (hedge)',false);
+drawZone(x,W,p2y(110),p2y(105),'rgba(255,107,129,.1)','Max loss = width - premium');
+drawZone(x,W,p2y(105),p2y(85),'rgba(52,214,196,.06)','Profit (keep premium)');
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Credit spread: defined risk (hedge caps max loss)',100,H-5);},
+
+debitSpread(el){this.creditSpread(el);},
+
+ironCondor(el){const{x,W,H}=mc(el,520,180);
+const candles=[];let p=100;for(let i=0;i<20;i++){const o=p,mv=(Math.random()-.5)*3;let c=Math.max(93,Math.min(107,o+mv));const h=Math.min(108,Math.max(o,c)+Math.random()*1.5),l=Math.max(92,Math.min(o,c)-Math.random()*1.5);candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(5,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawHLine(x,W,p2y(107),'#FF6B81','Short Call',true);drawHLine(x,W,p2y(93),'#FF6B81','Short Put',true);
+drawHLine(x,W,p2y(112),'#8C97AC','Long Call (hedge)',true);drawHLine(x,W,p2y(88),'#8C97AC','Long Put (hedge)',true);
+drawZone(x,W,p2y(107),p2y(93),'rgba(52,214,196,.06)','PROFIT ZONE (stay in range)');
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Iron Condor: profit if price stays between short strikes',80,H-5);},
+
+straddle(el){const{x,W,H}=mc(el,520,180);
+const candles=genCandles(20,100,5);const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(5,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawHLine(x,W,p2y(100),'#F2B84B','Strike (buy call + put here)',false);
+drawHLine(x,W,p2y(106),'#34D6C4','Upper breakeven',true);drawHLine(x,W,p2y(94),'#34D6C4','Lower breakeven',true);
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Straddle: profit from BIG move in either direction',100,H-5);},
+
+ivCrush(el){const{x,W,H}=mc(el,520,180);
+// Big candles before event, small after
+const candles=[];let p=100;for(let i=0;i<10;i++){const vol=5;const o=p,mv=(Math.random()-.5)*vol,c=o+mv;const h=Math.max(o,c)+Math.random()*2,l=Math.min(o,c)-Math.random()*2;candles.push({o,h,l,c});p=c;}
+for(let i=0;i<10;i++){const vol=1.5;const o=p,mv=(Math.random()-.5)*vol,c=o+mv;const h=Math.max(o,c)+Math.random()*.5,l=Math.min(o,c)-Math.random()*.5;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(5,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+// Event line
+const evtX=10*gap;x.strokeStyle='#F2B84B';x.setLineDash([4,3]);x.lineWidth=1.5;x.beginPath();x.moveTo(evtX,0);x.lineTo(evtX,H);x.stroke();x.setLineDash([]);
+x.fillStyle='#F2B84B';x.font='10px IBM Plex Mono,monospace';x.fillText('EVENT',evtX-15,14);
+x.fillStyle='#FF6B81';x.fillText('High IV (expensive)',20,H-18);x.fillStyle='#34D6C4';x.fillText('IV Crush (cheap)',evtX+20,H-18);
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('After event: IV drops → options lose value even if direction was right',40,H-5);},
 
 backtest(el){this.overfit(el);},walkForward(el){this.overfit(el);},isOos(el){this.overfit(el);},
 slippage(el){this.overfit(el);},monteCarlo(el){this.overfit(el);},sharpe(el){this.overfit(el);},decay(el){this.overfit(el);},
+
+overfit(el){const{x,W,H}=mc(el,520,180);
+const inSample=genCandles(20,95,2);const oos=genCandles(20,inSample[19].c,3);
+const all=[...inSample,...oos];const p2y=chartScale(all,H,18);const gap=W/all.length,bw=Math.max(2,gap*.5);
+all.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+// Divider
+const midX=20*gap;x.strokeStyle='#F2B84B';x.setLineDash([4,3]);x.lineWidth=1;x.beginPath();x.moveTo(midX,0);x.lineTo(midX,H);x.stroke();x.setLineDash([]);
+// Fitted line (in-sample: smooth, OOS: diverges)
+x.strokeStyle='#9C8CFF';x.lineWidth=2;x.beginPath();
+inSample.forEach((cd,i)=>{x.lineTo(i*gap+gap/2,p2y(cd.c));});x.stroke();
+x.strokeStyle='rgba(156,140,255,.3)';x.lineWidth=1.5;x.beginPath();
+oos.forEach((cd,i)=>{x.lineTo((20+i)*gap+gap/2,p2y(cd.c)+Math.random()*20-10);});x.stroke();
+x.fillStyle='#34D6C4';x.font='9px IBM Plex Mono,monospace';x.fillText('In-sample (tuned)',10,14);
+x.fillStyle='#FF6B81';x.fillText('Out-of-sample (reality)',midX+10,14);
+x.fillStyle='#8C97AC';x.fillText('Overfit = looks great in-sample, fails out-of-sample',100,H-5);},
 
 /* --- GENERIC FALLBACK for any animation key not explicitly defined --- */
 _fallback(el, label){const{x,W,H}=mc(el,520,120);x.clearRect(0,0,W,H);
