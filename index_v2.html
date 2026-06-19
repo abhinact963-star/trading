@@ -90,342 +90,379 @@ function mc(el,w,h){const c=document.createElement('canvas');c.width=w*2;c.heigh
 
 /* ===================== MODULE DATA ===================== */
 const M=[
-/* ===== MODULE 1: TRADING FUNDAMENTALS ===== */
-{id:'m1',g:'Foundations',t:'Trading Fundamentals',b:'Markets, participants, order types, and the vocabulary everything builds on.',
+/* ===== MODULE 1: THE JAPANESE ORIGINS & TRADING PHILOSOPHY ===== */
+{id:'m1',g:'Foundations',t:'Origins & Philosophy of Candlestick Trading',b:'The history of Japanese candlestick analysis — Munehisa Homma, the Dojima Rice Exchange, and the psychological principles behind reading price.',
 topics:[
-{h:'What is Trading',d:'Buying/selling assets to profit from price changes. Distinct from investing (longer horizon, ownership focus).',a:'whatIsTrade'},
-{h:'Bid, Ask & Spread',d:'<b>Bid</b> = highest buyer price. <b>Ask</b> = lowest seller price. <b>Spread</b> = cost of immediacy.',a:'orderbook'},
-{h:'Market Orders vs Limit Orders',d:'<b>Market order</b> = fill immediately at best available. <b>Limit order</b> = fill only at your price or better. Market orders consume liquidity; limit orders provide it.',a:'orderTypes'},
-{h:'Leverage & Margin',d:'Leverage amplifies both gains and losses. Margin = collateral. 10x leverage on a 5% move = 50% P&L swing.',a:'leverage'},
-{h:'Types of Traders',d:'<b>Scalper</b> (seconds-minutes), <b>Day trader</b> (same session), <b>Swing</b> (days-weeks), <b>Position</b> (weeks-months).',a:null},
-{h:'Long vs Short',d:'<b>Long</b> = profit from price rising. <b>Short</b> = profit from price falling (borrow, sell, buy back cheaper).',a:'longShort'},
-{h:'Timeframes',d:'Each candle represents a period: 1m, 5m, 15m, 1H, 4H, Daily, Weekly. Higher timeframes carry more weight.',a:'timeframes'},
-{h:'Market Sessions',d:'<b>Asian</b> (low vol), <b>London</b> (most vol), <b>New York</b> (overlap = peak). Crypto: 24/7 but still has rhythm.',a:'sessions'}
+{h:'Munehisa Homma — Father of Candlestick Charts',d:'In the 1700s, Munehisa Homma became the most successful rice trader in Japan. He developed candlestick techniques at the Dojima Rice Exchange in Osaka. He understood that <b>human emotions drive markets</b> — fear and greed create predictable price patterns. His trading records reportedly showed over 100 consecutive winning trades.',a:'whatIsTrade'},
+{h:'The Dojima Rice Exchange',d:'The world\'s first futures market. Rice coupons (futures contracts) were traded on speculation. Homma studied years of weather, price, and psychological data to develop his methods. He communicated rice prices from Osaka to Sakata using a network of men on rooftops — the first "ticker system."',a:null},
+{h:'The Core Principle: Markets Are Driven by Human Emotion',d:'Candlestick analysis is built on one idea: <b>price reflects the collective emotion of all participants</b>. Fear creates selling pressure (long upper wicks, red bodies). Greed creates buying pressure (long lower wicks, green bodies). Indecision creates small bodies and dojis. Every candle tells an emotional story.',a:'bullBear'},
+{h:'Why Candlesticks Work Across All Markets',d:'Whether stocks, forex, crypto, or commodities — the patterns work because they reflect universal human psychology. Greed and fear don\'t change whether you\'re trading rice in 1750 or Bitcoin today. The time frame doesn\'t matter either — the psychology repeats from 1-minute to monthly charts.',a:'tfContext'},
+{h:'The Candlestick Trader\'s Mindset',d:'<b>1.</b> You are not predicting — you are reading what other traders are feeling. <b>2.</b> No single candle pattern works in isolation — context is everything. <b>3.</b> Patience to wait for the right setup at the right level is 80% of the game. <b>4.</b> Risk management comes before any entry signal.',a:null},
+{h:'What You Will Learn',d:'This curriculum teaches the same approach Homma developed: read the <b>story</b> price is telling through candle shapes and patterns, identify <b>where</b> to look (key levels), determine <b>what</b> to look for (specific patterns at those levels), and apply <b>strict rules</b> for entry, stop, and target.',a:null}
 ],
 quiz:[
-{q:'A market order:',o:['Waits for a specific price','Fills immediately at best available','Is always better than a limit order','Cannot be used for selling'],a:1,e:'Market orders fill instantly at best price.'},
-{q:'10x leverage on a 3% move means:',o:['3% P&L','30% P&L','0.3% P&L','300% P&L'],a:1,e:'Leverage multiplies the move: 10 × 3% = 30%.'},
-{q:'The spread represents:',o:['Daily profit','Cost of immediate execution','Exchange fees only','Leverage ratio'],a:1,e:'Spread = gap between bid and ask = cost of immediacy.'},
-{q:'London session is known for:',o:['Lowest volume','Highest volume/volatility','Only crypto trading','No institutional activity'],a:1,e:'London open brings the most liquidity and movement.'}
+{q:'Munehisa Homma traded at:',o:['New York Stock Exchange','Dojima Rice Exchange (Osaka)','London Stock Exchange','Chicago Board of Trade'],a:1,e:'Homma developed his methods at Dojima Rice Exchange in 1700s Japan.'},
+{q:'The core principle of candlestick analysis is:',o:['Price is random','Price reflects collective human emotion','Only volume matters','Charts are meaningless'],a:1,e:'Candles encode fear, greed, and indecision of all participants.'},
+{q:'Candlestick patterns work across markets because:',o:['They are mathematical formulas','Human psychology (fear/greed) is universal','They only work in forex','They were designed for all markets'],a:1,e:'Same emotions, same patterns — regardless of the asset.'},
+{q:'According to the candlestick philosophy, patience means:',o:['Trading every signal','Waiting for the right pattern at the right level','Never trading','Only trading once per month'],a:1,e:'Right pattern + right level = high-probability setup.'}
 ]},
-/* ===== MODULE 2: CANDLESTICK BASICS ===== */
-{id:'m2',g:'Foundations',t:'Candlestick Basics',b:'OHLC anatomy, timeframe meaning, and reading the story each candle tells.',
+/* ===== MODULE 2: CANDLESTICK ANATOMY & MARKET PSYCHOLOGY ===== */
+{id:'m2',g:'Foundations',t:'Candlestick Anatomy & Market Psychology',b:'How to read the story each candle tells — body, shadows, and the emotions they encode.',
 topics:[
-{h:'OHLC Anatomy',d:'Open, High, Low, Close. Body = O-to-C. Upper wick = rejection above. Lower wick = rejection below.',a:'ohlc'},
-{h:'Bull vs Bear Candles',d:'Close > Open = bullish (teal). Close < Open = bearish (coral). Body size = conviction.',a:'bullBear'},
-{h:'Wick Psychology',d:'Long upper wick = sellers rejected buyers. Long lower wick = buyers rejected sellers. Both = indecision.',a:'wicks'},
-{h:'Body Size & Momentum',d:'Large body = strong momentum. Small body = weak momentum or exhaustion. Marubozu = no wicks, pure conviction.',a:'bodySize'},
-{h:'Doji Candles',d:'Open ≈ Close. Variants: standard doji, dragonfly (long lower), gravestone (long upper), long-legged.',a:'doji'},
-{h:'Candle vs Line Chart',d:'Line shows only close. Candle shows the entire intra-period battle — rejection, absorption, conviction.',a:'candleVsLine'},
-{h:'Timeframe Context',d:'Same price action looks different on 5m vs 4H. Higher TF candles override lower TF signals.',a:'tfContext'}
+{h:'The Body — Who Won the Battle',d:'The <b>body</b> (thick part) shows open-to-close range. A <b>large bullish body</b> = buyers dominated the entire period. A <b>large bearish body</b> = sellers dominated. The body is the most important part — it tells you WHO WON.',a:'ohlc'},
+{h:'The Shadows (Wicks) — Rejected Price',d:'The thin lines above and below the body. <b>Upper shadow</b> = price went UP but was pushed BACK DOWN (sellers rejected the high). <b>Lower shadow</b> = price went DOWN but was pushed BACK UP (buyers rejected the low). Longer shadow = stronger rejection.',a:'wicks'},
+{h:'Big Body, Small Shadows — Conviction',d:'When the body is large relative to the shadows, one side had <b>complete control</b>. A big green body with tiny wicks = buyers overwhelmed sellers with zero hesitation. This is pure conviction. In the book this is called a "Marubozu" — a candle of dominance.',a:'bodySize'},
+{h:'Small Body, Big Shadows — Indecision & Rejection',d:'When the body is tiny but shadows are long, the market was <b>violently indecisive</b>. Price explored both extremes but settled near the middle. This is a battle where neither side could hold ground. Often appears before reversals.',a:'doji'},
+{h:'The Psychology of a Bullish Candle',d:'Open → sellers push price down (lower shadow forms) → <b>buyers step in aggressively</b> → push price above open → hold it there through close. The candle\'s story: "Sellers tried and FAILED. Buyers took control." The longer the lower shadow, the more dramatically sellers were rejected.',a:'bullBear'},
+{h:'The Psychology of a Bearish Candle',d:'Open → buyers push price up (upper shadow forms) → <b>sellers overwhelm</b> → push price below open → hold it down through close. Story: "Buyers tried and FAILED. Sellers took control." Long upper shadow = maximum buyer rejection.',a:'bullBear'},
+{h:'Reading Candles as a Story, Not a Shape',d:'Never memorize patterns mechanically. Each candle is a <b>one-act story</b>: Who attacked first? Who won? How decisive was the victory? A hammer isn\'t just "small body, long lower wick" — it\'s the story of sellers being overwhelmed after attempting to push price down.',a:'candleVsLine'},
+{h:'The Emotional Cycle in Every Candle',d:'Every candle contains a micro-cycle: <b>Hope</b> (opening expectations) → <b>Fear</b> (adverse move against holders) → <b>Greed</b> (winners pressing advantage) → <b>Resolution</b> (close determines who won). Understanding this cycle is the foundation of everything that follows.',a:null}
 ],
 quiz:[
-{q:'A candle body shows:',o:['High to Low','Open to Close','Previous close to current open','Volume'],a:1,e:'Body = range from open to close.'},
-{q:'A long lower wick means:',o:['Sellers dominated','Buyers pushed price back up from lows','No trading occurred','Price gapped down'],a:1,e:'Price went low but buyers pushed it back = lower wick.'},
-{q:'A Marubozu candle has:',o:['Equal wicks','No wicks at all','Only upper wick','Doji shape'],a:1,e:'Marubozu = full conviction, no wicks.'},
-{q:'Doji signals:',o:['Strong trend','Pure indecision (open ≈ close)','Guaranteed reversal','High volume'],a:1,e:'Open ≈ close = neither side won.'}
+{q:'A large bullish body with tiny wicks means:',o:['Indecision','Buyers dominated with total conviction','Sellers won','No trading happened'],a:1,e:'Large body + small wicks = one side completely in control.'},
+{q:'A long upper shadow tells you:',o:['Buyers are in control','Price was rejected from highs (sellers pushed it back down)','The trend is up','Volume was high'],a:1,e:'Upper shadow = price went up but couldn\'t hold = seller rejection.'},
+{q:'According to the book, you should read candles as:',o:['Mathematical shapes to memorize','Stories of who attacked, who won, how decisively','Random noise','Volume indicators'],a:1,e:'Each candle tells an emotional story of the battle.'},
+{q:'A small body with long shadows on both sides indicates:',o:['Strong trend','Violent indecision — neither side could hold','Bullish continuation','Only appears in ranging markets'],a:1,e:'Big shadows + tiny body = battle with no clear winner.'}
 ]},
-/* ===== MODULE 3: CANDLESTICK PATTERNS ===== */
-{id:'m3',g:'Price Action',t:'Candlestick Patterns',b:'Single, double, and triple-candle patterns — reversals and continuations.',
+/* ===== MODULE 3: THE THREE KEY PATTERNS (Pin Bar, Engulfing, Inside Bar) ===== */
+{id:'m3',g:'Candlestick Bible',t:'The Three Key Patterns',b:'The Candlestick Trading Bible focuses on THREE patterns that work — the Pin Bar, the Engulfing, and the Inside Bar. Master these three; ignore the rest.',
 topics:[
-{h:'Hammer & Inverted Hammer',d:'<b>Hammer</b>: small body top, long lower wick, after downtrend = bullish reversal. <b>Inverted</b>: long upper wick.',a:'hammer'},
-{h:'Shooting Star & Hanging Man',d:'<b>Shooting Star</b>: long upper wick after uptrend = bearish. <b>Hanging Man</b>: hammer shape at a top.',a:'shootingStar'},
-{h:'Bullish & Bearish Engulfing',d:'Current candle body fully engulfs previous. Bullish: bull engulfs bear after downtrend. Bearish: bear engulfs bull.',a:'engulfing'},
-{h:'Morning Star & Evening Star',d:'Three-candle reversal. Morning Star (bottom): bear → small body → bull. Evening Star (top): bull → small → bear.',a:'stars'},
-{h:'Piercing Pattern & Dark Cloud Cover',d:'<b>Piercing</b>: bull opens below prior close, closes above 50% of prior bear. <b>Dark Cloud</b>: mirror.',a:'piercing'},
-{h:'Three White Soldiers & Three Black Crows',d:'Three consecutive strong directional candles with minimal wicks = powerful continuation/reversal.',a:'threeSoldiers'},
-{h:'Spinning Top & Doji Variations',d:'Small body, wicks both sides = indecision. Four doji types: standard, dragonfly, gravestone, long-legged.',a:'spinTop'},
-{h:'Tweezers Top & Bottom',d:'Two candles with matching highs (top) or matching lows (bottom) at S/R = reversal signal.',a:'tweezers'}
+{h:'Why Only Three Patterns?',d:'Most books teach 40+ patterns. The Candlestick Bible says: <b>forget most of them</b>. Three patterns, traded at the right levels with the right context, are all you need. Simplicity + discipline beats encyclopedic knowledge every time.',a:null},
+{h:'THE PIN BAR — Anatomy',d:'A candle with a <b>small body</b> at one end and a <b>long shadow (tail)</b> at the other. The tail must be at least 2/3 of the total candle length. The body should be within the range of the prior candle. The tail is the rejection — it shows price tried to go one way and was violently rejected.',a:'hammer'},
+{h:'Bullish Pin Bar (Hammer)',d:'Long <b>lower tail</b>, small body at the top. Found after a decline or at support. Story: sellers pushed price aggressively lower, but <b>buyers overwhelmed them</b> and pushed price back up to close near the high. The longer the tail, the more violent the rejection.',a:'hammer'},
+{h:'Bearish Pin Bar (Shooting Star)',d:'Long <b>upper tail</b>, small body at the bottom. Found after a rally or at resistance. Story: buyers pushed price higher, but <b>sellers crushed them</b> and drove price back to close near the low. The upper tail is a gravestone for the bulls.',a:'shootingStar'},
+{h:'Pin Bar Psychology — Why It Works',d:'The long tail represents <b>trapped traders</b>. In a bullish pin bar, all the traders who sold during that candle are now underwater — their stops are below the tail. This creates fuel for the move up (short-covering). The pattern works because it creates a pool of trapped sellers.',a:null},
+{h:'Pin Bar Confirmation Rules',d:'<b>1.</b> Tail must be 2/3+ of total candle. <b>2.</b> Body must be small (ideally 1/3 or less). <b>3.</b> Must occur at a key level (support/resistance). <b>4.</b> Direction must align with higher timeframe trend. <b>5.</b> Ignore pin bars in the middle of nowhere.',a:null},
+{h:'THE ENGULFING PATTERN — Anatomy',d:'A two-candle pattern where the second candle\'s <b>body completely engulfs</b> the first candle\'s body. The second candle shows a complete shift of power from one side to the other. It represents a dramatic emotional reversal in a single period.',a:'engulfing'},
+{h:'Bullish Engulfing',d:'After a decline: small bearish candle followed by a <b>larger bullish candle that fully covers</b> the prior body. Psychology: the first candle shows bears are tiring (small body). The second candle shows buyers arrived with overwhelming force — they didn\'t just stop the decline, they reversed it entirely in one candle.',a:'engulfing'},
+{h:'Bearish Engulfing',d:'After a rally: small bullish candle followed by a <b>larger bearish candle that fully covers</b> the prior body. Psychology: bulls are exhausted (small body showing weak last push). Then sellers arrive with brutal force — erasing all of the prior gains and more in a single period.',a:'engulfing'},
+{h:'Engulfing Confirmation Rules',d:'<b>1.</b> Second body must FULLY contain the first body. <b>2.</b> The bigger the second candle relative to the first, the stronger the signal. <b>3.</b> Must occur at a key level. <b>4.</b> In a trend direction or at a clear reversal point. <b>5.</b> Higher timeframe engulfing > lower TF.',a:null},
+{h:'THE INSIDE BAR — Anatomy',d:'A candle whose <b>entire range (high to low) is contained within the prior candle\'s range</b>. The mother candle is the big one; the inside bar is the smaller one nestled within it. It represents <b>consolidation and indecision</b> — a coiling spring about to release.',a:null},
+{h:'Inside Bar Psychology',d:'After a big move (mother candle), the market <b>pauses to digest</b>. Neither buyers nor sellers can push beyond the mother candle\'s range. Energy builds. When price finally breaks out of the inside bar\'s range, it often explodes in that direction — the compressed energy releases.',a:null},
+{h:'Trading the Inside Bar Breakout',d:'<b>1.</b> Identify a clear mother candle (large, decisive). <b>2.</b> Wait for 1+ inside bars to form within it. <b>3.</b> Place a buy stop above the inside bar high, sell stop below inside bar low. <b>4.</b> Whichever triggers first = the trade. <b>5.</b> Stop goes on the opposite side. <b>6.</b> Works best at key levels or after a trend move.',a:null},
+{h:'The False Break of the Inside Bar',d:'Sometimes price breaks one side of the inside bar, traps traders, then reverses through the other side. This is a <b>powerful signal</b> — the trapped traders add fuel to the real move. Wait for a candle close beyond the level for confirmation, not just a wick.',a:null}
 ],
 quiz:[
-{q:'Hammer after downtrend signals:',o:['Continuation down','Potential bullish reversal','Indecision','Short entry'],a:1,e:'Hammer = buyers rejected lows = potential reversal.'},
-{q:'Engulfing pattern requires:',o:['Matching wicks','Current body fully covers prior body','Three candles','A gap'],a:1,e:'Full body engulfment of previous candle.'},
-{q:'Evening Star is:',o:['Bullish reversal','Bearish three-candle reversal at a top','Continuation','Single candle pattern'],a:1,e:'Evening Star: bull → indecision → bear at a high.'},
-{q:'Three Black Crows after an uptrend:',o:['Bullish continuation','Strong bearish reversal signal','Neutral','Needs 5 more candles'],a:1,e:'Three strong bear candles = selling pressure overwhelming.'}
+{q:'The Pin Bar tail should be at least:',o:['1/4 of the candle','1/2 of the candle','2/3 of the total candle length','The exact same as the body'],a:2,e:'Tail = 2/3+ of total candle for a valid pin bar.'},
+{q:'A bullish pin bar works because:',o:['It looks nice','Trapped sellers (below the tail) create fuel for the move up','It always works at any level','It means high volume'],a:1,e:'Trapped shorts = covering pressure = fuel for rally.'},
+{q:'Engulfing pattern requires the second candle to:',o:['Have a longer wick','Fully cover the first candle\'s body','Be the same size','Gap up/down'],a:1,e:'Full body engulfment = complete power shift.'},
+{q:'Inside Bar represents:',o:['Strong momentum','Consolidation/compression before a breakout','Trend end guaranteed','Only works in forex'],a:1,e:'Energy compresses inside the mother candle, then releases.'},
+{q:'The book says to focus on how many patterns?',o:['40+','12','3 (Pin Bar, Engulfing, Inside Bar)','1'],a:2,e:'Three patterns at the right level with discipline = enough.'}
 ]},
 
-/* ===== MODULE 4: SUPPORT & RESISTANCE ===== */
-{id:'m4',g:'Price Action',t:'Support & Resistance',b:'Horizontal levels, dynamic levels, role reversal, and how to draw them properly.',
+/* ===== MODULE 4: MARKET STRUCTURE & THE 4 STAGES ===== */
+{id:'m4',g:'Candlestick Bible',t:'Market Structure & The Four Stages',b:'Trending vs ranging, how to identify what the market is doing RIGHT NOW, and the four repeating stages every market cycles through.',
 topics:[
-{h:'Horizontal Support',d:'Price level where buying repeatedly halted declines. More touches without breaking = stronger.',a:'hSupport'},
-{h:'Horizontal Resistance',d:'Price level where selling repeatedly halted advances. Mirror of support.',a:'hResist'},
-{h:'Drawing S/R Zones (not lines)',d:'Use zones, not exact lines. Wicks define the "zone width." Look for multiple reactions at similar prices.',a:'srZones'},
-{h:'Dynamic S/R (Moving Averages)',d:'MAs like 20 EMA, 50 SMA, 200 SMA act as dynamic support/resistance that moves with price.',a:'dynamicSR'},
-{h:'Trendline Support & Resistance',d:'Connecting swing lows (support) or highs (resistance) with a diagonal line. Valid with 3+ touches.',a:'trendlineSR'},
-{h:'Role Reversal (Flip)',d:'Broken resistance becomes support on retest. Broken support becomes resistance. Traders buy the retest.',a:'roleReversal'},
-{h:'Round Numbers & Psychological Levels',d:'100, 500, 1000, 50000 — round numbers attract orders. They act as invisible S/R.',a:'roundNums'},
-{h:'Multi-Timeframe S/R',d:'Daily/weekly S/R overrules 1H/15m. Always check higher TF levels before trading lower TF setups.',a:'mtfSR'}
+{h:'The Two States of Any Market',d:'At any moment, a market is either <b>TRENDING</b> (making directional progress) or <b>RANGING</b> (going sideways in a box). Your entire approach changes based on which state you are in. Trading a range strategy in a trend = losses. Trading a trend strategy in a range = losses.',a:'uptrend'},
+{h:'Trending Market — How to Identify',d:'<b>Uptrend</b>: series of higher highs + higher lows. Each pullback holds above the prior low. <b>Downtrend</b>: series of lower highs + lower lows. Each rally fails below prior high. If you can draw a clear staircase of HH/HL or LH/LL, you are in a trend.',a:'uptrend'},
+{h:'Ranging Market — How to Identify',d:'Price bounces between a clear <b>ceiling (resistance)</b> and <b>floor (support)</b> without making new directional progress. The highs are roughly equal. The lows are roughly equal. If you cannot see a staircase, you are in a range.',a:'range'},
+{h:'The Trap: Treating Ranges as Trends',d:'Most traders lose money by <b>buying breakouts that fail</b> in a range or <b>fighting the trend</b> trying to pick tops/bottoms. Step 1 of ANY analysis: determine if you are in a trend or a range FIRST. Everything else follows from this.',a:null},
+{h:'Stage 1: ACCUMULATION',d:'After a downtrend, the market enters a <b>sideways range</b>. Smart money is quietly buying from retail sellers who are still bearish. Volume is low. Looks boring. Retail traders ignore it or keep shorting. This is where the next big move is being built.',a:'po3'},
+{h:'Stage 2: ADVANCING (Markup)',d:'The range breaks out upward. <b>Price trends higher</b> with HH/HL structure. Volume increases. Retail finally notices and starts buying. This is the "easy money" phase where trend-following works beautifully. Pin bars at pullback levels = ideal entries.',a:'uptrend'},
+{h:'Stage 3: DISTRIBUTION',d:'After a long uptrend, price enters another <b>sideways range at the top</b>. Smart money is selling to the late-arriving retail buyers who are now euphoric. Looks like "consolidation before another leg up" — but it\'s actually the exit phase.',a:'po3'},
+{h:'Stage 4: DECLINING (Markdown)',d:'The range breaks down. <b>Price trends lower</b> with LH/LL structure. Fear replaces greed. Retail panic-sells. This phase often moves faster than the advancing phase because fear is stronger than greed.',a:'downtrend'},
+{h:'Identifying Which Stage You Are In',d:'<b>1.</b> Was there a prior trend? <b>2.</b> Is price currently in a range or trending? <b>3.</b> Is the range at a previous high (distribution) or previous low (accumulation)? <b>4.</b> Has the range broken out in a direction? Answer these and you know your stage.',a:null},
+{h:'Why This Matters for Candlestick Trading',d:'<b>Accumulation/Distribution</b>: trade inside bar breakouts, range fades. <b>Advancing/Declining</b>: trade pin bars and engulfing patterns at pullback support/resistance within the trend. Your pattern ONLY matters if you know which stage the market is in.',a:null}
 ],
 quiz:[
-{q:'S/R zones vs lines:',o:['Lines are more accurate','Zones account for wicks and slight variations','Zones only work weekly','No difference'],a:1,e:'Zones are more practical — price rarely respects exact lines.'},
-{q:'Role reversal means:',o:['Support becomes resistance after breakdown','Support stays support forever','Only works in forex','A candlestick pattern'],a:0,e:'Broken level flips its role on retest.'},
-{q:'200 SMA is considered:',o:['Irrelevant','Major dynamic S/R watched by institutions','Only for scalping','A volume indicator'],a:1,e:'200 SMA is one of the most-watched dynamic levels.'},
-{q:'Higher timeframe S/R:',o:['Is weaker than lower TF','Overrules lower TF signals','Only matters for swing trading','Is invisible'],a:1,e:'Higher TF levels carry more weight.'}
+{q:'The two states of any market are:',o:['Bull and bear','Trending and ranging','Fast and slow','Volatile and calm'],a:1,e:'Every market is either trending (directional) or ranging (sideways).'},
+{q:'Accumulation happens:',o:['After an uptrend at the top','After a downtrend — smart money buys in a range while retail sells','During the trending phase','Only in forex'],a:1,e:'Accumulation = quiet buying at lows after a decline.'},
+{q:'Distribution looks like:',o:['A breakout','A sideways range at a top where smart money exits to retail','A downtrend','A bullish engulfing'],a:1,e:'Smart money sells into retail buying euphoria at the top.'},
+{q:'The most common mistake traders make:',o:['Using candlesticks','Treating a range as a trend (buying breakouts that fail)','Waiting for confirmation','Using stop-losses'],a:1,e:'Range breakout failures are the #1 retail trap.'},
+{q:'In the advancing stage, you should:',o:['Short every new high','Trade pin bars at pullback levels with the trend','Wait for distribution','Only trade inside bars'],a:1,e:'Trend phase = trade with the trend at pullback levels.'}
 ]},
-/* ===== MODULE 5: TREND ANALYSIS ===== */
-{id:'m5',g:'Price Action',t:'Trend Analysis',b:'HH/HL, LH/LL, trendlines, moving averages for trend identification, and ranging markets.',
+/* ===== MODULE 5: SUPPORT/RESISTANCE & TRADING STRATEGIES (Candlestick Bible) ===== */
+{id:'m5',g:'Candlestick Bible',t:'Key Levels & Trading Strategies',b:'How to identify key levels, then trade your three patterns at those levels with exact entry, stop-loss, and target rules.',
 topics:[
-{h:'Uptrend: HH + HL',d:'Each high is higher than the last. Each pullback holds above the previous low. Buyers in control.',a:'uptrend'},
-{h:'Downtrend: LH + LL',d:'Each high fails lower. Each low breaks further down. Sellers in control.',a:'downtrend'},
-{h:'Sideways / Range',d:'Highs and lows oscillate in a band. No directional progression. Wait for breakout or trade the range.',a:'range'},
-{h:'Trend Identification with MAs',d:'Price above 20/50 EMA = bullish bias. Below = bearish. EMAs stacked (20>50>200) = strong trend.',a:'maTrend'},
-{h:'Drawing Trendlines',d:'Connect 2+ swing lows (uptrend) or highs (downtrend). Third touch = confirmation. Break = potential reversal.',a:'drawTrendline'},
-{h:'Channels (Parallel)',d:'Two parallel trendlines. Ascending channel: rising support + rising resistance. Descending: falling both.',a:'channels'},
-{h:'Trend Exhaustion Signs',d:'Decreasing momentum: smaller candle bodies, divergence with RSI, volume drying up on new highs/lows.',a:'exhaustion'},
-{h:'Multi-Timeframe Trend',d:'HTF trend > LTF trend. Trade with the higher timeframe direction. LTF gives entry timing within HTF trend.',a:'mtfTrend'}
+{h:'What is a Key Level?',d:'A price level where the market has <b>repeatedly</b> reversed or reacted. Not just any line — it must have at least 2-3 clear historical reactions. The more times price has respected a level, the more significant it is. These are the ONLY places you should look for your candlestick signals.',a:'hSupport'},
+{h:'Drawing Support Levels',d:'Look left. Find the price levels where the market <b>bounced up multiple times</b>. Connect these lows with a horizontal line/zone. Use the candle bodies, not just wicks. A level that held 3+ times is very significant. These are your "buy zones."',a:'hSupport'},
+{h:'Drawing Resistance Levels',d:'Find price levels where the market was <b>rejected down multiple times</b>. Connect these highs. Resistance that has held 3+ times is strong. These are your "sell zones." When you see a bearish pin bar or bearish engulfing HERE — that is your signal.',a:'hResist'},
+{h:'Support Becomes Resistance (Role Reversal)',d:'When a support level <b>breaks</b>, old buyers are now trapped. When price retests that level from below, those trapped buyers sell to "get out at breakeven." Their selling turns old support into new resistance. This is one of the highest-probability setups in trading.',a:'roleReversal'},
+{h:'STRATEGY 1: Pin Bar at Key Level',d:'<b>Setup:</b> Price approaches a key S/R level. A pin bar forms WITH the tail rejecting the level. <b>Entry:</b> Place buy/sell stop 2-3 pips beyond the pin bar body (in the direction of the expected move). <b>Stop:</b> 2-3 pips beyond the pin bar tail. <b>Target:</b> Next key level or 2:1 R:R minimum.',a:'hammer'},
+{h:'STRATEGY 2: Engulfing at Key Level',d:'<b>Setup:</b> Price hits key S/R. An engulfing pattern forms. <b>Entry:</b> Enter at the close of the engulfing candle, or place a stop entry 2 pips beyond its high/low. <b>Stop:</b> Beyond the engulfing candle\'s opposite extreme. <b>Target:</b> Next S/R level or 2:1 R:R.',a:'engulfing'},
+{h:'STRATEGY 3: Inside Bar Breakout',d:'<b>Setup:</b> After a strong move or at a key level, an inside bar forms (consolidation). <b>Entry:</b> Buy stop above inside bar high / sell stop below inside bar low. <b>Stop:</b> Opposite side of the inside bar. <b>Target:</b> Width of the mother candle projected from breakout point, or next level.',a:null},
+{h:'The Confluence Rule',d:'A signal is <b>10x stronger</b> when multiple factors align: <b>1.</b> Key level (S/R that held 3+ times). <b>2.</b> Trend direction (trading WITH the trend). <b>3.</b> A valid candlestick pattern. When all three align = A+ setup. When only pattern exists (no level, no trend) = skip it.',a:null},
+{h:'Timeframe Selection',d:'The book recommends <b>Daily and 4-Hour charts</b> for most traders. Daily = less noise, clearer signals, fewer but higher-quality setups. 4H = more opportunities but more noise. Avoid 5m/15m unless you\'re an experienced scalper. Higher TF = higher probability.',a:'tfContext'},
+{h:'Trading With the Trend',d:'In an uptrend: ONLY take bullish signals (bullish pin bars, bullish engulfing) at pullback support levels. In a downtrend: ONLY take bearish signals at pullback resistance. <b>Never trade against the trend direction</b> unless at a major HTF level.',a:'uptrend'},
+{h:'Stop-Loss Placement Philosophy',d:'Your stop goes at the point where your <b>setup is invalidated</b>. For a pin bar: if price goes beyond the tail, your thesis is wrong. For engulfing: if price goes beyond the engulfing candle\'s extreme, the signal failed. <b>Never</b> use arbitrary fixed-pip stops — always use structure-based stops.',a:null},
+{h:'Taking Profits — Don\'t Be Greedy',d:'<b>Option A:</b> Close at the next key level (most conservative). <b>Option B:</b> Close half at 1:1 R:R, move stop to breakeven, let rest run to 2:1 or 3:1. <b>Option C:</b> Trail stop below each new swing low (in an uptrend). The book emphasizes: let winners run but have a PLAN before entering.',a:null}
 ],
 quiz:[
-{q:'An uptrend requires:',o:['Lower lows','Higher highs AND higher lows','Only higher highs','Random oscillation'],a:1,e:'Both HH and HL must be present for uptrend.'},
-{q:'EMAs stacked 20>50>200 with price above all:',o:['Bearish','Strong bullish trend','Ranging','Indeterminate'],a:1,e:'Stacked EMAs confirm strong trend direction.'},
-{q:'Third touch of a trendline:',o:['Invalidates it','Confirms validity','Means it will break','Is irrelevant'],a:1,e:'More touches = more confirmed/respected.'},
-{q:'Trend exhaustion shows:',o:['Bigger candles','Smaller bodies, divergence, volume decay','More momentum','Higher volume'],a:1,e:'Signs of weakening participation.'}
+{q:'A "key level" requires:',o:['Just one touch','2-3+ clear historical reactions/bounces','Any horizontal line','Only round numbers'],a:1,e:'Multiple reactions = proven significant level.'},
+{q:'Pin bar stop-loss goes:',o:['10 pips from entry','Beyond the pin bar tail (where thesis invalidates)','At the body middle','Below the prior candle'],a:1,e:'Beyond the tail = setup is invalidated = exit.'},
+{q:'The confluence rule says A+ setups need:',o:['Just a valid pattern','Key level + trend direction + valid pattern (all three)','Only a key level','High volume'],a:1,e:'All three aligning = highest probability.'},
+{q:'The recommended timeframes for most traders are:',o:['1m and 5m','Daily and 4H','Weekly only','Tick charts'],a:1,e:'Daily/4H = less noise, higher-quality signals.'},
+{q:'Support becomes resistance when:',o:['It\'s tested 5 times','It breaks — trapped buyers sell at retest, flipping the role','The trend is strong','Volume increases'],a:1,e:'Broken support + retest = trapped buyers sell = now resistance.'},
+{q:'In an uptrend, you should ONLY look for:',o:['Bearish signals to short the top','Bullish signals at pullback support levels','Both bullish and bearish signals','Doji candles'],a:1,e:'Trade WITH the trend at pullback levels.'}
 ]},
 
 /* ===== MODULE 6: MARKET STRUCTURE (COMPREHENSIVE SMC) ===== */
-{id:'m6',g:'Smart Money & Structure',t:'Market Structure — SMC/ICT',b:'The complete SMC framework: swing structure, BOS, CHoCH, MSS, FVGs, order blocks, liquidity, and advanced concepts.',
+{id:'m6',g:'Smart Money & Structure',t:'Market Structure — SMC/ICT',b:'The institutional framework for reading price: swing structure, BOS, CHoCH, MSS. This is how smart money reads the market — not patterns, but the STRUCTURE of price itself.',
 topics:[
-{h:'Swing High & Swing Low',d:'A <b>swing high</b> has lower highs on both sides. A <b>swing low</b> has higher lows on both sides. Foundation of all structure.',a:'swingHL'},
-{h:'Higher High (HH) & Higher Low (HL)',d:'Bullish structure: each peak exceeds prior peak, each dip holds above prior dip.',a:'hhhl'},
-{h:'Lower High (LH) & Lower Low (LL)',d:'Bearish structure: each rally fails below prior rally, each dip breaks below prior dip.',a:'lhll'},
-{h:'Break of Structure (BOS)',d:'Price closes beyond a prior swing point IN the trend direction. Confirms trend continuation.',a:'bos'},
-{h:'Change of Character (CHoCH)',d:'First break AGAINST the prevailing trend. Breaks the most recent HL (in uptrend) or LH (in downtrend). Warning sign.',a:'choch'},
-{h:'Market Structure Shift (MSS)',d:'More decisive than CHoCH — confirms actual reversal with new opposing structure forming after the break.',a:'mss'},
-{h:'Fair Value Gap (FVG)',d:'Three-candle imbalance: candle 1 wick and candle 3 wick dont overlap — the gap between them is the FVG. Price often returns to fill it.',a:'fvg'},
-{h:'Imbalance (IMB) & Inefficiency',d:'Any area where price moved too fast for fair two-sided trading. FVGs are a specific type. Price seeks to "rebalance" these areas.',a:'imbalance'},
-{h:'Bullish Order Block',d:'The last bearish candle before a strong bullish impulse. Marks where institutional buy orders likely accumulated.',a:'bullOB'},
-{h:'Bearish Order Block',d:'The last bullish candle before a strong bearish impulse. Where institutions likely placed sell orders.',a:'bearOB'},
-{h:'Breaker Block',d:'An order block that failed (price went through it) — it now acts as S/R in the opposite direction.',a:'breaker'},
-{h:'Mitigation Block',d:'Where price returns to partially fill unfilled orders before continuing. Old failed OB that now gets "mitigated."',a:'mitigation'},
-{h:'Rejection Block',d:'A candle with a long wick showing strong rejection. The wick zone acts as future S/R.',a:'rejection'},
-{h:'Buy-Side Liquidity (BSL)',d:'Resting above old highs: stop-losses of shorts + breakout buy orders. Smart money targets these pools.',a:'bsl'},
-{h:'Sell-Side Liquidity (SSL)',d:'Resting below old lows: stop-losses of longs + breakout sell orders. Target for bearish raids.',a:'ssl'},
-{h:'Internal Range Liquidity (IRL)',d:'Liquidity inside a range — FVGs, order blocks within the move. Price fills these before continuing.',a:'irl'},
-{h:'External Range Liquidity (ERL)',d:'Liquidity at the extremes of a range — the swing highs/lows themselves. Price targets ERL after filling IRL.',a:'erl'},
-{h:'Equal Highs (EQH) & Equal Lows (EQL)',d:'Two or more highs/lows at the same price = obvious liquidity pool. Highly likely to be swept.',a:'eqhl'},
-{h:'Liquidity Sweep / Grab',d:'Price spikes through a level to trigger stops, then immediately reverses. The "hunt" is complete.',a:'sweep'},
-{h:'Stop Hunt',d:'Deliberate push past obvious S/R to trigger retail stops. Then the real move begins in the opposite direction.',a:'stopHunt'},
-{h:'Premium Zone',d:'Upper half of a range (above equilibrium). In premium, price is "expensive" — look for sells/shorts.',a:'premium'},
-{h:'Discount Zone',d:'Lower half of a range (below equilibrium). In discount, price is "cheap" — look for buys/longs.',a:'discount'},
-{h:'Equilibrium (50% Level)',d:'The exact midpoint of a range. Divides premium from discount. Often acts as a magnet.',a:'equilibrium'},
-{h:'Displacement',d:'A large, fast candle (or sequence) that shows genuine institutional intent. Validates direction of the move.',a:'displacement'},
-{h:'Inducement',d:'A small, engineered move to lure retail traders into the wrong side before the real move. Creates liquidity to be swept.',a:'inducement'},
-{h:'Power of 3 (PO3)',d:'Daily cycle: <b>Accumulation</b> (Asian session) → <b>Manipulation</b> (false move at London open) → <b>Distribution</b> (real move NY session).',a:'po3'},
-{h:'Accumulation & Distribution',d:'<b>Accumulation</b>: large players building position in a range. <b>Distribution</b>: unwinding position. Both look like ranges.',a:'accumDist'},
-{h:'Expansion & Contraction',d:'<b>Expansion</b>: range breakout, trending. <b>Contraction</b>: volatility shrinks, range forms. Markets cycle between both.',a:'expContract'},
-{h:'Timeframe Alignment',d:'Setup is strongest when multiple timeframes agree: HTF trend + MTF structure + LTF entry all pointing same direction.',a:'tfAlign'}
+{h:'Swing High & Swing Low — The Foundation',d:'A <b>swing high</b> is a candle (or group) with lower highs on BOTH sides — a clear peak. A <b>swing low</b> is a candle with higher lows on both sides — a clear valley. ALL structure analysis starts by identifying these swings. If you can\'t mark swing points correctly, nothing else works. Practice marking them until it becomes second nature.',a:'swingHL'},
+{h:'Higher High (HH) & Higher Low (HL) — Bullish Structure',d:'When each new swing high exceeds the prior swing high AND each new swing low holds above the prior swing low, the market has <b>bullish structure</b>. This is not just "price going up" — it\'s an organized sequence showing buyers are consistently in control. Every pullback is bought before it reaches the prior low. This is the staircase of bull control.',a:'hhhl'},
+{h:'Lower High (LH) & Lower Low (LL) — Bearish Structure',d:'Mirror of bullish. Each rally fails to reach the prior high (sellers cap it earlier each time). Each decline breaks below the prior low. Sellers are systematically in control. The staircase descends. You can feel the desperation of buyers getting weaker with each failed rally.',a:'lhll'},
+{h:'Break of Structure (BOS) — Trend Continuation Confirmed',d:'BOS happens when price closes beyond a prior significant swing point <b>IN the direction of the existing trend</b>. In an uptrend, price breaks above a prior swing high = bullish BOS. This CONFIRMS the trend is continuing. Think of it as the market saying: "Yes, I\'m still going up. The bulls are STILL in charge." This is your green light to look for entries with the trend.',a:'bos'},
+{h:'Change of Character (CHoCH) — First Warning Shot',d:'CHoCH is the <b>FIRST break against</b> the prevailing trend. In an uptrend: price breaks below the most recent higher low. In a downtrend: price breaks above the most recent lower high. This doesn\'t mean the trend has reversed — it means the trend\'s RHYTHM is broken. It\'s a warning, not a reversal signal. Think of it as a yellow traffic light — proceed with caution.',a:'choch'},
+{h:'Market Structure Shift (MSS) — Confirmed Reversal',d:'MSS is more decisive than CHoCH. After the CHoCH breaks the rhythm, MSS confirms a NEW structure is forming in the opposite direction. You need to see: <b>1.</b> CHoCH occurs. <b>2.</b> Price then creates a new swing in the opposing direction. <b>3.</b> That new swing holds (new HL in a reversal to bullish, or new LH in reversal to bearish). Only THEN is the reversal confirmed. This is the red light — the old trend is dead.',a:'mss'},
+{h:'Internal vs External Structure',d:'<b>External structure</b> = the major swing highs and lows on your analysis timeframe. The "big picture." <b>Internal structure</b> = the smaller swings WITHIN each leg of the external structure. Think of it like this: a daily uptrend (external) might have 4-hour pullbacks within each leg (internal). You use external to determine DIRECTION and internal to find ENTRIES within that direction.',a:null},
+{h:'Fair Value Gap (FVG) — The Imbalance',d:'When a candle moves so aggressively that there\'s a <b>visible gap between candle 1\'s wick and candle 3\'s wick</b>, that gap is an FVG. It represents price that moved so fast there was no fair two-sided trading there. The market tends to "fill" these gaps later — price returns to them like a magnet. FVGs are entry zones, not signals. You wait for price to return to the FVG, THEN look for a reaction.',a:'fvg'},
+{h:'Imbalance & Inefficiency — Why Price Returns',d:'An imbalance is any area where price moved too one-sidedly. The market seeks <b>efficiency</b> — it wants every price level to have been tested by both buyers and sellers. When it hasn\'t (imbalance), price is drawn back to "fix" the inefficiency. This is why strong moves often retrace 50-70% — the market is filling imbalances from the initial impulse.',a:'imbalance'},
+{h:'Bullish Order Block (OB) — Institutional Footprint',d:'The <b>last bearish candle</b> before a strong bullish impulse. Why? Because that\'s where institutions placed their buy orders. They needed sellers (the bearish candle = selling pressure) to fill their large buy orders against. When price returns to this level, remaining unfilled institutional buy orders may still be there — creating a bounce. The OB is where smart money ENTERED.',a:'bullOB'},
+{h:'Bearish Order Block',d:'The <b>last bullish candle</b> before a strong bearish impulse. Institutions needed buyers (bullish candle) to sell into. Their unfilled sell orders remain at that level. When price retests, it often rejects. The bigger the impulse after the OB, the more institutional conviction was behind it, the more likely the OB holds on retest.',a:'bearOB'},
+{h:'Breaker Block — The Failed OB',d:'An order block that <b>price went through</b> (failed to hold). Now it acts as S/R in the OPPOSITE direction. Why? Because everyone who traded at the OB is now trapped. Their liquidation orders sit at the OB level. When price returns, it gets absorbed by these liquidations, creating a reaction in the opposite direction. A failed support becomes resistance.',a:'breaker'},
+{h:'Mitigation Block',d:'When price returns to a previously untested zone and partially fills unfilled orders there. Unlike a breaker (which failed completely), a mitigation block is a zone where <b>partial</b> orders remain. Price touches it, absorbs some orders, then continues. Think of it as "cleaning up" leftover institutional orders.',a:'mitigation'},
+{h:'Rejection Block',d:'A candle with a <b>very long wick</b> showing violent rejection at a level. The wick zone becomes future S/R because it proved that one side has overwhelming power at that price. The wick is the battlefield where one army was completely routed. Price remembers that "massacre" and reacts when it returns.',a:'rejection'},
+{h:'Buy-Side Liquidity (BSL) — Fuel Above',d:'Above every swing high sits a <b>pool of resting orders</b>: stop-losses of short sellers + buy-stop orders of breakout traders. Smart money KNOWS these orders are there. They drive price up to those levels to <b>trigger the stops</b> and fill their own large orders against the rush of buying. Then price reverses. The "breakout" was a trap to access liquidity.',a:'bsl'},
+{h:'Sell-Side Liquidity (SSL) — Fuel Below',d:'Below every swing low: stop-losses of long holders + sell-stops of breakdown traders. Same concept in reverse. Smart money pushes price into these pools to trigger the cascade of selling, fills their buy orders against it, then reverses price upward. What retail calls a "stop hunt," institutions call "filling orders."',a:'ssl'},
+{h:'Internal Range Liquidity (IRL)',d:'Liquidity that exists INSIDE a trading range — the FVGs, order blocks, and minor swing points within the move itself. Price often fills IRL (internal levels) before targeting ERL (the extremes). Think of it as: "The market cleans up the inside of the range before going for the edges."',a:'irl'},
+{h:'External Range Liquidity (ERL)',d:'The liquidity at the EXTREMES of a range — the actual swing highs and lows. After internal liquidity is taken, price targets external range liquidity. The trading cycle: <b>IRL → ERL → IRL → ERL</b>. Understanding this flow tells you where price is heading NEXT.',a:'erl'},
+{h:'Equal Highs (EQH) & Equal Lows (EQL)',d:'When two or more swing highs (or lows) print at virtually the same price, it creates an <b>extremely obvious liquidity pool</b>. Every textbook says "double top = resistance." Smart money sees: "double top = maximum resting orders to be swept." EQH/EQL are HIGH-probability sweep targets. They\'re almost guaranteed to be taken.',a:'eqhl'},
+{h:'Liquidity Sweep / Grab',d:'The actual event: price <b>spikes through</b> a known liquidity level (EQH, old high, S/R), triggers all the resting orders, then IMMEDIATELY reverses. The spike is not a breakout — it\'s a SWEEP. The key: look for the sweep, then look for a reversal signal (OB, FVG entry) in the opposite direction. Sweeps SET UP the real move.',a:'sweep'},
+{h:'Stop Hunt — The Institutional Play',d:'A deliberate push past obvious S/R specifically to trigger retail stop-losses. How to tell a stop hunt from a real breakout: <b>1.</b> Price moves past the level violently but briefly. <b>2.</b> It doesn\'t hold above/below — it immediately snaps back. <b>3.</b> A displacement (strong candle) follows in the opposite direction. If it holds beyond the level with strong closes, it\'s a real break.',a:'stopHunt'},
+{h:'Premium & Discount Zones',d:'Take any range from swing low to swing high. The 50% midpoint is <b>equilibrium</b>. Above 50% = <b>premium</b> (expensive, look for sells). Below 50% = <b>discount</b> (cheap, look for buys). Smart money buys in discount and sells in premium. Retail does the opposite — they buy at highs (premium) out of FOMO and sell at lows (discount) out of fear.',a:'premium'},
+{h:'Displacement — Showing Intent',d:'A single large candle (or 2-3 back-to-back large bodies with minimal wicks) that moves price aggressively. This is <b>institutional intent made visible</b>. It\'s NOT just a big candle — it has meaning. It tells you: "Smart money just committed. The direction of this displacement is the direction they want price to go." FVGs created by displacement are the most valid.',a:'displacement'},
+{h:'Inducement — The Trap Before the Move',d:'A small, tempting move that <b>lures retail traders</b> into the wrong position right before the real move. Example: price makes a small break above a minor high (retail buys the "breakout"), then immediately dumps. That small break was inducement — it existed only to create liquidity (retail buy stops) for smart money to sell into. The lesson: not every break is real.',a:'inducement'},
+{h:'Power of 3 (PO3) — The Daily Blueprint',d:'Most trending days follow this sequence: <b>Phase 1 - Accumulation</b> (Asian session): low volatility range, building orders. <b>Phase 2 - Manipulation</b> (London open): a FALSE move against the daily direction, sweeping Asian session liquidity. <b>Phase 3 - Distribution</b> (NY session): the REAL directional move, targeting daily liquidity. If you can identify which phase you\'re in, you know what\'s coming next.',a:'po3'},
+{h:'Timeframe Alignment — The Confirmation Stack',d:'The highest-probability setups occur when: <b>HTF (Daily/Weekly)</b> shows clear bias direction. <b>MTF (4H/1H)</b> shows structure supporting that direction. <b>LTF (15m/5m)</b> gives you the precise entry trigger (OB, FVG, pattern). Never trade a LTF signal that contradicts HTF direction. Alignment = highest probability. Conflict = stay out.',a:'tfAlign'}
 ],
 quiz:[
-{q:'BOS confirms:',o:['Reversal','Trend continuation','Indecision','A pattern'],a:1,e:'BOS = break in trend direction = continuation.'},
-{q:'CHoCH is:',o:['Trend continuation','First break against trend (warning)','A candle pattern','Volume spike'],a:1,e:'First opposing break = potential reversal warning.'},
-{q:'FVG forms when:',o:['One big candle appears','Candle 1 wick and candle 3 wick dont overlap','Price gaps overnight','Volume spikes'],a:1,e:'Three-candle imbalance where wicks dont meet.'},
-{q:'Order Block is:',o:['Highest volume bar','Last opposing candle before impulsive move','Any S/R level','A gap'],a:1,e:'Last candle against the coming move = institutional entry.'},
-{q:'Equal highs indicate:',o:['Strong resistance','Obvious liquidity pool likely to be swept','Trend continuation','No significance'],a:1,e:'EQH = resting orders that smart money will target.'},
-{q:'Premium zone is for:',o:['Buying','Selling (price is expensive)','Both equally','Neither'],a:1,e:'Premium = expensive = look for sells.'},
-{q:'Power of 3 sequence:',o:['Expansion→Contraction→Expansion','Accumulation→Manipulation→Distribution','Buy→Hold→Sell','Support→Break→Retest'],a:1,e:'PO3: Accumulate, Manipulate, Distribute.'},
-{q:'Displacement shows:',o:['Indecision','Genuine institutional intent','Retail activity','Low volume'],a:1,e:'Large fast moves = institutions showing their hand.'}
+{q:'BOS confirms:',o:['Reversal','Trend continuation','Indecision','A pattern'],a:1,e:'BOS = break in trend direction = continuation confirmed.'},
+{q:'CHoCH is:',o:['Trend continuation','First break against prevailing trend (warning)','A candle pattern','Volume spike'],a:1,e:'First opposing break = the trend rhythm is broken.'},
+{q:'FVG forms when:',o:['One big candle appears','Candle 1 wick and candle 3 wick dont overlap (gap between)','Price gaps overnight','Volume spikes'],a:1,e:'Three-candle imbalance where wicks dont meet = FVG.'},
+{q:'Order Block is:',o:['Highest volume bar','Last opposing candle before impulsive move (institutional entry)','Any S/R level','A gap'],a:1,e:'Where institutions placed their orders = last opposing candle.'},
+{q:'Equal highs are important because:',o:['Strong resistance','They mark obvious liquidity pools almost guaranteed to be swept','Trend continuation','They mean nothing'],a:1,e:'EQH = maximum resting orders = high-probability sweep target.'},
+{q:'Premium zone is for:',o:['Buying aggressively','Selling/shorting (price is expensive relative to range)','Both equally','Neither'],a:1,e:'Premium = above equilibrium = expensive = sell zone.'},
+{q:'Power of 3 daily sequence:',o:['Expansion→Contraction→Expansion','Accumulation (Asia) → Manipulation (London) → Distribution (NY)','Buy→Hold→Sell','Random'],a:1,e:'PO3: Accumulate quietly, manipulate with a fake move, distribute the real move.'},
+{q:'A displacement candle shows:',o:['Indecision','Genuine institutional commitment to a direction','Retail activity only','Low volume'],a:1,e:'Large aggressive candle = smart money showing their hand.'}
 ]},
-/* ===== MODULE 7-9: SUPPLY/DEMAND, CHART PATTERNS ===== */
-{id:'m7',g:'Smart Money & Structure',t:'Supply & Demand Zones',b:'Where institutional orders cluster — identifying fresh zones, retests, and invalidation.',
+/* ===== MODULE 7: SUPPLY & DEMAND ZONES ===== */
+{id:'m7',g:'Smart Money & Structure',t:'Supply & Demand Zones',b:'Where institutional order clusters hide — how to identify zones, understand their formation, trade retests, and know when a zone is dead.',
 topics:[
-{h:'Demand Zone',d:'Base of a strong rally. Buyers overwhelmed sellers here. Fresh zone = not retested yet.',a:'demandZone'},
-{h:'Supply Zone',d:'Origin of a strong decline. Sellers overwhelmed buyers. Fresh = higher probability.',a:'supplyZone'},
-{h:'Rally-Base-Rally (RBR)',d:'Continuation demand: price rallies, pauses briefly (base), then rallies again. The base = demand zone.',a:'rbr'},
-{h:'Drop-Base-Drop (DBD)',d:'Continuation supply: price drops, pauses, drops again. The base = supply zone.',a:'dbd'},
-{h:'Rally-Base-Drop (RBD)',d:'Reversal supply: price rallied, based, then dropped hard. Base = supply zone where sellers took over.',a:'rbd'},
-{h:'Drop-Base-Rally (DBR)',d:'Reversal demand: price dropped, based, then rallied hard. Base = demand zone where buyers took over.',a:'dbr'},
-{h:'Zone Freshness',d:'A zone is "fresh" if price hasnt returned to it since formation. Fresh zones have unfilled orders waiting.',a:'freshness'},
-{h:'Zone Invalidation',d:'If price closes cleanly through a zone, it is invalidated — orders were absorbed or pulled.',a:'zoneInvalid'},
-{h:'Nested / Refined Zones',d:'Zoom into a lower timeframe to refine the exact OB or candle within a broader zone for a tighter entry.',a:'nestedZone'}
+{h:'What IS a Supply/Demand Zone?',d:'Unlike support/resistance (which is just a level), a supply/demand zone is a <b>specific price AREA where an aggressive move originated</b>. The theory: large institutions cannot fill their entire order at once — they leave unfilled orders behind. When price returns to that area, those remaining orders activate, creating a reaction. The zone is literally "unfinished business."',a:'demandZone'},
+{h:'Demand Zone — Where Buyers Overwhelmed Sellers',d:'A demand zone is the <b>base area where a strong rally began</b>. Look for: price declining into an area → consolidation (base) → explosive move UP. That base = demand zone. Buyers entered so aggressively there that sellers were completely overwhelmed. When price returns, remaining buy orders may still be waiting.',a:'demandZone'},
+{h:'Supply Zone — Where Sellers Overwhelmed Buyers',d:'The mirror: the base area where a <b>strong decline began</b>. Price rising into an area → consolidation → explosive move DOWN. That base = supply zone. Sellers entered with such force that buyers were crushed. On retest, remaining sell orders activate.',a:'supplyZone'},
+{h:'Rally-Base-Rally (RBR) — Continuation Demand',d:'Price rallies, pauses briefly in a <b>tight consolidation (base)</b>, then rallies again. The base is a demand zone because buyers re-loaded there mid-trend. This is continuation demand — trend-following. Higher probability because it aligns with existing momentum.',a:'rbr'},
+{h:'Drop-Base-Drop (DBD) — Continuation Supply',d:'Price drops, pauses in a tight base, then drops again. The base is supply — sellers reloaded. Also continuation (trend-aligned). Same logic as RBR but bearish.',a:'dbd'},
+{h:'Rally-Base-Drop (RBD) — Reversal Supply',d:'Price was rallying, formed a base at the top, then <b>dropped hard</b>. The base marks where sellers took over from exhausted buyers. This is reversal supply — higher risk but higher reward because you\'re catching a turning point.',a:'rbd'},
+{h:'Drop-Base-Rally (DBR) — Reversal Demand',d:'Price was declining, formed a base at the bottom, then <b>rallied hard</b>. Buyers absorbed all selling and reversed it. Reversal demand. Again, catching a turn — higher risk, but explosive when it works.',a:'dbr'},
+{h:'Zone Freshness — First Touch is Best',d:'A zone is <b>"fresh" if price hasn\'t returned to it</b> since it was created. Fresh zones have the highest probability because unfilled orders haven\'t been absorbed yet. First retest = best reaction. Second retest = weaker. Third retest = zone is likely dead.',a:'freshness'},
+{h:'Zone Invalidation — When to Walk Away',d:'A zone is <b>invalidated when price closes CLEANLY through it</b> (not just a wick). A clean body close beyond the zone means the remaining orders were either absorbed or pulled. The zone is dead — do NOT expect it to hold again. Many traders lose money re-entering at dead zones.',a:'zoneInvalid'},
+{h:'Refining Zones on Lower Timeframes',d:'A daily supply zone might be 50 pips wide. Zoom to 1H or 15m and find the <b>exact candle (order block) within that zone</b> where the move started. This gives you a refined, tight entry instead of a wide zone. Tighter entry = better risk:reward. This is "nested" or refined zone trading.',a:'nestedZone'},
+{h:'Quality Checklist for Zones',d:'<b>1.</b> Was the departure move strong? (large candles, displacement) <b>2.</b> Is the zone fresh? (first return) <b>3.</b> Did price spend little time in the zone? (fast departure = more unfilled orders) <b>4.</b> Does it align with HTF trend? <b>5.</b> Is there confluence? (OB, FVG, Fib level). Score 4/5 = A+ zone.',a:null}
 ],
 quiz:[
-{q:'A "fresh" zone means:',o:['Formed today','Not yet retested','Tested 3 times','Only on daily chart'],a:1,e:'Fresh = price hasnt returned since formation.'},
-{q:'RBD stands for:',o:['Rally-Base-Drop (supply)','Reject-Break-Dive','Resistance-Breakout-Dip','None'],a:0,e:'Rally, Base, then Drop = supply zone formation.'},
-{q:'Zone invalidation happens when:',o:['Price touches the zone','Price closes cleanly through it','Volume drops','A doji forms at the zone'],a:1,e:'Clean close through = orders absorbed, zone dead.'}
-]},
-
-{id:'m8',g:'Price Action',t:'Chart Patterns',b:'Classic geometry: triangles, flags, wedges, head & shoulders, double tops/bottoms.',
-topics:[
-{h:'Ascending Triangle',d:'Flat resistance + rising lows. Buyers increasingly aggressive. Usually breaks up.',a:'ascTriangle'},
-{h:'Descending Triangle',d:'Flat support + falling highs. Sellers pressing. Usually breaks down.',a:'descTriangle'},
-{h:'Symmetrical Triangle',d:'Converging trendlines, neutral. Breaks either way — trade the breakout direction.',a:'symTriangle'},
-{h:'Bull Flag & Bear Flag',d:'Sharp move → tight consolidation against it → continuation. Flag pole = impulse, flag = pullback.',a:'flags'},
-{h:'Rising & Falling Wedge',d:'Rising wedge (bearish): converging up. Falling wedge (bullish): converging down. Counter-trend patterns.',a:'wedges'},
-{h:'Head & Shoulders',d:'Three peaks, middle tallest. Neckline connects the two troughs. Break of neckline = bearish reversal confirmed.',a:'headShoulders'},
-{h:'Inverse Head & Shoulders',d:'Three troughs, middle deepest. Neckline break = bullish reversal. Mirror of regular H&S.',a:'invHS'},
-{h:'Double Top & Double Bottom',d:'Two peaks at same level (DT = bearish) or two troughs (DB = bullish). Neckline break confirms.',a:'doubleTopBot'},
-{h:'Cup & Handle',d:'Rounded bottom (cup) + small pullback (handle) → breakout. Bullish continuation pattern.',a:'cupHandle'},
-{h:'Rectangle / Range',d:'Price bounces between flat support and flat resistance. Breakout direction determines the trade.',a:'rectangle'}
-],
-quiz:[
-{q:'Ascending triangle usually:',o:['Breaks down','Breaks up (buyers aggressive)','Is neutral','Requires volume divergence'],a:1,e:'Rising lows vs flat resistance = bullish pressure.'},
-{q:'Head & Shoulders neckline break:',o:['Bullish signal','Confirms bearish reversal','Is meaningless','Only works weekly'],a:1,e:'Neckline break confirms the topping pattern.'},
-{q:'A bull flag is:',o:['Sharp move up → tight pullback → continuation up','Three peaks','A reversal pattern','Flat range'],a:0,e:'Impulse → consolidation → continuation.'},
-{q:'Falling wedge is:',o:['Bearish','Bullish (converging down then breaking up)','Neutral','A single candle'],a:1,e:'Falling wedge = bullish reversal/continuation.'}
-]},
-/* ===== MODULE 9-10: INDICATORS ===== */
-{id:'m9',g:'Indicators & Volume',t:'Moving Averages & Trend Indicators',b:'SMA, EMA, MA crossovers, VWAP — trend identification and dynamic S/R.',
-topics:[
-{h:'Simple Moving Average (SMA)',d:'Average of N closing prices. Equal weight. Smoother but slower to react. Common: 20, 50, 200.',a:'sma'},
-{h:'Exponential Moving Average (EMA)',d:'More weight on recent prices. Reacts faster. Popular: 9, 21, 50 EMA for entries/trend.',a:'ema'},
-{h:'MA Crossover (Golden/Death Cross)',d:'<b>Golden Cross</b>: 50 crosses above 200 = bullish. <b>Death Cross</b>: 50 below 200 = bearish. Lagging but powerful.',a:'maCross'},
-{h:'EMA as Dynamic S/R',d:'In uptrend, 20 EMA acts as pullback support. In downtrend, 20 EMA = resistance. Price "rides" the EMA.',a:'emaDynamic'},
-{h:'VWAP (Volume-Weighted Average Price)',d:'Average price weighted by volume. Institutional benchmark. Above VWAP = bullish bias. Below = bearish.',a:'vwap'},
-{h:'Multiple MA Strategy',d:'Use 3 MAs (fast/medium/slow). All stacked in order = strong trend. Squeeze together = range/breakout coming.',a:'multiMA'}
-],
-quiz:[
-{q:'EMA vs SMA:',o:['SMA reacts faster','EMA reacts faster (more recent weight)','They are identical','EMA uses volume'],a:1,e:'EMA weights recent prices more heavily.'},
-{q:'Golden Cross is:',o:['50 MA crossing below 200','50 MA crossing above 200 (bullish)','RSI above 70','MACD histogram positive'],a:1,e:'50 above 200 = Golden Cross = bullish.'},
-{q:'VWAP represents:',o:['Highest volume price','Average price weighted by volume (fairness)','The 50% fib level','Opening price'],a:1,e:'VWAP = volume-weighted average = fair value line.'}
+{q:'A "fresh" zone means:',o:['It formed today','Price hasnt returned to it since formation','Its been tested 3 times','Only exists on daily charts'],a:1,e:'Fresh = untested = unfilled orders likely still waiting.'},
+{q:'RBD stands for:',o:['Rally-Base-Drop (reversal supply zone)','Reject-Break-Dive','Resistance-Breakout-Dip','Range-Bound-Distribution'],a:0,e:'Rally up, Base forms, then Drop = supply zone at the top.'},
+{q:'Zone invalidation happens when:',o:['Price wicks through','Price closes cleanly through it (body beyond zone)','Volume increases at the zone','A doji forms there'],a:1,e:'Clean body close through = orders absorbed = zone dead.'},
+{q:'The strongest zones have:',o:['Many retests','A strong/fast departure move and are being retested for the first time','Small departure moves','Been tested 5+ times'],a:1,e:'Strong move away + first retest = maximum probability.'}
 ]},
 
-{id:'m10',g:'Indicators & Volume',t:'Oscillators & Momentum',b:'RSI, Stochastic, MACD, CCI — measuring overbought/oversold and divergence.',
+{id:'m8',g:'Smart Money & Structure',t:'Chart Patterns — The Psychology Behind the Geometry',b:'Triangles, flags, wedges, H&S, double tops — understood not as shapes to memorize but as STORIES of who is winning the battle.',
 topics:[
-{h:'RSI (Relative Strength Index)',d:'0-100 oscillator. >70 overbought, <30 oversold. Measures speed of gains vs losses over N periods.',a:'rsi'},
-{h:'RSI Divergence',d:'<b>Bullish div</b>: price makes lower low, RSI makes higher low. <b>Bearish div</b>: price HH, RSI LH. Warns of reversal.',a:'rsiDiv'},
-{h:'Stochastic RSI',d:'RSI of RSI — even more sensitive. Oscillates 0-1. Useful for oversold/overbought in ranging markets.',a:'stochRsi'},
-{h:'MACD (Moving Average Convergence Divergence)',d:'Difference between 12 EMA and 26 EMA + 9 EMA signal line. Cross above signal = bullish. Histogram shows momentum.',a:'macd'},
-{h:'MACD Divergence',d:'Same concept as RSI divergence but using MACD. Price new extreme vs MACD not confirming = weakening trend.',a:'macdDiv'},
-{h:'Bollinger Bands',d:'20 SMA ± 2 standard deviations. Bands expand in volatility, squeeze in consolidation. Squeeze → expansion.',a:'bollinger'},
-{h:'ATR (Average True Range)',d:'Measures volatility (not direction). Higher ATR = more volatile. Used for stop-loss sizing and filtering.',a:'atr'},
-{h:'CCI (Commodity Channel Index)',d:'Oscillator measuring price vs average. Above +100 = overbought trend. Below -100 = oversold trend.',a:'cci'}
+{h:'Why Chart Patterns Work',d:'Patterns aren\'t magic geometry. They work because they represent <b>consistent psychological sequences</b>. A head & shoulders works because it shows buyers getting progressively weaker (lower right shoulder) until they can\'t push anymore. Understanding WHY a pattern works lets you judge WHEN it will fail.',a:null},
+{h:'Ascending Triangle — Buyers Getting Aggressive',d:'Flat resistance (sellers defend a level) but <b>lows keep rising</b> (buyers are bidding higher each time). Each pullback is smaller. Buyers are getting more aggressive, sellers are holding their ground. Eventually, the relentless buying pressure overwhelms the fixed resistance → breakout UP. The rising lows are the tell: buyers won\'t wait for lower prices anymore.',a:'ascTriangle'},
+{h:'Descending Triangle — Sellers Getting Aggressive',d:'Flat support but <b>highs keep falling</b>. Sellers press harder each rally. Buyers defend support but get less help from rallies. Eventually sellers break through the floor. Symmetrical to ascending triangle — the falling highs tell you sellers are winning the war of attrition.',a:'descTriangle'},
+{h:'Symmetrical Triangle — Compression Before Explosion',d:'Both sides are converging. Highs falling AND lows rising. Neither side winning. Energy is <b>compressing</b> like a spring. The breakout direction determines the trade — you don\'t predict, you REACT. Often the breakout aligns with the prior trend (continuation bias).',a:'symTriangle'},
+{h:'Bull Flag & Bear Flag — Pause in a War',d:'A <b>flag is a brief consolidation against the trend</b> after a sharp move (the "pole"). Bull flag: sharp rally → small downward-drifting channel → continuation up. The flag represents profit-taking by early longs, but the underlying pressure hasn\'t changed. When the flag breaks, the move resumes with fresh energy.',a:'flags'},
+{h:'Rising Wedge (Bearish) & Falling Wedge (Bullish)',d:'<b>Rising wedge</b>: price makes higher highs and higher lows but the highs are rising FASTER than the lows — momentum is FADING. Each new high has less buying power. Eventually collapses. <b>Falling wedge</b>: opposite — each new low has less selling power. Buying pressure builds. Breaks UP.',a:'wedges'},
+{h:'Head & Shoulders — Three Attempts, Buyers Exhausted',d:'<b>Left shoulder</b>: strong rally + pullback. <b>Head</b>: higher high but it fails back to the same "neckline." <b>Right shoulder</b>: weaker rally that can\'t reach the head\'s high. The story: buyers tried three times. Each time weaker. When the neckline breaks, there are NO buyers left above — gravity takes over. The measured move target = head height projected below neckline.',a:'headShoulders'},
+{h:'Inverse Head & Shoulders — Three Attempts, Sellers Exhausted',d:'Mirror at bottoms. Three attempts to push lower, each weaker than the last. When neckline breaks upward, all the trapped shorts fuel the rally. Same measured move principle.',a:'invHS'},
+{h:'Double Top & Double Bottom — Equal Levels as Liquidity',d:'From an SMC perspective: a <b>double top is equal highs (EQH)</b> — liquidity. Price often sweeps ABOVE the double top (triggers stops), THEN reverses. The "confirmed double top" in textbooks is often AFTER the liquidity sweep. Same for double bottoms. Understanding this means you don\'t get faked out by the "false break" that precedes the real reversal.',a:'doubleTopBot'},
+{h:'Cup & Handle — Accumulation Made Visible',d:'Rounded bottom (the cup) shows sellers gradually losing power as buyers slowly build. The handle is a brief shakeout (last weak hands exit). Then breakout. The rounded shape is important — it shows <b>gradual</b> transfer of control, not sudden. More reliable than V-bottoms for continuation.',a:'cupHandle'},
+{h:'Rectangle / Range — Equal Supply & Demand',d:'Price bounces between flat support and flat resistance. Neither side can gain the upper hand. Volume typically declines during the range (less interest). The breakout, when it comes, is often <b>violent</b> because all that compressed energy releases at once. Breakout + retest = entry.',a:'rectangle'}
 ],
 quiz:[
-{q:'RSI bullish divergence:',o:['Price HH, RSI HH','Price LL, RSI HL (weakening selling)','RSI stays at 50','MACD crosses up'],a:1,e:'Price lower low but RSI higher low = sellers losing steam.'},
-{q:'Bollinger Band squeeze means:',o:['High volatility','Low volatility → expansion likely coming','Trend is over','RSI is overbought'],a:1,e:'Squeeze = coiling energy → breakout expected.'},
-{q:'ATR is used for:',o:['Predicting direction','Sizing stops relative to volatility','Measuring trend','Finding divergence'],a:1,e:'ATR = volatility measure, not directional.'},
-{q:'MACD signal line crossover:',o:['MACD crosses above signal = bullish','Signal crosses above MACD = bullish','Both mean the same','Neither is useful'],a:0,e:'MACD line above signal = bullish momentum.'}
+{q:'Ascending triangle breaks up because:',o:['Resistance is weak','Buyers get more aggressive each pullback (rising lows)','It always breaks up','Volume determines direction'],a:1,e:'Rising lows = buyers getting more urgent = eventually overwhelm resistance.'},
+{q:'H&S right shoulder being lower than head tells you:',o:['Buyers are getting stronger','Buyers are getting WEAKER (less power each attempt)','Its a continuation','Volume is high'],a:1,e:'Right shoulder < head = buyers are exhausting their power.'},
+{q:'A bull flag is:',o:['A reversal pattern','Sharp rally → brief pullback against trend → continuation','Three peaks','A triangle'],a:1,e:'Flag = pause in a strong trend, then continuation.'},
+{q:'From an SMC perspective, a double top is:',o:['Confirmed resistance','Equal highs = liquidity pool likely to be swept before reversal','Always a sell signal','Meaningless'],a:1,e:'EQH = resting orders above = sweep then reverse.'}
 ]},
-/* ===== MODULE 11-12: VOLUME & FIBONACCI ===== */
-{id:'m11',g:'Indicators & Volume',t:'Volume Analysis & Volume Profile',b:'Volume confirmation, climactic volume, divergence, and the profile (POC, VA, VAH/VAL).',
+/* ===== MODULE 9: MOVING AVERAGES & TREND INDICATORS ===== */
+{id:'m9',g:'Indicators & Volume',t:'Moving Averages & Trend Indicators',b:'The most important indicators aren\'t magic lines — they\'re tools that summarize what price has already done. Used correctly, they confirm your bias and give you dynamic levels to trade from.',
 topics:[
-{h:'Volume Confirmation',d:'Move + rising volume = conviction. Move + falling volume = suspect. Volume validates price action.',a:'volConfirm'},
-{h:'Climactic Volume',d:'Extreme volume spike at a high/low often marks exhaustion — the last gasp of the move. Look for reversals after.',a:'climacticVol'},
-{h:'Volume Divergence',d:'Price makes new high but volume decreases = bearish divergence. New low + decreasing vol = bullish divergence.',a:'volDiv'},
-{h:'Volume Profile',d:'Volume plotted against PRICE (not time). Shows where most trading occurred. Bell-curve shape typical.',a:'volProfile'},
-{h:'Point of Control (POC)',d:'The single price level with the highest traded volume. Price gravitates toward POC — mean reversion magnet.',a:'poc'},
-{h:'Value Area (VA) — VAH & VAL',d:'Range containing ~70% of volume. VAH = upper boundary, VAL = lower. Price outside VA tends to revert inside.',a:'valueArea'},
-{h:'High Volume Node (HVN)',d:'Price levels with lots of activity — act as magnets/S&R. Price tends to consolidate at HVNs.',a:'hvn'},
-{h:'Low Volume Node (LVN)',d:'Price levels with little activity — price moves through quickly. Acts as "gaps" in the profile.',a:'lvn'}
+{h:'Why Use Indicators At All?',d:'Indicators are <b>derived from price</b> — they don\'t predict, they CONFIRM. Use them to: <b>1.</b> Objectively determine trend direction. <b>2.</b> Find dynamic support/resistance levels. <b>3.</b> Measure momentum strength/weakness. <b>4.</b> Identify divergences that warn of exhaustion. Never use an indicator as your sole entry reason — it confirms your price action reading.',a:null},
+{h:'Simple Moving Average (SMA) — The Honest Average',d:'SMA gives <b>equal weight</b> to every price in the lookback period. A 20 SMA averages the last 20 closes. It\'s smooth and stable but SLOW to react to new information. Think of it as a calm, slow friend who only changes their mind when the evidence is overwhelming. Best for: identifying major trend direction (50 SMA, 200 SMA).',a:'sma'},
+{h:'Exponential Moving Average (EMA) — The Responsive One',d:'EMA gives <b>more weight to recent prices</b>, making it faster to react. It turns sooner when trend shifts. Think of it as an alert friend who notices changes quickly — but sometimes overreacts to noise. Best for: entries and short-term trend on lower TFs. Popular EMAs: 9, 21, 50.',a:'ema'},
+{h:'The 200 SMA/EMA — The Institutional Line',d:'The 200-period moving average is the <b>most-watched level on any chart</b>. Institutions use it to define "bullish" (above) vs "bearish" (below). When price approaches the 200 MA after a long time away, expect a REACTION (bounce or dramatic break). It\'s not magic — it works because everyone watches it, creating a self-fulfilling prophecy.',a:null},
+{h:'MA Crossovers — Golden Cross & Death Cross',d:'<b>Golden Cross</b>: 50 MA crosses above 200 MA = long-term bullish signal. <b>Death Cross</b>: 50 crosses below 200 = bearish. These are LAGGING signals (by design — they confirm trends, not predict them). They filter out noise. If the golden cross triggers, the uptrend is likely already well underway — but it\'s confirmed.',a:'maCross'},
+{h:'EMA as Dynamic Support/Resistance',d:'In a healthy uptrend, price <b>consistently bounces off the 20 or 50 EMA</b> on pullbacks. The EMA acts as a "moving floor." Traders buy the touch of the EMA, place stops below it, and ride the next leg up. When price CLOSES below the EMA it was riding, the trend may be weakening. In downtrends, the EMA acts as a ceiling (resistance on rallies).',a:'emaDynamic'},
+{h:'VWAP — The Institutional Fairness Line',d:'Volume-Weighted Average Price = the average price weighted by volume. It represents the <b>"fair price"</b> that most volume traded at today. Institutions use VWAP as a benchmark — they want to execute better than VWAP. For traders: above VWAP = bullish intraday bias. Below = bearish. VWAP acts as a magnet in ranging markets and as dynamic S/R in trending ones.',a:'vwap'},
+{h:'Multiple MA Strategy — Stacking',d:'Use 3 MAs: fast (9/20), medium (50), slow (200). When all three are <b>stacked in order</b> (fast on top for uptrend, fast on bottom for downtrend) = strong trend. When they squeeze together and intertwine = range/consolidation. The squeeze BEFORE a big move is your alert to watch for a breakout setup.',a:'multiMA'},
+{h:'MA Ribbon — Trend Strength Visualization',d:'Plot 5-8 EMAs (8, 13, 21, 34, 55, 89). When they\'re <b>fanning out in order</b> = strong trend. When they compress into a tight band = weakening/range. When they cross and re-order = potential trend change. The ribbon gives you a VISUAL feel for trend strength that a single MA can\'t provide.',a:null}
 ],
 quiz:[
-{q:'POC is:',o:['Highest price','Most-traded price level (volume)','Opening price','50% of range'],a:1,e:'POC = peak volume node = fairest price.'},
-{q:'Value Area contains:',o:['100% of volume','~70% of volume','50% of volume','Only POC'],a:1,e:'VA ≈ 70% of total session volume.'},
-{q:'Low Volume Node (LVN) means:',o:['Price consolidates there','Price moves through quickly','High institutional interest','Strong support'],a:1,e:'LVN = little interest = price zips through.'}
-]},
-
-{id:'m12',g:'Indicators & Volume',t:'Fibonacci',b:'Retracements, extensions, and how to use them with structure.',
-topics:[
-{h:'Fibonacci Retracement Levels',d:'Key levels: 23.6%, 38.2%, 50%, 61.8%, 78.6%. Drawn from swing low to swing high. Measures pullback depth.',a:'fibRetrace'},
-{h:'The Golden Pocket (61.8-78.6%)',d:'The 61.8-78.6% zone is called the "golden pocket." Highest probability retracement zone for entries.',a:'goldenPocket'},
-{h:'Fibonacci Extension',d:'Projects targets beyond the swing: 127.2%, 161.8%, 261.8%. Used for take-profit levels.',a:'fibExt'},
-{h:'Fib + Order Block Confluence',d:'When a Fib level (especially golden pocket) aligns with an OB or FVG, the confluence massively increases probability.',a:'fibOB'},
-{h:'Fib Time Zones',d:'Vertical lines at Fibonacci intervals predicting when moves might occur. Less common but worth knowing.',a:'fibTime'},
-{h:'Drawing Fibs Correctly',d:'Uptrend: draw from swing LOW to swing HIGH. Downtrend: draw from swing HIGH to swing LOW. Always with the trend.',a:'drawFib'}
-],
-quiz:[
-{q:'Golden pocket is:',o:['0-23.6%','61.8-78.6% retracement zone','100% level','Fib extension'],a:1,e:'61.8-78.6% = highest probability retracement zone.'},
-{q:'Fib extension is for:',o:['Measuring pullback depth','Projecting profit targets beyond the swing','Drawing support lines','Volume analysis'],a:1,e:'Extensions project where price might reach beyond the move.'},
-{q:'Fib + OB at same level =:',o:['Conflict','High-probability confluence','Cancels out','Only for crypto'],a:1,e:'Multiple confluences at one level = strongest setups.'}
-]},
-/* ===== MODULE 13-14: RISK & PSYCHOLOGY ===== */
-{id:'m13',g:'Risk & Psychology',t:'Risk Management',b:'Position sizing, R:R, drawdown, and the math that keeps you alive.',
-topics:[
-{h:'Risk Per Trade (%)',d:'Risk a fixed % of account per trade (1-2%). Account grows? Position grows. Account shrinks? Position shrinks. Proportional.',a:'riskPct'},
-{h:'Stop-Loss Placement',d:'Place stops at logical invalidation points (below OB, above supply zone, beyond structure). Never arbitrary.',a:'stopPlace'},
-{h:'Take-Profit & Targets',d:'Set targets at opposing liquidity, next S/R, or Fibonacci extensions. Have a plan before entry.',a:'tpTargets'},
-{h:'Risk:Reward Ratio',d:'Risk 1 to make 2 (1:2 R:R) or better. With 1:3 R:R, you only need 25% win rate to profit.',a:'rrRatio'},
-{h:'Position Sizing Calculator',d:'Position size = (Account × Risk%) / Stop distance. Ensures every trade risks the same $ amount.',a:'posSizeCalc'},
-{h:'Maximum Drawdown',d:'Largest peak-to-trough decline. Even with 2% risk, 10 losses in a row = 18% drawdown. Plan for streaks.',a:'maxDD'},
-{h:'Portfolio Heat',d:'Total risk across ALL open positions simultaneously. Cap at 5-6% total. Correlated trades = hidden concentration.',a:'portHeat'},
-{h:'Kelly Criterion (simplified)',d:'Optimal bet size = (win% × avg_win - loss% × avg_loss) / avg_win. Most traders use fractional Kelly (25-50%).',a:'kelly'}
-],
-quiz:[
-{q:'With 1:3 R:R, breakeven win rate is:',o:['50%','33%','25%','75%'],a:2,e:'1/(1+3) = 25% needed to break even.'},
-{q:'Position size formula:',o:['Account / Price','(Account × Risk%) / Stop distance','Fixed lots always','Random'],a:1,e:'Ensures consistent $ risk per trade.'},
-{q:'Portfolio heat should be capped at:',o:['50%','25%','5-6% total open risk','100%'],a:2,e:'Total simultaneous risk = portfolio heat, keep it low.'}
+{q:'EMA vs SMA — EMA:',o:['Weights all prices equally','Gives MORE weight to recent prices (faster reaction)','Is always better','Uses volume data'],a:1,e:'EMA emphasizes recent data, making it more responsive.'},
+{q:'Golden Cross (50 above 200) means:',o:['Sell signal','Long-term bullish confirmation','Immediate buy','Nothing useful'],a:1,e:'Golden Cross confirms a bullish trend is underway.'},
+{q:'VWAP represents:',o:['Highest price today','Volume-weighted average price (institutional fairness level)','The opening price','A Fibonacci level'],a:1,e:'VWAP = fair value based on where most volume occurred.'},
+{q:'When multiple MAs squeeze together:',o:['Strong trend','Range/consolidation — breakout may be coming','Always bullish','Time to sell'],a:1,e:'Compressed MAs = stored energy = watch for breakout direction.'}
 ]},
 
-{id:'m14',g:'Risk & Psychology',t:'Trading Psychology',b:'The mental game: cognitive biases, emotional traps, and discipline systems.',
+{id:'m10',g:'Indicators & Volume',t:'Oscillators & Momentum',b:'RSI, MACD, Stochastic, Bollinger Bands, ATR — tools that measure HOW STRONG or WEAK a move is, and warn when the fuel is running out.',
 topics:[
-{h:'Fear & Greed Cycle',d:'Fear: premature exits, missed setups. Greed: oversized, holding past targets, ignoring stop-losses.',a:'fearGreed'},
-{h:'FOMO (Fear of Missing Out)',d:'Entering because price is moving, not because setup is valid. Usually catches the end of a move.',a:'fomo'},
-{h:'Revenge Trading',d:'After a loss, taking a bigger undisciplined trade to "win it back." Accelerates drawdown.',a:'revenge'},
-{h:'Overtrading',d:'Taking way more trades than the strategy calls for. Boredom, ego, or FOMO-driven. Quality > quantity.',a:'overtrading'},
-{h:'Confirmation Bias',d:'Only seeing evidence that supports your existing position. Ignoring red flags. Deadly for objective analysis.',a:'confBias'},
-{h:'Loss Aversion',d:'Pain of losing $100 feels 2x worse than joy of gaining $100. Leads to holding losers, cutting winners early.',a:'lossAversion'},
-{h:'Trading Journal',d:'Record every trade: entry reason, exit, emotions, grade. Patterns of self-sabotage become visible over time.',a:'journal'},
-{h:'Process Over Outcome',d:'A good trade can lose. A bad trade can win. Judge yourself on whether you followed your rules, not P&L.',a:'processOutcome'}
+{h:'RSI — Relative Strength Index',d:'RSI measures the <b>speed and magnitude of recent price changes</b> on a 0-100 scale. Above 70 = "overbought" (extended). Below 30 = "oversold" (extended). BUT — in a strong trend, RSI can stay overbought/oversold for extended periods. Don\'t blindly fade RSI extremes in a trend. Use it for: divergence detection and confirming momentum at key levels.',a:'rsi'},
+{h:'RSI Divergence — The Most Powerful RSI Signal',d:'<b>Bullish divergence</b>: price makes a LOWER LOW but RSI makes a HIGHER LOW. Translation: "Price went lower but the MOMENTUM behind the selling is weakening." <b>Bearish divergence</b>: price makes a HIGHER HIGH but RSI makes a LOWER HIGH. Translation: "Price went higher but buying power is fading." Divergence doesn\'t mean instant reversal — it means the trend is LOSING STEAM.',a:'rsiDiv'},
+{h:'Stochastic RSI — Sensitivity Amplified',d:'Applies the stochastic formula to RSI values (oscillator of an oscillator). Oscillates 0-1. More sensitive than regular RSI — useful in <b>ranging markets</b> for short-term overbought/oversold signals. In trending markets it gives too many false signals. Use it with context: ranging = useful. Trending = ignore it.',a:'stochRsi'},
+{h:'MACD — Momentum Direction + Strength',d:'MACD = 12 EMA minus 26 EMA (the "MACD line"). Signal line = 9 EMA of MACD. Histogram = difference between them. <b>MACD above zero</b> = bullish momentum. <b>Below zero</b> = bearish. <b>Histogram growing</b> = momentum increasing. <b>Shrinking</b> = momentum fading. Crossovers (MACD crossing signal line) = momentum shift trigger.',a:'macd'},
+{h:'MACD Divergence',d:'Same principle as RSI divergence: price makes a new extreme, MACD doesn\'t confirm it. This is often MORE reliable than RSI divergence because MACD measures TWO moving averages diverging — it captures the actual momentum relationship changing. Bearish MACD divergence at resistance = high-probability short setup.',a:'macdDiv'},
+{h:'Bollinger Bands — Volatility Visualization',d:'Middle band = 20 SMA. Upper/lower bands = 2 standard deviations above/below. Bands <b>expand when volatility increases</b> and <b>contract when volatility decreases</b>. The KEY signal: <b>Bollinger Squeeze</b> — when bands get extremely narrow (low volatility), a BIG move is coming. You don\'t know which direction — but you know it\'s coming. The squeeze is the setup; the breakout direction is the trigger.',a:'bollinger'},
+{h:'Bollinger Band Walk',d:'In a strong trend, price doesn\'t bounce between bands — it <b>"walks" along one band</b>. Continuous closes near the upper band = strong uptrend (don\'t short just because price touches the upper band). Only when price starts closing INSIDE the bands again does the trend weaken.',a:null},
+{h:'ATR — Average True Range (Volatility Ruler)',d:'ATR measures <b>how much price moves on average</b> over N periods. It doesn\'t tell direction — only magnitude. Use it for: <b>1.</b> Stop-loss sizing (1.5-2x ATR from entry = volatility-adjusted stop). <b>2.</b> Filtering trades (if ATR is very low, don\'t expect big moves). <b>3.</b> Position sizing (wider ATR = smaller position to maintain same $ risk). ATR is your volatility RULER.',a:'atr'},
+{h:'CCI — Commodity Channel Index',d:'Measures how far price has deviated from its statistical average. Above +100 = abnormally strong (trend or overbought). Below -100 = abnormally weak. Zero line crossovers can signal momentum shifts. Less popular than RSI/MACD but useful as a confirmation tool, especially in commodity markets.',a:'cci'},
+{h:'The Indicator Trap — Don\'t Stack 5 Confirming the Same Thing',d:'RSI, MACD, Stochastic, CCI are ALL momentum oscillators. Using 4 of them at once doesn\'t give you 4x the information — they\'re measuring the SAME thing differently. Instead: use <b>one trend tool</b> (MA), <b>one momentum tool</b> (RSI or MACD), and <b>one volatility tool</b> (BB or ATR). Three different TYPES of information.',a:null}
 ],
 quiz:[
-{q:'Revenge trading typically:',o:['Improves results','Accelerates drawdown','Is a valid strategy','Only affects beginners'],a:1,e:'Bigger undisciplined trades after losses = faster ruin.'},
-{q:'Loss aversion causes:',o:['Taking profits too early','Holding losers too long (avoiding pain of realizing loss)','Both A and B','Neither'],a:2,e:'Both: cut winners short, let losers run.'},
-{q:'Trading journal helps by:',o:['Guaranteeing wins','Making behavioral patterns visible over time','Replacing a strategy','Calculating taxes only'],a:1,e:'Patterns of self-sabotage surface in review.'}
+{q:'RSI bullish divergence means:',o:['Price HH + RSI HH (confirmation)','Price LL + RSI HL (selling momentum weakening)','RSI at 50 (neutral)','MACD crosses up'],a:1,e:'Lower low in price but higher low in RSI = bears losing power.'},
+{q:'Bollinger Band squeeze signals:',o:['High volatility continuation','Low volatility → big move coming (direction unknown)','Trend reversal','Overbought condition'],a:1,e:'Compressed bands = stored energy = explosion incoming.'},
+{q:'ATR is used for:',o:['Predicting price direction','Sizing stops relative to current volatility','Measuring trend direction','Finding support levels'],a:1,e:'ATR = how much price moves, not WHERE. Perfect for stops.'},
+{q:'The indicator trap is:',o:['Using too few indicators','Stacking multiple indicators that all measure the SAME thing','Using any indicators at all','Only using MACD'],a:1,e:'Use one of each TYPE (trend, momentum, volatility), not 4 momentum tools.'}
+]},
+/* ===== MODULE 11: VOLUME ANALYSIS ===== */
+{id:'m11',g:'Indicators & Volume',t:'Volume Analysis & Volume Profile',b:'Volume is the fuel behind price. Without fuel, moves stall. With it, they explode. Volume Profile shows you WHERE the real trading happened — not just when.',
+topics:[
+{h:'Volume = Conviction',d:'Price tells you WHERE the market went. Volume tells you <b>HOW MUCH the participants cared</b>. A big move on heavy volume = real conviction (institutions participating). A big move on LOW volume = suspicious (might be a fake move that will retrace). Always ask: "Does volume CONFIRM what price is doing?"',a:'volConfirm'},
+{h:'Volume Confirmation in Trends',d:'In a healthy uptrend: <b>volume should INCREASE on the impulse legs</b> (moves with the trend) and <b>DECREASE on the pullback legs</b> (moves against the trend). This shows: institutions are pushing the trend forward and stepping back during corrections. If volume increases on pullbacks, the trend may be weakening — more participants are fighting it.',a:'volConfirm'},
+{h:'Climactic Volume — Exhaustion Signal',d:'A sudden EXTREME volume spike far above average at a swing high or low often marks <b>the end of a move</b>, not the beginning. Why? Because it represents EVERYONE piling in at the same time — there\'s no one left to push further. It\'s the last gasp. Look for climactic volume + pin bar/engulfing = reversal setup.',a:'climacticVol'},
+{h:'Volume Divergence — The Silent Warning',d:'Price makes a <b>new high</b> but volume on that leg is LOWER than the previous high\'s volume. Translation: "Price went higher but FEWER participants are pushing it." This is volume divergence — the crowd is thinning. The move is living on borrowed time. Same applies to new lows on decreasing volume.',a:'volDiv'},
+{h:'Volume Profile — Horizontal Volume Distribution',d:'Instead of plotting volume vs TIME (traditional bars below chart), Volume Profile plots volume vs <b>PRICE</b>. It shows a horizontal histogram: which price levels attracted the most trading. This tells you WHERE the "fair value" was and where price is likely to return to. It\'s the X-ray of market interest.',a:'volProfile'},
+{h:'Point of Control (POC) — The Magnet',d:'POC is the single price level with the <b>highest traded volume</b> in the profile. It represents where the market found "fairness" — where most participants agreed on value. Price tends to <b>gravitate back toward POC</b> when it drifts away. It\'s the ultimate mean-reversion magnet. Many institutional algos use POC as their target.',a:'poc'},
+{h:'Value Area (VA) — The Comfort Zone',d:'The VA is the price range containing approximately <b>70% of all volume</b> in the profile. Bounded by VAH (Value Area High) and VAL (Value Area Low). When price is INSIDE the VA, it\'s in the comfort zone — range-bound, mean-reverting behavior. When price BREAKS OUTSIDE the VA, it\'s signaling a new directional move.',a:'valueArea'},
+{h:'High Volume Node (HVN) — Acceptance',d:'Price levels with concentrated volume. HVNs act like <b>magnets and speed bumps</b> — price tends to slow down, consolidate, and get "stuck" at HVNs. They represent levels where the market spent significant time = accepted as fair. Use them as S/R levels.',a:'hvn'},
+{h:'Low Volume Node (LVN) — Rejection',d:'Price levels with very little volume. The market moved through these levels QUICKLY — it <b>rejected</b> them as unfair. Price tends to zip through LVNs rapidly again on future visits. They act like "gaps" in the profile. Don\'t expect support/resistance at LVNs; expect fast moves through them.',a:'lvn'},
+{h:'Trading the VA Edges',d:'<b>Fade strategy</b>: when price pushes to VAH or VAL and shows rejection (pin bar, engulfing), fade it back toward POC. <b>Breakout strategy</b>: when price closes decisively beyond VAH/VAL with volume, trade the continuation away from the VA. The VA gives you built-in entry triggers with clear invalidation.',a:null}
+],
+quiz:[
+{q:'POC is:',o:['The highest price of the day','The price level with the most traded volume (market fairness)','The opening price','A Fibonacci level'],a:1,e:'POC = peak volume = where the market agreed on value.'},
+{q:'Value Area contains approximately:',o:['100% of volume','~70% of total session volume','25% of volume','Only the POC'],a:1,e:'VA ≈ 70% of volume around the POC.'},
+{q:'Low Volume Node means:',o:['Strong support','Price moves through QUICKLY (market rejected this price)','High institutional interest','Good entry point'],a:1,e:'LVN = little interest = price zips through, don\'t expect holding.'},
+{q:'Climactic volume at a high usually means:',o:['The trend will continue forever','Exhaustion — everyone is in, nobody left to push higher','Low conviction','A gap is coming'],a:1,e:'Everyone in at once = no one left to buy = often marks the top.'}
+]},
+
+{id:'m12',g:'Indicators & Volume',t:'Fibonacci — The Market\'s Natural Rhythm',b:'Fibonacci ratios appear throughout nature and markets. Not because of magic, but because enough traders watch the same levels — creating self-fulfilling reactions.',
+topics:[
+{h:'Why Fibonacci Works in Markets',d:'Fibonacci levels work not because of mystical properties but because <b>millions of traders watch them</b>. When price pulls back to the 61.8% level and enough traders place buy orders there, it becomes a self-fulfilling prophecy. The level "works" because everyone expects it to work — and acts accordingly.',a:'fibRetrace'},
+{h:'Fibonacci Retracement — Measuring the Pullback',d:'Draw from swing low to swing high (in an uptrend). The tool shows where price might <b>find support during a pullback</b>: 23.6% (shallow), 38.2% (moderate), 50% (halfway), 61.8% (deep), 78.6% (very deep). The deeper the retracement, the weaker the trend may be — but the better the risk:reward if it holds.',a:'fibRetrace'},
+{h:'The Golden Pocket (61.8% - 78.6%)',d:'This zone is called the "golden pocket" — the <b>highest-probability retracement area</b>. Why? Because 61.8% is the "golden ratio" (most watched Fib level), and 78.6% is the square root of 61.8%. A pullback to this zone that holds = strong trend resumption with excellent R:R. If it breaks below 78.6%, the swing is likely broken.',a:'goldenPocket'},
+{h:'Fibonacci Extension — Projecting Targets',d:'Extensions project where price might GO after the retracement ends: 127.2%, 161.8%, 200%, 261.8%. Use them for <b>take-profit targets</b>. The 161.8% extension is the most-watched target level. If wave 1 moved 100 points, the 161.8% extension targets 161.8 points from the retracement low.',a:'fibExt'},
+{h:'Fib + Order Block = Maximum Confluence',d:'When a Fibonacci level (especially the golden pocket) <b>aligns with an order block or FVG</b>, you have a confluence that dramatically increases probability. The Fib gives you the "where" mathematically. The OB gives you the "why" structurally. Together they create institutional-grade entries.',a:'fibOB'},
+{h:'Fib + S/R + Trend = Triple Confluence',d:'The highest probability Fib entries: <b>1.</b> Price is in a clear trend. <b>2.</b> A pullback reaches the golden pocket (61.8-78.6%). <b>3.</b> That zone aligns with a key support level or order block. <b>4.</b> A candlestick signal (pin bar/engulfing) forms there. This is the full stack — four layers of confluence.',a:null},
+{h:'Drawing Fibs Correctly',d:'<b>Uptrend</b>: draw from swing LOW (0%) to swing HIGH (100%). Retracement levels appear BETWEEN them (below the high). <b>Downtrend</b>: draw from swing HIGH (0%) to swing LOW (100%). Retracement levels appear above the low. ALWAYS draw in the direction of the impulse you\'re measuring. Anchor points must be clear, significant swing points.',a:'drawFib'},
+{h:'When Fibonacci Fails',d:'Fib levels are NOT guaranteed. They fail when: <b>1.</b> The trend has changed (you\'re drawing against a new trend). <b>2.</b> No other confluence supports the level (naked Fib = weak). <b>3.</b> The retracement breaks below 100% of the swing — meaning the entire move is invalidated. Don\'t marry a Fib level; let price confirm it holds first.',a:null}
+],
+quiz:[
+{q:'Golden pocket is:',o:['0-23.6% zone','61.8-78.6% retracement (highest probability)','The 100% level','Only for extensions'],a:1,e:'61.8-78.6% = the golden pocket, most-watched zone.'},
+{q:'Fib extension is used for:',o:['Finding pullback support','Projecting profit targets BEYOND the original swing','Drawing support zones','Volume analysis'],a:1,e:'Extensions project where price might reach after retracement.'},
+{q:'Fib + Order Block at same level:',o:['Conflict (cancel out)','HIGH-probability confluence (Fib math + structural logic)','Only works in crypto','Means you should avoid the trade'],a:1,e:'Two independent reasons pointing to the same level = strong.'},
+{q:'If price breaks below 78.6% retracement:',o:['The Fib level still holds','The swing is likely broken — the move may have reversed','Always buy there','No significance'],a:1,e:'Below 78.6% = the retracement has gone too deep, original trend likely failed.'}
+]},
+/* ===== MODULE 13: RISK MANAGEMENT ===== */
+{id:'m13',g:'Risk & Psychology',t:'Risk Management — The Math That Keeps You Alive',b:'More trading careers end from poor risk management than bad entries. You can have a 40% win rate and STILL be profitable — if your risk management is disciplined. This module is the most important one.',
+topics:[
+{h:'Why Risk Management Comes First',d:'A 90% win rate with bad risk management will LOSE money (one blowup erases 9 wins). A 35% win rate with disciplined R:R and sizing can be very profitable. <b>Your edge isn\'t your entries — it\'s how you manage the math around them.</b> Risk management determines if you survive long enough for your edge to compound.',a:null},
+{h:'Fixed Percentage Risk Per Trade',d:'Risk a fixed <b>1-2% of your account on every single trade</b>. Not 1% one day and 5% when you "feel confident." Always 1-2%. This way: if you lose 10 in a row (it happens), you\'ve lost 10-20% — painful but recoverable. If you risk 10% per trade and lose 5 in a row: 50% drawdown — nearly unrecoverable. Consistency is survival.',a:'riskPct'},
+{h:'Position Sizing Formula',d:'<b>Position Size = (Account × Risk%) / Stop Distance</b>. Example: $10,000 account, 2% risk = $200 max loss. If your stop is 50 pips away, position size = $200/50 pips = $4 per pip. This ensures EVERY trade risks exactly the same dollar amount regardless of how wide or tight the stop is. Wider stop = smaller position. Tighter stop = larger position.',a:'posSizeCalc'},
+{h:'Stop-Loss Placement — Structure, Not Pips',d:'Your stop belongs at the point where <b>your thesis is wrong</b>. For a long trade off an OB: stop below the OB (if price goes below, your OB thesis failed). For a pin bar: stop beyond the tail. NEVER use random fixed-pip stops (like "always 20 pips"). The market doesn\'t care about your arbitrary number — it cares about structure.',a:'stopPlace'},
+{h:'Risk:Reward Ratio — The Core Math',d:'If you risk $100 per trade: <b>1:1 R:R</b> = target $100 profit. Need 50% win rate to break even. <b>1:2 R:R</b> = target $200. Need only 33% win rate. <b>1:3 R:R</b> = target $300. Need only 25% win rate. The higher your R:R, the less often you need to be right. This is why entering at deep pullbacks (better R:R) is superior to chasing.',a:'rrRatio'},
+{h:'Take-Profit Strategies',d:'<b>Option 1 — Fixed target:</b> Close at next key level (most conservative). <b>Option 2 — Partial profits:</b> Close 50% at 1:1, move stop to breakeven, let rest run. <b>Option 3 — Trailing stop:</b> Move stop below each new swing low as trend progresses. The WORST option: "I\'ll just see how it goes" — that\'s not a plan, that\'s gambling.',a:'tpTargets'},
+{h:'Maximum Drawdown & Losing Streaks',d:'Even a system with 55% win rate will have <b>runs of 8-12 consecutive losses</b> over 1000 trades. This is normal statistics, not failure. If you risk 2% per trade: 10 consecutive losses = 18% drawdown. Painful but recoverable. If you risk 5%: 10 losses = 40% drawdown — you now need 67% return just to get back to even. The math is cruel.',a:'maxDD'},
+{h:'Portfolio Heat — Total Exposure',d:'If you have 5 trades open, each risking 2%, your total risk = 10% of your account if they ALL stop out. This is <b>"portfolio heat."</b> Cap it at 5-6% maximum. Also watch for CORRELATION: 3 long trades in correlated pairs (EUR/USD, GBP/USD, AUD/USD) is basically ONE trade x3. Diversify your risk.',a:'portHeat'},
+{h:'The Recovery Math',d:'After a 10% drawdown, you need 11.1% to recover. After 20%, you need 25%. After 50%, you need 100%. After 80%, you need 400%. <b>The deeper the hole, the exponentially harder to climb out.</b> This is why preventing large drawdowns (small risk per trade) is infinitely more important than maximizing winners.',a:null},
+{h:'Risk Management Rules (Non-Negotiable)',d:'<b>1.</b> Never risk more than 2% per trade. <b>2.</b> Always define stop before entry. <b>3.</b> Never move stop FURTHER from entry (only closer). <b>4.</b> Never add to a losing position. <b>5.</b> Cap portfolio heat at 6%. <b>6.</b> If drawdown reaches 10%, reduce size to 1%. <b>7.</b> If drawdown reaches 20%, STOP trading — review everything.',a:null}
+],
+quiz:[
+{q:'With 1:3 R:R, breakeven win rate is:',o:['50%','33%','25% (only need to be right 1 in 4 trades)','75%'],a:2,e:'1/(1+3) = 25%. You only need to win 25% of the time.'},
+{q:'Position size formula:',o:['Account / Price','(Account × Risk%) / Stop distance in pips','Fixed lots always','Whatever feels right'],a:1,e:'Ensures consistent dollar risk regardless of stop width.'},
+{q:'After a 50% drawdown, you need to gain:',o:['50% to recover','75% to recover','100% to recover (back to breakeven)','200%'],a:2,e:'$10k → $5k loss → need $5k gain = 100% of remaining $5k.'},
+{q:'Portfolio heat should be capped at:',o:['50%','25%','5-6% total simultaneous risk','No cap needed'],a:2,e:'All open positions combined should risk no more than 5-6%.'}
+]},
+
+{id:'m14',g:'Risk & Psychology',t:'Trading Psychology — The Mind Game',b:'You can have the best system in the world and still lose money if your psychology is broken. Most traders fail not because of bad analysis but because of emotional decision-making.',
+topics:[
+{h:'The Fear & Greed Pendulum',d:'All market psychology swings between two emotions: <b>Fear</b> (causes premature exits, missed entries, paralysis) and <b>Greed</b> (causes oversized positions, holding past targets, revenge trading). Every mistake you make traces back to one of these two. Self-awareness of which one is controlling you RIGHT NOW is the first step.',a:'fearGreed'},
+{h:'FOMO — Fear of Missing Out',d:'You see price moving, you\'re not in, and you panic-enter with no setup. <b>FOMO entries almost always catch the END of a move.</b> By the time you notice something moving, the smart money that caused it is already exiting. The cure: accept that you will miss moves. There is ALWAYS another setup. The market will be here tomorrow.',a:'fomo'},
+{h:'Revenge Trading — The Account Killer',d:'After a loss, the urge to immediately "win it back" with a bigger trade. This is <b>pure ego</b>, not strategy. The market doesn\'t owe you anything. Revenge trades are larger, less disciplined, and entered without proper analysis. They turn small losses into catastrophic ones. Rule: after a loss, step away for at least 30 minutes.',a:'revenge'},
+{h:'Overtrading — Quantity vs Quality',d:'Taking 15 trades when your system only generates 3 valid setups. Why? Boredom, addiction to action, belief that "more trades = more profit." The reality: <b>more low-quality trades = more losses + more commissions</b>. The best traders take FEWER trades, not more. If you took 3 A+ setups per week, you\'d outperform most traders taking 30.',a:'overtrading'},
+{h:'Confirmation Bias — Seeing What You Want to See',d:'You\'re long, so you only notice bullish evidence and ignore bearish warnings. Every red flag is "just noise." This is confirmation bias — your brain filters reality to match your existing belief. <b>Cure</b>: before every trade, actively argue the OPPOSITE case. If you can\'t find a reason NOT to take the trade, it\'s probably a good one.',a:'confBias'},
+{h:'Loss Aversion — The Pain Asymmetry',d:'Losing $100 hurts about <b>2x more than gaining $100 feels good</b> (proven in behavioral economics). This causes: holding losers too long (avoiding the pain of realizing the loss) and cutting winners too early (locking in the pleasure of gain before it disappears). You end up with: small wins, big losses. The exact OPPOSITE of profitable trading.',a:'lossAversion'},
+{h:'The Trading Journal — Your Mirror',d:'Write down: <b>1.</b> Setup (what you saw). <b>2.</b> Entry (exact price, time, reason). <b>3.</b> Stop and target (where and why). <b>4.</b> Emotional state (0-10 confidence, any FOMO/revenge?). <b>5.</b> Outcome (win/loss, R:R). <b>6.</b> Grade (did you follow rules, regardless of outcome?). Review weekly. Patterns of self-sabotage become impossible to ignore.',a:'journal'},
+{h:'Process Over Outcome — The Mindset Shift',d:'A GOOD trade can lose (the market is probabilistic). A BAD trade can win (lucky). <b>Judge yourself on whether you followed your rules, not on P&L.</b> A disciplined loss on a valid setup = good trade. An undisciplined win on a revenge trade = bad trade (you just got lucky, and it reinforced bad behavior). Process > outcome.',a:'processOutcome'},
+{h:'The 3 Stages of Trader Development',d:'<b>Stage 1 — Unconscious Incompetence:</b> You don\'t know what you don\'t know. Overconfident. <b>Stage 2 — Conscious Incompetence:</b> You realize how much you don\'t know. Most painful stage. Many quit here. <b>Stage 3 — Conscious Competence:</b> You know the rules and deliberately follow them. Profits become consistent. There\'s no shortcut through stages 1 and 2.',a:null}
+],
+quiz:[
+{q:'Revenge trading typically:',o:['Improves results due to motivation','ACCELERATES drawdown (bigger, undisciplined trades)','Is a valid strategy after losses','Only affects beginners'],a:1,e:'Larger + less disciplined + emotional = faster losses.'},
+{q:'Loss aversion causes:',o:['Taking profits too early + holding losers too long (BOTH)','Only cutting winners early','Only holding losers','No effect on trading'],a:0,e:'Pain asymmetry: cut winners early (lock pleasure), hold losers (avoid pain).'},
+{q:'A "good trade" is one that:',o:['Made money','Followed your rules perfectly (regardless of P&L outcome)','Had a large position','Felt exciting'],a:1,e:'Process over outcome. Rules followed = good trade, even if it lost.'},
+{q:'FOMO entries typically catch:',o:['The beginning of a move','The END of a move (smart money already exiting)','The perfect entry','Nothing in particular'],a:1,e:'By the time you notice a move and panic-enter, it\'s usually almost over.'}
 ]},
 /* ===== MODULE 15: ICT / WYCKOFF / ELLIOTT ===== */
-{id:'m15',g:'Smart Money & Structure',t:'ICT, Wyckoff & Elliott Wave',b:'Advanced frameworks: ICT Kill Zones, Wyckoff schematics, and Elliott wave counting.',
+{id:'m15',g:'Smart Money & Structure',t:'ICT, Wyckoff & Elliott Wave',b:'Three advanced frameworks that attempt to model how large players move markets. Each has strengths and limitations — use them as lenses, not gospel.',
 topics:[
-{h:'ICT Kill Zones',d:'Specific time windows with highest probability: London Open (2-5am ET), NY Open (7-10am ET), London Close (10-12pm ET).',a:'killZones'},
-{h:'ICT Judas Swing',d:'False move at session open that traps traders before the real daily direction. Usually against the "true" move.',a:'judaSwing'},
-{h:'ICT Silver Bullet',d:'Specific 1-hour windows (10-11am ET, 2-3pm ET) where price delivers to an FVG/OB inside a higher-TF setup.',a:'silverBullet'},
-{h:'ICT Optimal Trade Entry (OTE)',d:'Entry at the 62-79% retracement of an impulsive leg. Combines Fib + OB + displacement for entries.',a:'ote'},
-{h:'Wyckoff Accumulation Schematic',d:'Phase A: selling climax. B: building cause. C: spring (test). D: sign of strength (SOS). E: markup begins.',a:'wyckoffAccum'},
-{h:'Wyckoff Distribution Schematic',d:'Phase A: buying climax. B: building cause. C: upthrust (UTAD). D: sign of weakness (SOW). E: markdown.',a:'wyckoffDist'},
-{h:'Wyckoff Spring & Upthrust',d:'Spring: false break below accumulation range (trap shorts). Upthrust: false break above distribution (trap longs).',a:'springUpthrust'},
-{h:'Elliott Wave 5-3 Structure',d:'Impulse: 5 waves (1-2-3-4-5). Correction: 3 waves (A-B-C). Waves 1,3,5 = with trend. Waves 2,4 = pullbacks.',a:'elliott'},
-{h:'Elliott Wave Rules',d:'Wave 2 never retraces 100% of wave 1. Wave 3 is never the shortest. Wave 4 doesnt overlap wave 1 territory.',a:'elliottRules'},
-{h:'Fibonacci + Elliott',d:'Wave 2 often retraces 61.8% of wave 1. Wave 3 often extends to 161.8%. Wave 4 retraces 38.2% of wave 3.',a:'fibElliott'}
+{h:'ICT Kill Zones — When Smart Money is Active',d:'Not all hours are equal. <b>London Open (2-5am ET)</b>: highest volatility/volume for forex. <b>NY Open (7-10am ET)</b>: US institutions enter, overlap with London = peak liquidity. <b>London Close (10-12pm ET)</b>: position squaring, often reversal time. Trading outside these windows = lower probability. The kill zones are when the "real money" plays.',a:'killZones'},
+{h:'ICT Judas Swing — The Session Fake-Out',d:'At the open of a session (especially London), price often makes a <b>FALSE move in the opposite direction</b> of the true daily bias. This "Judas swing" sweeps liquidity from traders positioned for the real move, then reverses violently. It\'s manipulation 101: fake them out, take their stops, THEN go the real direction. If you get stopped out at the London open regularly, you\'re being Judas\'d.',a:'judaSwing'},
+{h:'ICT Silver Bullet — The Precision Window',d:'Specific 1-hour windows where high-probability setups deliver: <b>10-11am ET</b> and <b>2-3pm ET</b>. Within these windows, look for price to deliver to a higher-timeframe FVG or order block. The Silver Bullet is for traders who want ONE clean trade per day at the highest probability time, rather than screen-watching for 8 hours.',a:'silverBullet'},
+{h:'ICT Optimal Trade Entry (OTE)',d:'The <b>62-79% retracement zone</b> of an impulsive leg. After a displacement (strong move), price retraces. The OTE zone is where you ENTER for the continuation. It combines: Fibonacci golden pocket + likely order block location + the natural rhythm of institutional re-entry. It gives you the deepest entry with the best R:R while still being with the trend.',a:'ote'},
+{h:'Wyckoff Accumulation — How Institutions Buy',d:'Institutions can\'t buy all at once (too much size). So they build positions in <b>a range that looks boring</b>. The schematic: <b>Phase A</b>: selling climax stops the prior downtrend. <b>Phase B</b>: range forms, building "cause." <b>Phase C</b>: SPRING — false breakdown that shakes out remaining sellers (the trap). <b>Phase D</b>: sign of strength (SOS) — rally above range. <b>Phase E</b>: markup begins.',a:'wyckoffAccum'},
+{h:'Wyckoff Distribution — How Institutions Sell',d:'Mirror of accumulation at tops. Institutions unload into retail buying. <b>Phase A</b>: buying climax. <b>Phase B</b>: range at top. <b>Phase C</b>: UTAD (upthrust after distribution) — false breakout above range that traps late buyers. <b>Phase D</b>: sign of weakness (SOW). <b>Phase E</b>: markdown. Retail is still "buying the dip" while institutions are gone.',a:'wyckoffDist'},
+{h:'The Spring & Upthrust — The Trap Events',d:'<b>Spring</b>: in accumulation, price briefly breaks BELOW the range. Retail thinks "breakdown!" and sells. But it\'s a TRAP — institutions are buying all those panic sells. Price immediately rallies back inside. <b>Upthrust</b>: same thing at distribution tops — false breakout above traps late buyers, then collapses. These are the highest-probability entries in Wyckoff.',a:'springUpthrust'},
+{h:'Elliott Wave — 5-3 Impulse-Correction',d:'Markets move in <b>5-wave impulses</b> (Waves 1,2,3,4,5) followed by <b>3-wave corrections</b> (A,B,C). Waves 1,3,5 move WITH the trend. Waves 2,4 are pullbacks. Wave 3 is usually the longest and strongest (the "sweet spot"). Wave 5 is the final push (often weakest, with divergence). Then the correction (A-B-C) retraces a portion of the entire impulse.',a:'elliott'},
+{h:'Elliott Wave Rules — The Three Laws',d:'<b>Rule 1:</b> Wave 2 NEVER retraces 100% of Wave 1. (If it does, your count is wrong.) <b>Rule 2:</b> Wave 3 is NEVER the shortest of waves 1, 3, and 5. (It\'s usually the longest.) <b>Rule 3:</b> Wave 4 does NOT overlap with Wave 1\'s territory. (In an uptrend, wave 4\'s low stays above wave 1\'s high.) Break any rule = invalid count, start over.',a:'elliottRules'},
+{h:'Fibonacci + Elliott Wave',d:'The two frameworks combine naturally: <b>Wave 2</b> often retraces 61.8% of wave 1 (golden pocket). <b>Wave 3</b> often extends to 161.8% of wave 1. <b>Wave 4</b> typically retraces 38.2% of wave 3. <b>Wave 5</b> often equals wave 1 in length or extends to 61.8% of waves 1-3 combined. These give you precise TARGETS for each wave.',a:'fibElliott'},
+{h:'The Honest Caveat About All Three Frameworks',d:'ICT, Wyckoff, and Elliott all have VALUE but also LIMITATIONS. ICT concepts are hard to validate statistically. Wyckoff schematics are easier to identify in hindsight than in real-time. Elliott Wave counting is subjective — two analysts often get different counts. Use them as <b>frameworks to think with</b>, not as certainties. Combine with your own price action reading.',a:null}
 ],
 quiz:[
-{q:'ICT Kill Zones are:',o:['Random times','Specific high-probability time windows (London/NY)','Only for forex','After market close'],a:1,e:'London and NY opens are the kill zones.'},
-{q:'Wyckoff Spring is:',o:['False breakdown below accumulation (trap)','Genuine breakdown','Bullish candle pattern','Volume indicator'],a:0,e:'Spring = false break below range, traps shorts.'},
-{q:'Elliott Wave 3 is:',o:['Always the shortest','Never the shortest (usually longest)','Always exactly 100% of wave 1','Optional'],a:1,e:'Rule: Wave 3 is never the shortest of 1,3,5.'},
-{q:'OTE zone is approximately:',o:['0-23%','50-61%','62-79% retracement','100%'],a:2,e:'Optimal Trade Entry at deep retracement (golden pocket area).'}
-]},
-/* ===== MODULE 16-17: OPTIONS & ALGO ===== */
-{id:'m16',g:'Options & Algo (new)',t:'Options Trading & Volatility',b:'Calls, puts, Greeks, IV, strategies from basic to spreads.',
-topics:[
-{h:'Call & Put Options',d:'<b>Call</b>: right to BUY at strike. <b>Put</b>: right to SELL at strike. Buyer pays premium; seller collects it.',a:'callPut'},
-{h:'Option Premium Components',d:'Premium = Intrinsic Value + Time Value. Intrinsic = how much ITM. Time = remaining expiry + volatility.',a:'premComp'},
-{h:'Implied Volatility (IV)',d:'Market estimate of future movement priced into options. Higher IV = more expensive premium.',a:'iv'},
-{h:'IV Rank & IV Percentile',d:'IV Rank: where is current IV vs past year. High IVR → sell premium. Low IVR → buy premium.',a:'ivRank'},
-{h:'Delta',d:'How much option price changes per $1 move in underlying. Also approximates probability of expiring ITM.',a:'delta'},
-{h:'Theta (Time Decay)',d:'Daily value lost from time passing. Accelerates near expiry. Sellers earn theta; buyers pay it.',a:'theta'},
-{h:'Gamma',d:'Rate of change of delta. Highest ATM near expiry. Gamma risk = rapid delta shifts.',a:'gamma'},
-{h:'Vega',d:'Sensitivity to IV change. Long options = long vega (benefit from IV rise). Short options = short vega.',a:'vega'},
-{h:'Naked Short (Selling Premium)',d:'Selling calls/puts without hedge. Unlimited risk on calls. Premium is max profit. Requires high margin.',a:'nakedShort'},
-{h:'Credit Spread',d:'Sell one option + buy further-out hedge. Capped risk = strike width - premium collected. Defined risk.',a:'creditSpread'},
-{h:'Debit Spread',d:'Buy one option + sell further-out option to reduce cost. Capped profit but cheaper than outright buy.',a:'debitSpread'},
-{h:'Iron Condor',d:'Sell both a call spread and put spread. Profit if price stays in range. Max profit = premium collected.',a:'ironCondor'},
-{h:'Straddle & Strangle',d:'<b>Straddle</b>: buy call+put same strike. <b>Strangle</b>: different strikes. Profit from big move either direction.',a:'straddle'},
-{h:'IV Crush',d:'IV drops sharply after anticipated event (earnings). Options lose value even if direction was right.',a:'ivCrush'}
-],
-quiz:[
-{q:'Theta benefits:',o:['Option buyers','Option sellers (collecting time decay)','Neither','Both equally'],a:1,e:'Sellers collect theta daily; buyers lose it.'},
-{q:'IV Crush happens:',o:['Before earnings','After earnings (IV drops sharply)','During weekends only','When IV is low'],a:1,e:'Anticipated event resolves → IV collapses.'},
-{q:'Iron Condor profits when:',o:['Price moves a lot','Price stays within a range','Only if bullish','Only if bearish'],a:1,e:'Profit from range-bound movement.'},
-{q:'Credit spread max loss:',o:['Unlimited','Strike width minus premium collected','Premium collected','Zero'],a:1,e:'Defined risk: strike difference - credit received.'}
+{q:'ICT Kill Zones are:',o:['Random times of day','Specific session windows with highest institutional activity','Only for crypto','Weekends'],a:1,e:'London/NY opens = when real money moves markets.'},
+{q:'Wyckoff Spring is:',o:['False breakdown below accumulation that TRAPS sellers','A genuine breakdown','A bullish candle pattern','A volume indicator'],a:0,e:'Spring = trap below range → institutions buying the panic.'},
+{q:'Elliott Wave 3 is:',o:['Always the shortest','NEVER the shortest (usually the longest/strongest)','Always exactly equal to wave 1','Optional'],a:1,e:'Rule: Wave 3 cannot be the shortest impulse wave.'},
+{q:'ICT OTE zone is:',o:['0-23% retracement','50-61%','62-79% retracement (golden pocket area)','100% retracement'],a:2,e:'OTE sits in the golden pocket = deep entry with best R:R.'}
 ]},
 
-{id:'m17',g:'Options & Algo (new)',t:'Algorithmic Trading & Backtesting',b:'Strategy automation, backtesting methodology, overfitting, and walk-forward.',
+/* ===== MODULE 16: OPTIONS TRADING ===== */
+{id:'m16',g:'Options & Algo (new)',t:'Options Trading & Volatility',b:'Options add a dimension beyond direction — time and volatility. This module covers the Greeks, IV, and strategies from basic to defined-risk spreads.',
 topics:[
-{h:'What is a Backtest',d:'Running exact rules against historical data. Only valuable if fills, slippage, and costs are realistic.',a:'backtest'},
-{h:'Overfitting (Curve Fitting)',d:'Tuning parameters to match past noise. Looks great in-sample, fails live. Fewer parameters = less overfitting.',a:'overfit'},
-{h:'Walk-Forward Validation',d:'Tune on period A, test frozen params on period B. Repeat rolling forward. Gold standard for robustness.',a:'walkForward'},
-{h:'In-Sample vs Out-of-Sample',d:'IS = data used to develop/tune. OOS = data never seen during development. OOS performance = real indicator.',a:'isOos'},
-{h:'Slippage & Transaction Costs',d:'Real fills are worse than backtest assumes. Add 1-2 ticks slippage + commissions to all simulated trades.',a:'slippage'},
-{h:'Monte Carlo Simulation',d:'Randomize trade order thousands of times to see range of possible equity curves. Shows worst-case drawdown.',a:'monteCarlo'},
-{h:'Sharpe & Sortino Ratios',d:'Sharpe = return/volatility. Sortino = return/downside volatility only. Higher = better risk-adjusted performance.',a:'sharpe'},
-{h:'Strategy Decay & Regime Change',d:'Edges degrade over time as markets evolve. Regular re-validation needed. No strategy works forever.',a:'decay'}
+{h:'What is an Option?',d:'An option gives you the <b>RIGHT (not obligation) to buy or sell</b> at a specific price (strike) by a specific date (expiry). You PAY for this right (premium). If you\'re wrong, you lose the premium. If you\'re right, the profit can be multiples of what you paid. Think of it as "renting" exposure to price movement.',a:'callPut'},
+{h:'Calls and Puts',d:'<b>Call option</b>: right to BUY at strike price. You buy calls when you\'re bullish. <b>Put option</b>: right to SELL at strike price. You buy puts when you\'re bearish. Buyer\'s max loss = premium paid. Seller (writer) collects premium but takes on obligation.',a:'callPut'},
+{h:'Intrinsic Value + Time Value = Premium',d:'Option premium has two parts: <b>Intrinsic</b> = how much it\'s already "in the money" (if at all). <b>Time value</b> = extra value from remaining time + volatility. A call with strike 100 when stock is at 105: intrinsic = $5, time value = whatever extra premium exists. At expiry, time value = 0; only intrinsic remains.',a:'premComp'},
+{h:'Implied Volatility (IV) — The Price of Uncertainty',d:'IV is the market\'s <b>forecast of how much the underlying will move</b> between now and expiry, baked into option prices. Higher IV = more expensive options. IV rises before uncertain events (earnings, elections) and DROPS after (IV crush). IV is not direction — it\'s the MAGNITUDE of expected movement.',a:'iv'},
+{h:'IV Rank & IV Percentile — Is IV High or Low?',d:'<b>IV Rank</b>: where current IV sits relative to its past year range (0-100%). IVR of 80 = IV is near its yearly high. <b>Strategy</b>: High IVR → options are expensive → SELL premium (collect that inflated price). Low IVR → options are cheap → BUY premium (buy cheap insurance/leverage).',a:'ivRank'},
+{h:'Delta — Direction Sensitivity',d:'How much the option price changes per $1 move in the underlying. A 0.50 delta call gains $0.50 for every $1 the stock rises. Delta also <b>approximates probability of expiring ITM</b> (0.30 delta ≈ 30% chance). ATM options ≈ 0.50 delta. OTM = lower delta. ITM = higher delta.',a:'delta'},
+{h:'Theta — Time Decay (The Silent Killer for Buyers)',d:'Every day that passes, an option loses value — this is theta. <b>Theta accelerates near expiry</b> (exponential decay in the last 30 days). Option SELLERS earn theta every day (their position gains value from decay). Buyers LOSE theta daily. This is why buying OTM options with far-away strikes often loses — theta eats you alive.',a:'theta'},
+{h:'Gamma — Delta\'s Accelerator',d:'How fast delta changes per $1 move. Gamma is highest for ATM options near expiry. High gamma = your delta shifts rapidly, which means your position can gain or lose MUCH faster. <b>Gamma risk</b>: near-expiry ATM options have extreme gamma, making P&L unpredictable. Long gamma = you benefit from big moves. Short gamma = big moves hurt you.',a:'gamma'},
+{h:'Vega — Volatility Sensitivity',d:'How much option price changes per 1% change in IV. Long options = <b>positive vega</b> (benefit when IV rises). Short options = negative vega (benefit when IV drops). This is why buying options before earnings (high IV) and holding through = dangerous. Even if direction is right, the IV drop (crush) can kill your profit.',a:'vega'},
+{h:'Selling Premium (Naked) — High Win Rate, Tail Risk',d:'Selling puts or calls collects premium upfront. Profitable if price stays away from strike. <b>Win rate is high (65-80%)</b> but max loss can be HUGE (unlimited on naked calls). It\'s like selling insurance — steady income until the rare disaster. Requires large account and strict risk management.',a:'nakedShort'},
+{h:'Credit Spread — Defined Risk Selling',d:'Sell one option + buy a further-out option as a hedge. <b>Max profit = premium collected</b>. <b>Max loss = width between strikes minus premium</b>. Example: sell 100 put, buy 95 put. Width = $5. If you collected $1.50 premium: max loss = $5 - $1.50 = $3.50. Risk is DEFINED and capped.',a:'creditSpread'},
+{h:'Iron Condor — Profit From Range',d:'Sell both a call spread AND a put spread around current price. You profit if price stays BETWEEN your short strikes until expiry. Max profit = total premium collected from both sides. Works best in high IV (collect more premium) and ranging markets. The trade: "I don\'t think price will move THIS much."',a:'ironCondor'},
+{h:'IV Crush — The Earnings Trap',d:'Before earnings, IV inflates because the event is uncertain. Options become expensive. After earnings, uncertainty resolves → IV drops 30-50% overnight. This is <b>IV crush</b>. Buying options before earnings is a LOSING game unless the move exceeds what IV already priced in. Most of the time, the move is SMALLER than IV priced — sellers win.',a:'ivCrush'}
 ],
 quiz:[
-{q:'Overfitting means:',o:['Too few parameters','Parameters tuned to noise, not signal','Using too much data','Testing too quickly'],a:1,e:'Fit to noise = fails on new data.'},
-{q:'Walk-forward testing:',o:['Uses same data for tuning and testing','Tunes on one period, tests unchanged on the next','Only tests recent data','Requires machine learning'],a:1,e:'Frozen params tested on unseen periods.'},
-{q:'Monte Carlo simulation shows:',o:['Exact future returns','Range of possible outcomes from randomized trade order','Only one equity curve','Entry signals'],a:1,e:'Many randomized equity curves reveal worst-case scenarios.'},
-{q:'Sharpe Ratio measures:',o:['Win rate','Risk-adjusted return (return / volatility)','Maximum drawdown','Number of trades'],a:1,e:'Higher Sharpe = better return per unit of risk.'}
+{q:'Theta benefits:',o:['Option buyers (they gain value over time)','Option SELLERS (they collect time decay daily)','Neither — theta is neutral','Both equally'],a:1,e:'Sellers earn theta; buyers hemorrhage it.'},
+{q:'IV Crush happens:',o:['Before an event (IV builds)','AFTER an event resolves (IV collapses rapidly)','During weekends only','When IV is already low'],a:1,e:'Uncertainty resolved → IV drops → option values crater.'},
+{q:'Iron Condor profits when:',o:['Price makes a big move','Price STAYS within a defined range until expiry','Only in a bull market','Only in a bear market'],a:1,e:'Range-bound = both spreads expire worthless = keep all premium.'},
+{q:'Credit spread max loss is:',o:['Unlimited','Strike width minus premium collected (DEFINED)','Only the premium paid','Zero'],a:1,e:'Hedge caps the loss at strike difference minus credit received.'}
+]},
+
+{id:'m17',g:'Options & Algo (new)',t:'Algorithmic Trading & Backtesting',b:'Converting a trading idea into rules a computer can test. The critical skill: knowing when your backtest is lying to you.',
+topics:[
+{h:'What is Algorithmic Trading?',d:'Converting your trading rules into <b>code that executes automatically</b>. Benefits: removes emotion, tests ideas on decades of data, executes faster than humans. Risk: if the rules are wrong or overfit, you automate LOSSES. The algo is only as good as the human who designed and validated it.',a:'backtest'},
+{h:'What a Backtest Actually Shows',d:'A backtest runs your exact entry/exit rules against historical price data. It shows: <b>what WOULD have happened</b> if you\'d traded those rules in the past. It does NOT guarantee future performance. It\'s a necessary but not sufficient test — think of it as: "If this edge existed, the backtest shows it. If the backtest fails, the edge doesn\'t exist."',a:'backtest'},
+{h:'Overfitting — The #1 Backtest Lie',d:'If you have 10 adjustable parameters and 50 historical trades, you can ALWAYS find parameter combinations that look profitable in hindsight. This is <b>curve fitting</b> — you\'ve matched the noise, not the signal. The strategy looks amazing on past data but fails immediately live because it memorized the past rather than finding a generalizable pattern.',a:'overfit'},
+{h:'How to Detect Overfitting',d:'Red flags: <b>1.</b> Strategy has many parameters relative to trade count. <b>2.</b> Small changes in parameters cause dramatically different results. <b>3.</b> Backtest equity curve is "too perfect" (suspiciously smooth). <b>4.</b> Strategy only works on one specific instrument/timeframe. <b>5.</b> In-sample performance is spectacularly better than out-of-sample.',a:null},
+{h:'Walk-Forward Validation — The Gold Standard',d:'<b>Step 1:</b> Optimize parameters on Period A (in-sample). <b>Step 2:</b> FREEZE those parameters. <b>Step 3:</b> Test on Period B (out-of-sample, never seen during optimization). <b>Step 4:</b> Roll forward — repeat with new in-sample/out-of-sample windows. If out-of-sample performance is consistently positive across many windows, the edge is likely REAL.',a:'walkForward'},
+{h:'In-Sample vs Out-of-Sample',d:'<b>In-sample (IS)</b> = data used to develop/tune the strategy. <b>Out-of-sample (OOS)</b> = data NEVER seen during development. OOS performance is the TRUE test. If IS shows 80% returns but OOS shows 5%, you\'ve overfit. A robust strategy shows SIMILAR (though slightly lower) performance on OOS vs IS.',a:'isOos'},
+{h:'Slippage & Transaction Costs — Reality Check',d:'Backtests assume you get filled at the EXACT price you wanted. Reality: you get slipped (worse fill). Add <b>1-2 ticks of slippage per trade</b> + commissions to your backtest. A strategy that shows 5% annual return before costs might show -2% after realistic friction. If the edge disappears with realistic costs, it\'s not a real edge.',a:'slippage'},
+{h:'Monte Carlo Simulation — Stress Testing',d:'Take your backtest results and <b>randomize the order of trades</b> thousands of times. This shows you the RANGE of possible equity curves — not just the one historical path. It reveals: worst-case drawdown (Murphy\'s Law scenario), probability of ruin, and confidence intervals for returns. If 20% of randomized paths blow up your account, the strategy is too fragile.',a:'monteCarlo'},
+{h:'Sharpe & Sortino Ratios — Quality of Returns',d:'<b>Sharpe Ratio</b> = (Annual Return - Risk-Free Rate) / Annual Volatility. Sharpe > 1.0 = decent. > 2.0 = excellent. <b>Sortino Ratio</b> = same but only uses DOWNSIDE volatility (more relevant since upside volatility is good). These tell you if returns are EARNED through skill or just through taking massive risk.',a:'sharpe'},
+{h:'Strategy Decay — Nothing Lasts Forever',d:'Markets evolve. Participants change. Regulations shift. An edge that worked 2015-2020 may not work 2024-2029. <b>Every strategy decays over time.</b> You need: continuous monitoring, periodic re-validation, and the willingness to retire strategies that stop working. The best algo traders are always developing the NEXT strategy while running the current one.',a:'decay'},
+{h:'The Algo Trader\'s Checklist',d:'Before going live: <b>1.</b> Strategy has clear, logical rationale (not just data-mined). <b>2.</b> Passes walk-forward on multiple windows. <b>3.</b> Survives Monte Carlo (no ruin in 95% of paths). <b>4.</b> Works on multiple instruments/timeframes (generalizability). <b>5.</b> Still profitable after 2x realistic slippage. <b>6.</b> Sharpe > 1.0 out-of-sample. <b>7.</b> You understand WHY it works, not just THAT it works.',a:null}
+],
+quiz:[
+{q:'Overfitting means:',o:['Using too little data','Parameters tuned to NOISE rather than signal (won\'t generalize)','Having zero parameters','Running too many backtests'],a:1,e:'Memorizing past noise ≠ finding a real edge.'},
+{q:'Walk-forward validation:',o:['Uses same data for tuning and testing','Tunes on one period, tests UNCHANGED parameters on a separate later period','Only tests the most recent week','Requires deep learning'],a:1,e:'Frozen params on unseen data = the real test of robustness.'},
+{q:'Monte Carlo simulation shows:',o:['Exact future returns','RANGE of possible outcomes from randomized trade order (worst-case scenarios)','A single perfect equity curve','Which trades to take'],a:1,e:'Many randomized paths reveal the distribution of possible outcomes.'},
+{q:'Sharpe Ratio > 2.0 means:',o:['The strategy will never lose','Returns are excellent relative to risk taken','It\'s overfit','It needs more parameters'],a:1,e:'Sharpe > 2.0 = high-quality risk-adjusted returns.'}
 ]}
 ]; /* END MODULES ARRAY */
 
-const GRP=['Foundations','Price Action','Smart Money & Structure','Indicators & Volume','Risk & Psychology','Options & Algo (new)'];
+const GRP=['Foundations','Candlestick Bible','Smart Money & Structure','Indicators & Volume','Risk & Psychology','Options & Algo (new)'];
 /* ===================== ANIMATION ENGINE ===================== */
 /* Each animation function receives a container div and draws into it using mc() helper */
 const A={
@@ -999,6 +1036,249 @@ if(t>60){x.fillStyle='#FF6B81';x.font='10px IBM Plex Mono,monospace';x.fillText(
 draw();setInterval(draw,40);},
 
 accumDist(el){this.po3(el);},expContract(el){this.range(el);},tfAlign(el){this.mtfTrend(el);},
+
+/* --- MODULE 7: SUPPLY/DEMAND ZONES --- */
+demandZone(el){const{x,W,H}=mc(el,520,180);let f=0;function draw(){x.clearRect(0,0,W,H);
+x.fillStyle='rgba(52,214,196,.12)';x.fillRect(0,130,W,35);x.fillStyle='#34D6C4';x.font='10px IBM Plex Mono,monospace';x.fillText('DEMAND ZONE (base of rally)',8,125);
+x.strokeStyle='#E7EAF0';x.lineWidth=2;x.beginPath();const t=Math.min(f,120);
+for(let i=0;i<=t;i++){let y;if(i<40)y=40+i*2.2+Math.sin(i/5)*3;else if(i<60)y=128+Math.sin(i/4)*3;else if(i<80)y=133-(i-60)*4;else y=53-(i-80)*0.3+Math.sin(i/6)*4;x.lineTo(i*4.2+10,y);}x.stroke();
+if(f>60){x.fillStyle='#F2B84B';x.fillText('Price enters zone → buyers activate → rally',150,H-6);}f=(f+1)%140;}draw();setInterval(draw,40);},
+
+supplyZone(el){const{x,W,H}=mc(el,520,180);let f=0;function draw(){x.clearRect(0,0,W,H);
+x.fillStyle='rgba(255,107,129,.12)';x.fillRect(0,20,W,35);x.fillStyle='#FF6B81';x.font='10px IBM Plex Mono,monospace';x.fillText('SUPPLY ZONE (origin of decline)',8,62);
+x.strokeStyle='#E7EAF0';x.lineWidth=2;x.beginPath();const t=Math.min(f,120);
+for(let i=0;i<=t;i++){let y;if(i<40)y=160-i*2.2+Math.sin(i/5)*3;else if(i<60)y=48+Math.sin(i/4)*3;else if(i<80)y=44+(i-60)*4;else y=124+(i-80)*0.3+Math.sin(i/6)*4;x.lineTo(i*4.2+10,y);}x.stroke();
+if(f>60){x.fillStyle='#F2B84B';x.fillText('Price enters zone → sellers activate → decline',150,H-6);}f=(f+1)%140;}draw();setInterval(draw,40);},
+
+rbr(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
+x.strokeStyle='#34D6C4';x.lineWidth=2.5;x.beginPath();x.moveTo(20,140);x.lineTo(120,60);x.lineTo(180,65);x.lineTo(220,58);x.lineTo(320,20);x.stroke();
+x.fillStyle='rgba(52,214,196,.15)';x.fillRect(115,55,110,15);x.fillStyle='#F2B84B';x.fillText('Rally',50,100);x.fillText('Base (demand)',140,80);x.fillText('Rally',280,40);
+x.fillStyle='#8C97AC';x.fillText('RBR: continuation demand — buyers reload mid-trend',80,H-6);},
+
+dbd(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
+x.strokeStyle='#FF6B81';x.lineWidth=2.5;x.beginPath();x.moveTo(20,20);x.lineTo(120,100);x.lineTo(180,95);x.lineTo(220,102);x.lineTo(320,150);x.stroke();
+x.fillStyle='rgba(255,107,129,.15)';x.fillRect(115,90,110,15);x.fillStyle='#F2B84B';x.fillText('Drop',50,60);x.fillText('Base (supply)',140,115);x.fillText('Drop',280,135);
+x.fillStyle='#8C97AC';x.fillText('DBD: continuation supply — sellers reload',100,H-6);},
+
+rbd(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
+x.strokeStyle='#34D6C4';x.lineWidth=2;x.beginPath();x.moveTo(20,140);x.lineTo(150,40);x.stroke();
+x.strokeStyle='#8C97AC';x.lineWidth=1.5;x.beginPath();x.moveTo(150,40);x.lineTo(200,38);x.lineTo(220,42);x.stroke();
+x.strokeStyle='#FF6B81';x.lineWidth=2.5;x.beginPath();x.moveTo(220,42);x.lineTo(400,150);x.stroke();
+x.fillStyle='rgba(255,107,129,.15)';x.fillRect(145,33,80,14);x.fillStyle='#F2B84B';x.fillText('Rally',60,90);x.fillText('Base (supply)',155,55);x.fillText('Drop',320,110);},
+
+dbr(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
+x.strokeStyle='#FF6B81';x.lineWidth=2;x.beginPath();x.moveTo(20,20);x.lineTo(150,120);x.stroke();
+x.strokeStyle='#8C97AC';x.lineWidth=1.5;x.beginPath();x.moveTo(150,120);x.lineTo(200,122);x.lineTo(220,118);x.stroke();
+x.strokeStyle='#34D6C4';x.lineWidth=2.5;x.beginPath();x.moveTo(220,118);x.lineTo(400,20);x.stroke();
+x.fillStyle='rgba(52,214,196,.15)';x.fillRect(145,115,80,14);x.fillStyle='#F2B84B';x.fillText('Drop',60,70);x.fillText('Base (demand)',155,140);x.fillText('Rally',320,50);},
+
+freshness(el){const{x,W,H}=mc(el,520,140);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
+x.fillStyle='rgba(52,214,196,.15)';x.fillRect(60,70,100,20);x.fillStyle='#34D6C4';x.fillText('Zone formed here',65,66);
+x.strokeStyle='#E7EAF0';x.lineWidth=2;x.beginPath();x.moveTo(20,100);x.lineTo(60,80);x.lineTo(160,80);x.lineTo(200,30);x.lineTo(350,35);x.stroke();
+x.strokeStyle='#F2B84B';x.setLineDash([4,3]);x.beginPath();x.moveTo(350,35);x.lineTo(400,50);x.lineTo(430,75);x.stroke();x.setLineDash([]);
+x.fillStyle='#F2B84B';x.fillText('First retest (fresh) = highest probability',200,H-6);x.fillText('→',350,38);},
+
+zoneInvalid(el){const{x,W,H}=mc(el,520,140);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
+x.fillStyle='rgba(255,107,129,.15)';x.fillRect(100,55,200,20);x.fillStyle='#FF6B81';x.fillText('Zone',170,52);
+x.strokeStyle='#E7EAF0';x.lineWidth=2;x.beginPath();x.moveTo(30,40);x.lineTo(150,60);x.lineTo(200,63);x.stroke();
+x.strokeStyle='#FF6B81';x.lineWidth=2.5;x.beginPath();x.moveTo(200,63);x.lineTo(280,80);x.lineTo(380,110);x.lineTo(470,130);x.stroke();
+x.fillStyle='#FF6B81';x.fillText('Price closes CLEANLY through → ZONE DEAD',100,H-6);},
+
+nestedZone(el){const{x,W,H}=mc(el,520,140);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
+x.fillStyle='rgba(52,214,196,.08)';x.fillRect(50,40,400,50);x.strokeStyle='#8C97AC';x.setLineDash([3,3]);x.strokeRect(50,40,400,50);x.setLineDash([]);
+x.fillStyle='rgba(52,214,196,.25)';x.fillRect(200,50,80,30);x.strokeStyle='#34D6C4';x.strokeRect(200,50,80,30);
+x.fillStyle='#8C97AC';x.fillText('Daily zone (wide)',60,36);x.fillStyle='#34D6C4';x.fillText('Refined OB on 15m (tight entry)',200,95);
+x.fillStyle='#F2B84B';x.fillText('Zoom LTF to refine = tighter entry = better R:R',100,H-6);},
+/* --- MODULE 8: CHART PATTERNS --- */
+ascTriangle(el){const{x,W,H}=mc(el,520,180);let f=0;function draw(){x.clearRect(0,0,W,H);
+x.strokeStyle='#FF6B81';x.setLineDash([4,3]);x.lineWidth=1.5;x.beginPath();x.moveTo(30,50);x.lineTo(450,50);x.stroke();x.setLineDash([]);
+x.strokeStyle='#34D6C4';x.setLineDash([4,3]);x.beginPath();x.moveTo(30,160);x.lineTo(400,55);x.stroke();x.setLineDash([]);
+x.strokeStyle='#E7EAF0';x.lineWidth=2;x.beginPath();const pts=[[30,160],[80,52],[130,135],[190,51],[240,110],[300,50],[350,85],[400,49]];
+const n=Math.min(pts.length,2+Math.floor(f/15));pts.slice(0,n).forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
+if(n>=pts.length){x.strokeStyle='#34D6C4';x.lineWidth=3;x.beginPath();x.moveTo(400,49);x.lineTo(460,25);x.lineTo(500,15);x.stroke();x.fillStyle='#F2B84B';x.font='11px IBM Plex Mono,monospace';x.fillText('BREAKOUT',430,40);}
+f=(f+1)%140;}draw();setInterval(draw,60);},
+
+descTriangle(el){const{x,W,H}=mc(el,520,180);x.clearRect(0,0,W,H);
+x.strokeStyle='#34D6C4';x.setLineDash([4,3]);x.lineWidth=1.5;x.beginPath();x.moveTo(30,140);x.lineTo(450,140);x.stroke();x.setLineDash([]);
+x.strokeStyle='#FF6B81';x.setLineDash([4,3]);x.beginPath();x.moveTo(30,30);x.lineTo(400,135);x.stroke();x.setLineDash([]);
+x.strokeStyle='#E7EAF0';x.lineWidth=2;x.beginPath();
+[[30,30],[80,138],[130,55],[190,139],[240,80],[300,140],[350,105],[400,141]].forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
+x.strokeStyle='#FF6B81';x.lineWidth=3;x.beginPath();x.moveTo(400,141);x.lineTo(470,165);x.stroke();
+x.fillStyle='#FF6B81';x.font='11px IBM Plex Mono,monospace';x.fillText('BREAKDOWN',430,H-10);},
+
+symTriangle(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);
+x.strokeStyle='#F2B84B';x.setLineDash([4,3]);x.lineWidth=1.5;x.beginPath();x.moveTo(20,20);x.lineTo(380,75);x.stroke();x.beginPath();x.moveTo(20,140);x.lineTo(380,85);x.stroke();x.setLineDash([]);
+x.strokeStyle='#E7EAF0';x.lineWidth=2;x.beginPath();[[20,140],[70,25],[130,130],[180,35],[230,110],[280,50],[320,90],[360,60]].forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
+x.fillStyle='#8C97AC';x.font='10px IBM Plex Mono,monospace';x.fillText('Converging — direction unknown until breakout',120,H-6);},
+
+flags(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
+x.strokeStyle='#34D6C4';x.lineWidth=3;x.beginPath();x.moveTo(30,140);x.lineTo(150,30);x.stroke();
+x.strokeStyle='#8C97AC';x.lineWidth=1.5;x.beginPath();x.moveTo(150,30);x.lineTo(200,50);x.lineTo(240,40);x.lineTo(280,55);x.stroke();
+x.strokeStyle='#34D6C4';x.lineWidth=3;x.beginPath();x.moveTo(280,55);x.lineTo(420,10);x.stroke();
+x.fillStyle='#F2B84B';x.fillText('Pole',70,90);x.fillText('Flag',200,70);x.fillText('Continuation',350,30);},
+
+wedges(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
+x.fillStyle='#8C97AC';x.fillText('Falling Wedge (bullish)',30,14);x.fillText('Rising Wedge (bearish)',300,14);
+x.strokeStyle='#34D6C4';x.setLineDash([3,3]);x.beginPath();x.moveTo(30,30);x.lineTo(200,90);x.stroke();x.beginPath();x.moveTo(30,130);x.lineTo(200,100);x.stroke();x.setLineDash([]);
+x.strokeStyle='#34D6C4';x.lineWidth=2;x.beginPath();x.moveTo(200,95);x.lineTo(240,60);x.stroke();
+x.strokeStyle='#FF6B81';x.setLineDash([3,3]);x.beginPath();x.moveTo(280,130);x.lineTo(450,70);x.stroke();x.beginPath();x.moveTo(280,80);x.lineTo(450,60);x.stroke();x.setLineDash([]);
+x.strokeStyle='#FF6B81';x.lineWidth=2;x.beginPath();x.moveTo(450,65);x.lineTo(490,100);x.stroke();},
+
+headShoulders(el){const{x,W,H}=mc(el,520,180);const pts=[[20,140],[80,80],[130,120],[200,35],[270,120],[330,80],[390,120],[440,140],[500,160]];let n=1;
+function draw(){x.clearRect(0,0,W,H);x.strokeStyle='#E7EAF0';x.lineWidth=2.5;x.beginPath();pts.slice(0,n+1).forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
+if(n>=6){x.strokeStyle='#F2B84B';x.setLineDash([4,3]);x.lineWidth=1.5;x.beginPath();x.moveTo(130,120);x.lineTo(450,120);x.stroke();x.setLineDash([]);x.fillStyle='#F2B84B';x.font='10px IBM Plex Mono,monospace';x.fillText('Neckline',440,118);}
+const labels=['','LS','','Head','','RS','','Break',''];x.font='10px IBM Plex Mono,monospace';
+pts.slice(1,n+1).forEach((p,i)=>{if(labels[i+1]){x.fillStyle='#8C97AC';x.fillText(labels[i+1],p[0]-10,p[1]-10);}});}
+draw();setInterval(()=>{n=n>=pts.length-1?1:n+1;draw();},900);},
+
+invHS(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);
+const pts=[[20,40],[80,100],[130,60],[200,140],[270,60],[330,100],[390,60],[450,30]];
+x.strokeStyle='#E7EAF0';x.lineWidth=2.5;x.beginPath();pts.forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
+x.strokeStyle='#F2B84B';x.setLineDash([4,3]);x.beginPath();x.moveTo(130,60);x.lineTo(400,60);x.stroke();x.setLineDash([]);
+x.fillStyle='#34D6C4';x.font='10px IBM Plex Mono,monospace';x.fillText('Inverse H&S — neckline break = bullish',140,H-6);},
+
+doubleTopBot(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
+x.fillStyle='#8C97AC';x.fillText('Double Top (bearish)',60,14);x.fillText('Double Bottom (bullish)',310,14);
+x.strokeStyle='#FF6B81';x.lineWidth=2;x.beginPath();[[20,120],[80,30],[140,80],[200,30],[260,120]].forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
+x.strokeStyle='#34D6C4';x.lineWidth=2;x.beginPath();[[280,40],[340,130],[400,80],[460,130],[510,40]].forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();},
+
+cupHandle(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
+x.strokeStyle='#34D6C4';x.lineWidth=2.5;x.beginPath();
+for(let i=0;i<=60;i++){const angle=Math.PI+i/60*Math.PI;x.lineTo(40+i*5,70+Math.sin(angle)*50);}
+x.lineTo(340,70);x.lineTo(360,80);x.lineTo(380,75);x.lineTo(400,50);x.lineTo(460,20);x.stroke();
+x.fillStyle='#F2B84B';x.fillText('Cup',150,140);x.fillText('Handle',350,95);x.fillText('Breakout',420,15);},
+
+rectangle(el){this.range(el);},
+
+/* --- MODULE 9-10: INDICATORS --- */
+sma(el){const{x,W,H}=mc(el,520,160);let prices=[100];for(let i=0;i<70;i++)prices.push(prices[prices.length-1]+(Math.random()-.48)*2);
+const max=Math.max(...prices)+2,min=Math.min(...prices)-2,s=130/((max-min)||1);x.font='9px IBM Plex Mono,monospace';
+x.strokeStyle='rgba(231,234,240,.5)';x.lineWidth=1;x.beginPath();prices.forEach((p,i)=>x.lineTo(i*7.4,10+(max-p)*s));x.stroke();
+let smaArr=[];for(let i=0;i<prices.length;i++){if(i<19){smaArr.push(null);continue;}let sum=0;for(let k=0;k<20;k++)sum+=prices[i-k];smaArr.push(sum/20);}
+x.strokeStyle='#F2B84B';x.lineWidth=2;x.beginPath();smaArr.forEach((v,i)=>{if(v!==null)x.lineTo(i*7.4,10+(max-v)*s);});x.stroke();
+x.fillStyle='#E7EAF0';x.fillText('Price',8,14);x.fillStyle='#F2B84B';x.fillText('20 SMA (equal weight, smooth, slow)',80,14);},
+
+ema(el){const{x,W,H}=mc(el,520,160);let prices=[100];for(let i=0;i<70;i++)prices.push(prices[prices.length-1]+(Math.random()-.48)*2);
+const max=Math.max(...prices)+2,min=Math.min(...prices)-2,s=130/((max-min)||1);
+x.strokeStyle='rgba(231,234,240,.5)';x.lineWidth=1;x.beginPath();prices.forEach((p,i)=>x.lineTo(i*7.4,10+(max-p)*s));x.stroke();
+let e=prices[0];x.strokeStyle='#9C8CFF';x.lineWidth=2;x.beginPath();prices.forEach((p,i)=>{e+=(p-e)*(2/21);if(i>=20)x.lineTo(i*7.4,10+(max-e)*s);});x.stroke();
+x.fillStyle='#9C8CFF';x.font='9px IBM Plex Mono,monospace';x.fillText('20 EMA (more weight on recent = faster)',80,14);},
+
+maCross(el){const{x,W,H}=mc(el,520,160);let prices=[100];for(let i=0;i<100;i++)prices.push(prices[prices.length-1]+(Math.random()-.45)*1.8);
+const max=Math.max(...prices)+2,min=Math.min(...prices)-2,s=130/((max-min)||1);
+function calcEma(arr,period){let e=arr[0],out=[];arr.forEach((p,i)=>{e+=(p-e)*(2/(period+1));out.push(i>=period?e:null);});return out;}
+const ema50=calcEma(prices,50),ema200=calcEma(prices,200);
+x.strokeStyle='rgba(231,234,240,.3)';x.lineWidth=1;x.beginPath();prices.forEach((p,i)=>x.lineTo(i*5.2,10+(max-p)*s));x.stroke();
+x.strokeStyle='#F2B84B';x.lineWidth=1.5;x.beginPath();ema50.forEach((v,i)=>{if(v)x.lineTo(i*5.2,10+(max-v)*s);});x.stroke();
+x.strokeStyle='#9C8CFF';x.lineWidth=1.5;x.beginPath();ema200.forEach((v,i)=>{if(v)x.lineTo(i*5.2,10+(max-v)*s);});x.stroke();
+x.fillStyle='#F2B84B';x.font='9px IBM Plex Mono,monospace';x.fillText('50 EMA',W-60,20);x.fillStyle='#9C8CFF';x.fillText('200 EMA',W-60,34);},
+
+emaDynamic(el){this.ema(el);},vwap(el){this.sma(el);},multiMA(el){this.maCross(el);},
+
+rsi(el){const{x,W,H}=mc(el,520,220);let prices=[100],rsiV=[50];
+function step(){prices.push(prices[prices.length-1]+(Math.random()-.5)*2.2);if(prices.length>70)prices.shift();let g=0,l=0;for(let i=1;i<prices.length;i++){const d=prices[i]-prices[i-1];if(d>0)g+=d;else l-=d;}const rs=g/(l||1);rsiV.push(100-(100/(1+rs)));if(rsiV.length>70)rsiV.shift();}
+for(let i=0;i<40;i++)step();
+function draw(){x.clearRect(0,0,520,220);const max=Math.max(...prices),min=Math.min(...prices);
+x.strokeStyle='#34D6C4';x.lineWidth=1.5;x.beginPath();prices.forEach((p,i)=>{x.lineTo(i*7.4,70-(p-min)/((max-min)||1)*55);});x.stroke();
+x.strokeStyle='#232C3D';x.beginPath();x.moveTo(0,110);x.lineTo(520,110);x.stroke();
+[70,30].forEach(lv=>{const y=200-lv*1.2;x.strokeStyle=lv===70?'#FF6B81':'#34D6C4';x.setLineDash([3,3]);x.beginPath();x.moveTo(0,y);x.lineTo(520,y);x.stroke();x.setLineDash([]);});
+x.strokeStyle='#F2B84B';x.lineWidth=2;x.beginPath();rsiV.forEach((r,i)=>x.lineTo(i*7.4,200-r*1.2));x.stroke();
+x.fillStyle='#34D6C4';x.font='9px IBM Plex Mono,monospace';x.fillText('Price',8,12);x.fillStyle='#F2B84B';x.fillText('RSI',8,122);}
+draw();setInterval(()=>{step();draw();},140);},
+
+rsiDiv(el){this.rsi(el);},stochRsi(el){this.rsi(el);},macd(el){this.rsi(el);},macdDiv(el){this.rsi(el);},
+
+bollinger(el){const{x,W,H}=mc(el,520,180);let prices=[100];for(let i=0;i<70;i++){const vol=.5+Math.abs(Math.sin(i/20))*3;prices.push(prices[prices.length-1]+(Math.random()-.5)*vol);}
+const max=Math.max(...prices)+4,min=Math.min(...prices)-4,s=150/((max-min)||1);
+x.strokeStyle='#E7EAF0';x.lineWidth=1.5;x.beginPath();prices.forEach((p,i)=>x.lineTo(i*7.4,10+(max-p)*s));x.stroke();
+let upper=[],lower=[];for(let i=0;i<prices.length;i++){if(i<19){upper.push(null);lower.push(null);continue;}let sum=0;for(let k=0;k<20;k++)sum+=prices[i-k];const avg=sum/20;let v=0;for(let k=0;k<20;k++)v+=Math.pow(prices[i-k]-avg,2);const std=Math.sqrt(v/20);upper.push(avg+2*std);lower.push(avg-2*std);}
+x.fillStyle='rgba(242,184,75,.06)';x.beginPath();let started=false;upper.forEach((v,i)=>{if(!v)return;if(!started){x.moveTo(i*7.4,10+(max-v)*s);started=true;}else x.lineTo(i*7.4,10+(max-v)*s);});for(let i=lower.length-1;i>=0;i--){if(lower[i])x.lineTo(i*7.4,10+(max-lower[i])*s);}x.closePath();x.fill();
+x.strokeStyle='#F2B84B';x.lineWidth=1;x.beginPath();upper.forEach((v,i)=>{if(v)x.lineTo(i*7.4,10+(max-v)*s);});x.stroke();
+x.beginPath();lower.forEach((v,i)=>{if(v)x.lineTo(i*7.4,10+(max-v)*s);});x.stroke();
+x.fillStyle='#F2B84B';x.font='9px IBM Plex Mono,monospace';x.fillText('Bollinger Bands (20, 2σ) — squeeze = breakout coming',60,H-4);},
+
+atr(el){this.bollinger(el);},cci(el){this.rsi(el);},
+
+/* --- MODULE 11-12: VOLUME & FIB --- */
+volConfirm(el){const{x,W,H}=mc(el,520,180);let prices=[100],vols=[];
+for(let i=0;i<50;i++){const d=(Math.random()-.48)*2;prices.push(prices[prices.length-1]+d);vols.push(10+Math.random()*25+Math.abs(d)*8);}
+const max=Math.max(...prices)+2,min=Math.min(...prices)-2,s=90/((max-min)||1),maxV=Math.max(...vols);
+vols.forEach((v,i)=>{const px=i*10.4+10,bH=(v/maxV)*50;const bull=i>0&&prices[i]>=prices[i-1];x.fillStyle=bull?'rgba(52,214,196,.4)':'rgba(255,107,129,.4)';x.fillRect(px,H-bH,8,bH);});
+x.strokeStyle='#E7EAF0';x.lineWidth=2;x.beginPath();prices.forEach((p,i)=>x.lineTo(i*10.4+14,10+(max-p)*s));x.stroke();
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Price + Volume bars',8,12);},
+
+climacticVol(el){this.volConfirm(el);},volDiv(el){this.volConfirm(el);},
+
+volProfile(el){const{x,W,H}=mc(el,520,220);const n=35,bars=[];let poc=0,maxV=0;
+for(let i=0;i<n;i++){const dist=Math.abs(i-n/2);const v=Math.max(2,35-dist*1.5+(Math.random()*6-3));bars.push(v);if(v>maxV){maxV=v;poc=i;}}
+const total=bars.reduce((a,b)=>a+b,0);let covered=bars[poc],lo=poc,hi=poc;
+while(covered/total<.7&&(lo>0||hi<n-1)){const lv=lo>0?bars[lo-1]:-1;const rv=hi<n-1?bars[hi+1]:-1;if(rv>=lv){hi++;covered+=bars[hi];}else{lo--;covered+=bars[lo];}}
+const barH=200/n;bars.forEach((v,i)=>{const y=10+i*barH;const inVA=i>=lo&&i<=hi;x.fillStyle=i===poc?'#F2B84B':(inVA?'rgba(52,214,196,.45)':'rgba(140,151,172,.3)');x.fillRect(70,y,v*3.5,barH-1.5);});
+x.fillStyle='#8C97AC';x.font='10px IBM Plex Mono,monospace';x.fillText('VAH',10,10+lo*barH+8);x.fillText('VAL',10,10+hi*barH+8);x.fillStyle='#F2B84B';x.fillText('POC',10,10+poc*barH+8);
+x.strokeStyle='#232C3D';x.beginPath();x.moveTo(70,0);x.lineTo(70,210);x.stroke();},
+
+poc(el){this.volProfile(el);},valueArea(el){this.volProfile(el);},hvn(el){this.volProfile(el);},lvn(el){this.volProfile(el);},
+
+fibRetrace(el){const{x,W,H}=mc(el,520,200);const levels=[0,.236,.382,.5,.618,.786,1],high={y:30},low={y:170};
+levels.forEach(l=>{const y=low.y+(high.y-low.y)*l;x.strokeStyle=l===0||l===1?'#8C97AC':'#F2B84B';x.setLineDash(l===0||l===1?[]:[4,3]);x.lineWidth=1;x.beginPath();x.moveTo(0,y);x.lineTo(520,y);x.stroke();x.setLineDash([]);x.fillStyle='#8C97AC';x.font='10px IBM Plex Mono,monospace';x.fillText((l*100).toFixed(1)+'%',4,y-3);});
+x.fillStyle='rgba(242,184,75,.1)';const y618=low.y+(high.y-low.y)*.618,y786=low.y+(high.y-low.y)*.786;x.fillRect(0,y618,520,y786-y618);
+x.fillStyle='#F2B84B';x.font='10px IBM Plex Mono,monospace';x.fillText('← Golden Pocket (61.8-78.6%)',200,(y618+y786)/2+4);
+x.fillStyle='#34D6C4';x.beginPath();x.arc(460,high.y,5,0,7);x.fill();x.fillStyle='#FF6B81';x.beginPath();x.arc(60,low.y,5,0,7);x.fill();},
+
+goldenPocket(el){this.fibRetrace(el);},fibExt(el){this.fibRetrace(el);},fibOB(el){this.fibRetrace(el);},fibTime(el){this.fibRetrace(el);},drawFib(el){this.fibRetrace(el);},
+
+/* --- MODULE 13-14: RISK & PSYCHOLOGY --- */
+riskPct(el){const{x,W,H}=mc(el,520,140);x.clearRect(0,0,W,H);x.font='11px IBM Plex Mono,monospace';
+const scenarios=[{risk:1,losses:10,dd:9.6,label:'1% risk'},{risk:2,losses:10,dd:18.3,label:'2% risk'},{risk:5,losses:10,dd:40.1,label:'5% risk'},{risk:10,losses:10,dd:65.1,label:'10% risk'}];
+scenarios.forEach((s,i)=>{const bx=20+i*125,bw=100,bh=s.dd*1.5;x.fillStyle=s.dd>30?'rgba(255,107,129,.4)':'rgba(52,214,196,.4)';x.fillRect(bx,H-bh-20,bw,bh);
+x.fillStyle='#E7EAF0';x.fillText(s.label,bx+20,H-bh-26);x.fillStyle=s.dd>30?'#FF6B81':'#34D6C4';x.fillText('-'+s.dd.toFixed(0)+'%',bx+30,H-10);});
+x.fillStyle='#8C97AC';x.fillText('Drawdown after 10 consecutive losses:',100,12);},
+
+stopPlace(el){this.riskPct(el);},tpTargets(el){this.riskPct(el);},
+
+rrRatio(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);
+const midY=80;x.strokeStyle='#8C97AC';x.setLineDash([3,3]);x.beginPath();x.moveTo(0,midY);x.lineTo(520,midY);x.stroke();x.setLineDash([]);
+x.fillStyle='rgba(255,107,129,.3)';x.fillRect(40,midY,440,30);x.fillStyle='rgba(52,214,196,.3)';x.fillRect(40,midY-60,440,60);
+x.fillStyle='#E7EAF0';x.font='11px IBM Plex Mono,monospace';x.fillText('Entry',4,midY+4);x.fillText('Stop (-1R)',4,midY+26);x.fillText('Target (+2R)',4,midY-50);
+x.fillStyle='#F2B84B';x.font='12px IBM Plex Mono,monospace';x.fillText('1:2 R:R → only need 33% win rate to profit',120,H-8);},
+
+posSizeCalc(el){this.rrRatio(el);},maxDD(el){this.riskPct(el);},portHeat(el){this.riskPct(el);},kelly(el){this.riskPct(el);},
+fearGreed(el){this.riskPct(el);},fomo(el){this.riskPct(el);},revenge(el){this.riskPct(el);},overtrading(el){this.riskPct(el);},
+confBias(el){this.riskPct(el);},lossAversion(el){this.riskPct(el);},journal(el){this.riskPct(el);},processOutcome(el){this.riskPct(el);},
+
+/* --- MODULE 15-17: ICT/WYCKOFF/ELLIOTT, OPTIONS, ALGO --- */
+wyckoff(el){const{x,W,H}=mc(el,520,180);const pts=[[20,90],[80,130],[140,90],[200,130],[240,150],[280,130],[340,90],[400,70],[480,30]];
+const labels=['','Support','Resist','Support','SPRING','Rally','Test','SOS','Mark-up'];let n=1;
+function draw(){x.clearRect(0,0,520,180);x.strokeStyle='rgba(242,184,75,.3)';x.setLineDash([4,3]);x.lineWidth=1;
+x.beginPath();x.moveTo(0,90);x.lineTo(380,90);x.stroke();x.beginPath();x.moveTo(0,130);x.lineTo(380,130);x.stroke();x.setLineDash([]);
+x.fillStyle='rgba(52,214,196,.05)';x.fillRect(0,90,380,40);
+x.strokeStyle='#E7EAF0';x.lineWidth=2.5;x.beginPath();pts.slice(0,n+1).forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
+x.font='9px IBM Plex Mono,monospace';pts.slice(1,n+1).forEach((p,i)=>{const lbl=labels[i+1];x.fillStyle=lbl==='SPRING'?'#FF6B81':lbl==='Mark-up'?'#34D6C4':'#8C97AC';x.fillText(lbl,p[0]-18,p[1]+(p[1]>100?14:-8));});}
+draw();setInterval(()=>{n=n>=pts.length-1?1:n+1;draw();},900);},
+
+killZones(el){this.sessions(el);},judaSwing(el){this.po3(el);},silverBullet(el){this.po3(el);},ote(el){this.fibRetrace(el);},
+wyckoffAccum(el){this.wyckoff(el);},wyckoffDist(el){this.wyckoff(el);},springUpthrust(el){this.wyckoff(el);},
+elliott(el){const{x,W,H}=mc(el,520,180);const pts=[[20,150],[80,80],[120,115],[180,40],[220,90],[300,20],[360,60],[420,40],[480,70]];
+const labels=['','1','2','3','4','5','A','B','C'];const colors=['','#34D6C4','#8C97AC','#34D6C4','#8C97AC','#34D6C4','#FF6B81','#8C97AC','#FF6B81'];let n=1;
+function draw(){x.clearRect(0,0,520,180);x.strokeStyle='#E7EAF0';x.lineWidth=2.5;x.beginPath();pts.slice(0,n+1).forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
+x.font='13px IBM Plex Mono,monospace';pts.slice(1,n+1).forEach((p,i)=>{x.fillStyle=colors[i+1];x.fillText(labels[i+1],p[0]-4,p[1]-10);});}
+draw();setInterval(()=>{n=n>=pts.length-1?1:n+1;draw();},800);},
+elliottRules(el){this.elliott(el);},fibElliott(el){this.elliott(el);},
+
+callPut(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
+const cx=260,midY=80;x.strokeStyle='#232C3D';x.beginPath();x.moveTo(0,midY);x.lineTo(W,midY);x.stroke();x.beginPath();x.moveTo(cx,0);x.lineTo(cx,H);x.stroke();
+x.strokeStyle='#34D6C4';x.lineWidth=2.5;x.beginPath();for(let px=-50;px<=50;px++){const pnl=Math.max(-10,px-10);x.lineTo(cx+px*4,midY-pnl*3);}x.stroke();
+x.strokeStyle='#FF6B81';x.lineWidth=2.5;x.beginPath();for(let px=-50;px<=50;px++){const pnl=Math.max(-10,-px+10);x.lineTo(cx+px*4,midY-pnl*3);}x.stroke();
+x.fillStyle='#34D6C4';x.fillText('CALL (profit if price UP)',350,30);x.fillStyle='#FF6B81';x.fillText('PUT (profit if price DOWN)',50,30);},
+
+premComp(el){this.callPut(el);},iv(el){this.callPut(el);},ivRank(el){this.callPut(el);},
+delta(el){this.callPut(el);},theta(el){this.callPut(el);},gamma(el){this.callPut(el);},vega(el){this.callPut(el);},
+nakedShort(el){this.callPut(el);},creditSpread(el){this.callPut(el);},debitSpread(el){this.callPut(el);},
+ironCondor(el){this.callPut(el);},straddle(el){this.callPut(el);},ivCrush(el){this.callPut(el);},
+
+backtest(el){this.overfit(el);},walkForward(el){this.overfit(el);},isOos(el){this.overfit(el);},
+slippage(el){this.overfit(el);},monteCarlo(el){this.overfit(el);},sharpe(el){this.overfit(el);},decay(el){this.overfit(el);},
+
 /* --- GENERIC FALLBACK for any animation key not explicitly defined --- */
 _fallback(el, label){const{x,W,H}=mc(el,520,120);x.clearRect(0,0,W,H);
 x.fillStyle='rgba(140,151,172,.08)';x.fillRect(0,0,W,H);
@@ -1009,6 +1289,170 @@ x.font='10px IBM Plex Mono,monospace';x.fillText('(interactive animation)',W/2,H
 
 /* --- Route animation calls --- */
 function runAnim(key,el,label){if(A[key]){A[key].call(A,el);}else{A._fallback(el,label);}}
+/* ===== GIF MAPPING: animation key → filename in img/ ===== */
+const GIFS={
+  // Module 1
+  whatIsTrade:'01-homma.gif',
+  // Module 2
+  ohlc:'02-ohlc.gif',
+  bullBear:'03-bull-bear-candle.gif',
+  wicks:'04-wick-types.gif',
+  bodySize:'05-marubozu.gif',
+  doji:'06-doji.gif',
+  candleVsLine:'07-candle-vs-line.gif',
+  // Module 3
+  hammer:'08-pin-bar.gif',
+  shootingStar:'09-shooting-star.gif',
+  engulfing:'10-bullish-engulfing.gif',
+  stars:'12-morning-star.gif',
+  piercing:'11-bearish-engulfing.gif',
+  threeSoldiers:'13-evening-star.gif',
+  spinTop:'06-doji.gif',
+  tweezers:'15-inside-bar-breakout.gif',
+  // Module 4
+  uptrend:'16-uptrend.gif',
+  downtrend:'17-downtrend.gif',
+  range:'18-range.gif',
+  maTrend:'19-four-stages.gif',
+  // Module 5
+  hSupport:'20-support.gif',
+  hResist:'21-resistance.gif',
+  roleReversal:'22-role-reversal.gif',
+  tfContext:'24-engulfing-trade.gif',
+  // Module 6 - SMC
+  swingHL:'25-swing-hl.gif',
+  hhhl:'16-uptrend.gif',
+  lhll:'17-downtrend.gif',
+  bos:'26-bos.gif',
+  choch:'27-choch.gif',
+  mss:'28-mss.gif',
+  fvg:'29-fvg.gif',
+  imbalance:'30-fvg-fill.gif',
+  bullOB:'31-bullish-ob.gif',
+  bearOB:'32-bearish-ob.gif',
+  breaker:'33-breaker.gif',
+  bsl:'34-bsl.gif',
+  ssl:'35-ssl.gif',
+  eqhl:'36-equal-highs.gif',
+  sweep:'37-liquidity-grab.gif',
+  stopHunt:'37-liquidity-grab.gif',
+  premium:'38-premium-discount.gif',
+  discount:'38-premium-discount.gif',
+  equilibrium:'38-premium-discount.gif',
+  displacement:'39-displacement.gif',
+  inducement:'40-inducement.gif',
+  po3:'41-po3.gif',
+  accumDist:'41-po3.gif',
+  expContract:'18-range.gif',
+  tfAlign:'19-four-stages.gif',
+  // Module 7 - Supply & Demand
+  demandZone:'42-demand-zone.gif',
+  supplyZone:'43-supply-zone.gif',
+  rbr:'44-rbr.gif',
+  dbd:'45-dbd.gif',
+  rbd:'46-rbd.gif',
+  dbr:'47-dbr.gif',
+  freshness:'48-fresh-zone.gif',
+  zoneInvalid:'49-zone-invalid.gif',
+  nestedZone:'42-demand-zone.gif',
+  // Module 8 - Chart Patterns
+  ascTriangle:'50-asc-triangle.gif',
+  descTriangle:'51-desc-triangle.gif',
+  symTriangle:'52-sym-triangle.gif',
+  flags:'53-bull-flag.gif',
+  wedges:'55-rising-wedge.gif',
+  headShoulders:'57-head-shoulders.gif',
+  invHS:'58-inv-hs.gif',
+  doubleTopBot:'59-double-top.gif',
+  cupHandle:'61-cup-handle.gif',
+  rectangle:'18-range.gif',
+  // Module 9 - MAs
+  sma:'62-sma.gif',
+  ema:'63-ema.gif',
+  maCross:'64-golden-cross.gif',
+  emaDynamic:'66-ema-bounce.gif',
+  vwap:'67-vwap.gif',
+  multiMA:'64-golden-cross.gif',
+  // Module 10 - Oscillators
+  rsi:'68-rsi.gif',
+  rsiDiv:'69-rsi-bull-div.gif',
+  stochRsi:'70-rsi-bear-div.gif',
+  macd:'71-macd-cross.gif',
+  macdDiv:'72-macd-div.gif',
+  bollinger:'73-bb-squeeze.gif',
+  atr:'75-atr.gif',
+  cci:'68-rsi.gif',
+  // Module 11 - Volume
+  volConfirm:'76-vol-confirm.gif',
+  climacticVol:'78-climactic-vol.gif',
+  volDiv:'77-vol-divergence.gif',
+  volProfile:'79-vol-profile.gif',
+  poc:'79-vol-profile.gif',
+  valueArea:'79-vol-profile.gif',
+  hvn:'79-vol-profile.gif',
+  lvn:'79-vol-profile.gif',
+  // Module 12 - Fibonacci
+  fibRetrace:'80-fib-retrace.gif',
+  goldenPocket:'81-golden-pocket.gif',
+  fibExt:'82-fib-extension.gif',
+  fibOB:'83-fib-ob.gif',
+  drawFib:'80-fib-retrace.gif',
+  // Module 13 - Risk
+  riskPct:'85-position-size.gif',
+  rrRatio:'84-risk-reward.gif',
+  posSizeCalc:'85-position-size.gif',
+  maxDD:'86-drawdown.gif',
+  portHeat:'86-drawdown.gif',
+  stopPlace:'84-risk-reward.gif',
+  tpTargets:'84-risk-reward.gif',
+  kelly:'85-position-size.gif',
+  // Module 14 - Psychology
+  fearGreed:'87-fomo.gif',
+  fomo:'87-fomo.gif',
+  revenge:'88-revenge-trade.gif',
+  overtrading:'88-revenge-trade.gif',
+  lossAversion:'89-loss-aversion.gif',
+  confBias:'89-loss-aversion.gif',
+  journal:'87-fomo.gif',
+  processOutcome:'89-loss-aversion.gif',
+  // Module 15 - ICT/Wyckoff/Elliott
+  killZones:'90-kill-zones.gif',
+  judaSwing:'91-judas-swing.gif',
+  silverBullet:'91-judas-swing.gif',
+  ote:'81-golden-pocket.gif',
+  wyckoff:'92-wyckoff-accum.gif',
+  wyckoffAccum:'92-wyckoff-accum.gif',
+  wyckoffDist:'93-wyckoff-dist.gif',
+  springUpthrust:'94-spring.gif',
+  elliott:'96-elliott-wave.gif',
+  elliottRules:'96-elliott-wave.gif',
+  fibElliott:'97-elliott-fib.gif',
+  // Module 16 - Options
+  callPut:'98-call-payoff.gif',
+  premComp:'98-call-payoff.gif',
+  iv:'102-iv-crush.gif',
+  ivRank:'102-iv-crush.gif',
+  delta:'98-call-payoff.gif',
+  theta:'103-theta-decay.gif',
+  gamma:'98-call-payoff.gif',
+  vega:'102-iv-crush.gif',
+  nakedShort:'99-put-payoff.gif',
+  creditSpread:'100-credit-spread.gif',
+  debitSpread:'100-credit-spread.gif',
+  ironCondor:'101-iron-condor.gif',
+  straddle:'99-put-payoff.gif',
+  ivCrush:'102-iv-crush.gif',
+  // Module 17 - Algo
+  backtest:'104-overfit.gif',
+  overfit:'104-overfit.gif',
+  walkForward:'105-walk-forward.gif',
+  isOos:'105-walk-forward.gif',
+  slippage:'104-overfit.gif',
+  monteCarlo:'106-monte-carlo.gif',
+  sharpe:'107-sharpe.gif',
+  decay:'107-sharpe.gif'
+};
+
 /* ===================== RENDER ENGINE ===================== */
 function buildNav(){
   const nav=document.getElementById('navList'),map=document.getElementById('mapRow');nav.innerHTML='';map.innerHTML='';
@@ -1037,7 +1481,13 @@ function render(id){
   let h=`<div class="mk${isNew?' new':''}">${m.g}</div><h2 class="mt">${m.t}</h2><p class="mb">${m.b}</p>`;
   m.topics.forEach((t,ti)=>{
     h+=`<div class="tc"><h3>${t.h}</h3><p>${t.d}</p>`;
-    if(t.a) h+=`<div class="as"><div class="at">${t.h}</div><div id="anim_${ti}"></div></div>`;
+    if(t.a){
+      if(GIFS[t.a]){
+        h+=`<div class="as"><div class="at">${t.h}</div><img src="img/${GIFS[t.a]}" alt="${t.h}" loading="lazy" style="width:100%;max-width:540px;border-radius:6px;display:block;"></div>`;
+      } else {
+        h+=`<div class="as"><div class="at">${t.h}</div><div id="anim_${ti}"></div></div>`;
+      }
+    }
     h+=`</div>`;
   });
   h+=`<div class="qb"><h3>Quick Check</h3><div id="qWrap"></div><div class="qs" id="qScore" style="display:none"></div></div>`;
