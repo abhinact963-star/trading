@@ -86,6 +86,22 @@ footer{text-align:center;color:var(--text-dim);font-size:11px;padding:28px 20px 
 const S={cur:null,pts:0,done:new Set()};
 try{const d=JSON.parse(localStorage.getItem('rtt2'));if(d){S.pts=d.p||0;(d.d||[]).forEach(x=>S.done.add(x));}}catch(e){}
 function save(){localStorage.setItem('rtt2',JSON.stringify({p:S.pts,d:[...S.done]}));}
+
+/* === ANIMATION LIFECYCLE TRACKING ===
+   The 123 animation functions in A{} each call setInterval directly with no
+   reference kept anywhere else. Switching modules wipes the DOM (innerHTML)
+   but never stops these loops, so they pile up forever in the background.
+   Fix: wrap setInterval while animations for a module are being started,
+   capture every ID created, and clear them all before the next module runs. */
+const activeIntervals=[];
+let _capturingIntervals=false;
+const _origSetInterval=window.setInterval.bind(window);
+window.setInterval=function(...args){
+  const id=_origSetInterval(...args);
+  if(_capturingIntervals)activeIntervals.push(id);
+  return id;
+};
+function clearModuleAnimations(){activeIntervals.forEach(id=>clearInterval(id));activeIntervals.length=0;}
 function mc(el,w,h){const c=document.createElement('canvas');c.width=w*2;c.height=h*2;c.style.width='100%';c.style.maxWidth=w+'px';c.style.height='auto';c.style.display='block';c.style.borderRadius='6px';const x=c.getContext('2d');x.scale(2,2);el.appendChild(c);
 x.fillStyle='#080C12';x.fillRect(0,0,w,h);
 x.strokeStyle='rgba(35,44,61,.5)';x.lineWidth=0.5;
@@ -1538,8 +1554,13 @@ function render(id){
   const idx=M.findIndex(x=>x.id===id);const prev=M[idx-1],next=M[idx+1];
   h+=`<div class="mfn">${prev?`<button class="btn" onclick="goTo('${prev.id}')">&larr; ${prev.t}</button>`:'<span></span>'}${next?`<button class="btn primary" onclick="goTo('${next.id}')">${next.t} &rarr;</button>`:'<span></span>'}</div>`;
   p.innerHTML=h;
-  // Run animations
-  m.topics.forEach((t,ti)=>{if(t.a){const el=document.getElementById('anim_'+ti);if(el)runAnim(t.a,el,t.h);}});
+  // Stop any animations still running from the previous module, then run this one's
+  clearModuleAnimations();
+  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    _capturingIntervals=true;
+    m.topics.forEach((t,ti)=>{if(t.a){const el=document.getElementById('anim_'+ti);if(el)runAnim(t.a,el,t.h);}});
+    _capturingIntervals=false;
+  }
   renderQuiz(m);}
 /* ===================== QUIZ ENGINE ===================== */
 function renderQuiz(m){
