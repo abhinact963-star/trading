@@ -1549,9 +1549,13 @@ function renderQuiz(m){
     const d=document.createElement('div');d.className='qq';
     d.innerHTML=`<div class="qt">${qi+1}. ${q.q}</div><div class="qo" id="qo${qi}"></div><div class="qe" id="qe${qi}">${q.e}</div>`;
     w.appendChild(d);const od=d.querySelector('.qo');
-    q.o.forEach((opt,oi)=>{const b=document.createElement('button');b.className='qp';b.textContent=opt;
+    // Shuffle options while tracking correct answer
+    const indices=[...Array(q.o.length).keys()];
+    for(let i=indices.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[indices[i],indices[j]]=[indices[j],indices[i]];}
+    const correctIdx=indices.indexOf(q.a);
+    indices.forEach((origIdx)=>{const b=document.createElement('button');b.className='qp';b.textContent=q.o[origIdx];
     b.onclick=()=>{if(b.dataset.lk)return;od.querySelectorAll('.qp').forEach(c=>{c.dataset.lk='1';c.disabled=true;});
-    if(oi===q.a){b.classList.add('ok');sc++;S.pts+=10;}else{b.classList.add('no');od.children[q.a].classList.add('ok');}
+    if(origIdx===q.a){b.classList.add('ok');sc++;S.pts+=10;}else{b.classList.add('no');od.children[correctIdx].classList.add('ok');}
     d.querySelector('.qe').classList.add('show');ans++;
     if(ans===m.quiz.length){S.done.add(m.id);buildNav();save();
     const sl=document.getElementById('qScore');sl.style.display='block';sl.textContent=`Score: ${sc}/${m.quiz.length} | +${sc*10} pips`;}};
