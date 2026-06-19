@@ -121,9 +121,28 @@ function drawCandle(x,cx,bw,o,h,l,c,p2y){
 }
 function genCandles(n,start,vol){
   const cd=[];let p=start||100;vol=vol||4;
-  for(let i=0;i<n;i++){const o=p,mv=(Math.random()-.48)*vol,c=o+mv;
-  const h=Math.max(o,c)+Math.random()*vol*.4,l=Math.min(o,c)-Math.random()*vol*.4;
-  cd.push({o,h,l,c});p=c;}return cd;
+  let trend=0; // drift bias that persists
+  let vState=vol; // volatility state that clusters
+  for(let i=0;i<n;i++){
+    // Trend persistence: slowly random-walk the drift
+    trend+=(Math.random()-.5)*0.4;
+    trend*=0.92; // mean-revert trend slowly
+    // Volatility clustering: vol itself random-walks
+    vState+=(Math.random()-.5)*vol*0.15;
+    vState=Math.max(vol*0.3, Math.min(vol*2.2, vState)); // clamp
+    // Price move with drift + noise
+    const mv=trend+((Math.random()-.5)*vState);
+    const o=p, c=o+mv;
+    // Wicks proportional to realized body + extra rejection
+    const body=Math.abs(mv);
+    const upperWick=Math.random()*vState*0.35 + body*0.1;
+    const lowerWick=Math.random()*vState*0.35 + body*0.1;
+    const h=Math.max(o,c)+upperWick;
+    const l=Math.min(o,c)-lowerWick;
+    cd.push({o,h,l,c});
+    p=c;
+  }
+  return cd;
 }
 function chartScale(candles,H,pad){
   pad=pad||18;const all=candles.flatMap(c=>[c.h,c.l]);const mx=Math.max(...all),mn=Math.min(...all);
@@ -1319,11 +1338,30 @@ x.strokeStyle='#232C3D';x.beginPath();x.moveTo(70,0);x.lineTo(70,210);x.stroke()
 
 poc(el){this.volProfile(el);},valueArea(el){this.volProfile(el);},hvn(el){this.volProfile(el);},lvn(el){this.volProfile(el);},
 
-fibRetrace(el){const{x,W,H}=mc(el,520,200);const levels=[0,.236,.382,.5,.618,.786,1],high={y:30},low={y:170};
-levels.forEach(l=>{const y=low.y+(high.y-low.y)*l;x.strokeStyle=l===0||l===1?'#8C97AC':'#F2B84B';x.setLineDash(l===0||l===1?[]:[4,3]);x.lineWidth=1;x.beginPath();x.moveTo(0,y);x.lineTo(520,y);x.stroke();x.setLineDash([]);x.fillStyle='#8C97AC';x.font='10px IBM Plex Mono,monospace';x.fillText((l*100).toFixed(1)+'%',4,y-3);});
-x.fillStyle='rgba(242,184,75,.1)';const y618=low.y+(high.y-low.y)*.618,y786=low.y+(high.y-low.y)*.786;x.fillRect(0,y618,520,y786-y618);
-x.fillStyle='#F2B84B';x.font='10px IBM Plex Mono,monospace';x.fillText('← Golden Pocket (61.8-78.6%)',200,(y618+y786)/2+4);
-x.fillStyle='#34D6C4';x.beginPath();x.arc(460,high.y,5,0,7);x.fill();x.fillStyle='#FF6B81';x.beginPath();x.arc(60,low.y,5,0,7);x.fill();},
+fibRetrace(el){const{x,W,H}=mc(el,520,220);
+// Generate a clear impulse up, then pullback to golden pocket
+const candles=[];let p=85;
+// Impulse up (10 candles)
+for(let i=0;i<10;i++){const o=p,c=o+2.5+Math.random()*2;const h=c+Math.random()*1.5,l=o-Math.random()*1;candles.push({o,h,l,c});p=c;}
+const swingHigh=p;
+// Pullback down to ~61.8% (8 candles)
+const swingLow=85;const target618=swingHigh-(swingHigh-swingLow)*0.618;
+for(let i=0;i<8;i++){const remaining=(p-target618)/8;const o=p,c=o-remaining-Math.random()*1;const h=o+Math.random()*1,l=Math.min(o,c)-Math.random()*1;candles.push({o,h,l,c});p=c;}
+// Bounce from golden pocket (6 candles)
+for(let i=0;i<6;i++){const o=p,c=o+2+Math.random()*1.5;const h=c+Math.random()*1,l=o-Math.random()*.8;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,22);const gap=W/candles.length,bw=Math.max(5,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+// Draw fib levels
+const levels=[0,.236,.382,.5,.618,.786,1];
+levels.forEach(l=>{const price=swingHigh-(swingHigh-swingLow)*l;const y=p2y(price);
+x.strokeStyle=l>=.618&&l<=.786?'#F2B84B':'rgba(140,151,172,.4)';x.setLineDash([3,3]);x.lineWidth=l>=.618&&l<=.786?1.5:0.8;
+x.beginPath();x.moveTo(0,y);x.lineTo(W,y);x.stroke();x.setLineDash([]);
+x.fillStyle='#8C97AC';x.font='8px IBM Plex Mono,monospace';x.fillText((l*100).toFixed(1)+'%',W-40,y-3);});
+// Highlight golden pocket zone
+const y618=p2y(swingHigh-(swingHigh-swingLow)*.618),y786=p2y(swingHigh-(swingHigh-swingLow)*.786);
+x.fillStyle='rgba(242,184,75,.08)';x.fillRect(0,Math.min(y618,y786),W,Math.abs(y786-y618));
+x.fillStyle='#F2B84B';x.font='9px IBM Plex Mono,monospace';x.fillText('Golden Pocket (61.8-78.6%)',W/2-80,(y618+y786)/2+3);
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Impulse → Pullback to Fib → Bounce',140,H-5);},
 
 goldenPocket(el){this.fibRetrace(el);},fibExt(el){this.fibRetrace(el);},fibOB(el){this.fibRetrace(el);},fibTime(el){this.fibRetrace(el);},drawFib(el){this.fibRetrace(el);},
 
