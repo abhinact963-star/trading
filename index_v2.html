@@ -86,7 +86,65 @@ footer{text-align:center;color:var(--text-dim);font-size:11px;padding:28px 20px 
 const S={cur:null,pts:0,done:new Set()};
 try{const d=JSON.parse(localStorage.getItem('rtt2'));if(d){S.pts=d.p||0;(d.d||[]).forEach(x=>S.done.add(x));}}catch(e){}
 function save(){localStorage.setItem('rtt2',JSON.stringify({p:S.pts,d:[...S.done]}));}
-function mc(el,w,h){const c=document.createElement('canvas');c.width=w*2;c.height=h*2;c.style.width='100%';c.style.maxWidth=w+'px';c.style.height='auto';c.style.display='block';const x=c.getContext('2d');x.scale(2,2);el.appendChild(c);return{c,x,W:w,H:h};}
+function mc(el,w,h){const c=document.createElement('canvas');c.width=w*2;c.height=h*2;c.style.width='100%';c.style.maxWidth=w+'px';c.style.height='auto';c.style.display='block';c.style.borderRadius='6px';const x=c.getContext('2d');x.scale(2,2);el.appendChild(c);
+x.fillStyle='#080C12';x.fillRect(0,0,w,h);
+x.strokeStyle='rgba(35,44,61,.5)';x.lineWidth=0.5;
+for(let i=0;i<w;i+=50){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke();}
+for(let i=0;i<h;i+=35){x.beginPath();x.moveTo(0,i);x.lineTo(w,i);x.stroke();}
+return{c,x,W:w,H:h};}
+
+/* === SHARED CANDLE UTILITIES === */
+function drawCandle(x,cx,bw,o,h,l,c,p2y){
+  const bull=c>=o;x.strokeStyle=bull?'#34D6C4':'#FF6B81';x.fillStyle=bull?'rgba(52,214,196,.8)':'rgba(255,107,129,.8)';
+  x.lineWidth=1;x.beginPath();x.moveTo(cx+bw/2,p2y(h));x.lineTo(cx+bw/2,p2y(l));x.stroke();
+  const top=Math.min(p2y(o),p2y(c)),bH=Math.max(2,Math.abs(p2y(c)-p2y(o)));
+  x.fillRect(cx,top,bw,bH);
+}
+function genCandles(n,start,vol){
+  const cd=[];let p=start||100;vol=vol||2;
+  for(let i=0;i<n;i++){const o=p,mv=(Math.random()-.48)*vol,c=o+mv;
+  const h=Math.max(o,c)+Math.random()*vol*.5,l=Math.min(o,c)-Math.random()*vol*.5;
+  cd.push({o,h,l,c});p=c;}return cd;
+}
+function chartScale(candles,H,pad=15){
+  const all=candles.flatMap(c=>[c.h,c.l]);const mx=Math.max(...all),mn=Math.min(...all);
+  const rng=mx-mn||1;return p=>pad+(mx-p)/rng*(H-pad*2);
+}
+function drawCandleChart(x,W,H,candles,opts){
+  opts=opts||{};const p2y=chartScale(candles,H,opts.pad||15);
+  const gap=W/candles.length,bw=Math.max(3,gap*.65);
+  candles.forEach((cd,i)=>{const cx=i*gap+(gap-bw)/2;drawCandle(x,cx,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+  return{p2y,gap,bw};
+}
+function drawHLine(x,W,y,color,label,dashed){
+  x.strokeStyle=color;x.lineWidth=1;if(dashed)x.setLineDash([4,3]);
+  x.beginPath();x.moveTo(0,y);x.lineTo(W,y);x.stroke();x.setLineDash([]);
+  if(label){x.fillStyle=color;x.font='9px IBM Plex Mono,monospace';x.fillText(label,4,y-4);}
+}
+function drawZone(x,W,y1,y2,color,label){
+  x.fillStyle=color;x.fillRect(0,y1,W,y2-y1);
+  if(label){x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText(label,8,y1-4);}
+}
+
+/* Helper: draw a candle */
+function drawCandle(x,cx,bw,o,c2,h,l,scale,baseY,baseP){
+const bull=c2>=o;const yO=baseY-(o-baseP)*scale,yC=baseY-(c2-baseP)*scale,yH=baseY-(h-baseP)*scale,yL=baseY-(l-baseP)*scale;
+x.strokeStyle=bull?'#34D6C4':'#FF6B81';x.fillStyle=bull?'rgba(52,214,196,.8)':'rgba(255,107,129,.8)';x.lineWidth=1.5;
+x.beginPath();x.moveTo(cx+bw/2,yH);x.lineTo(cx+bw/2,yL);x.stroke();
+x.fillRect(cx,Math.min(yO,yC),bw,Math.max(2,Math.abs(yC-yO)));
+return{yO,yC,yH,yL,bull};}
+
+/* Helper: draw grid (call after clearRect for animated canvases) */
+function drawGrid(x,W,H){
+x.fillStyle='#080C12';x.fillRect(0,0,W,H);
+x.strokeStyle='rgba(35,44,61,.5)';x.lineWidth=0.5;
+for(let i=0;i<W;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,H);x.stroke();}
+for(let i=0;i<H;i+=40){x.beginPath();x.moveTo(0,i);x.lineTo(W,i);x.stroke();}}
+
+/* Helper: smooth glow effect for lines */
+function glowLine(x,pts,color,width){
+x.shadowColor=color;x.shadowBlur=6;x.strokeStyle=color;x.lineWidth=width||2;x.beginPath();
+pts.forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();x.shadowBlur=0;}
 
 /* ===================== MODULE DATA ===================== */
 const M=[
@@ -715,19 +773,19 @@ const yO=base-(cd.o-85)*s,yC=base-(cd.c-85)*s,yH=base-(cd.h-85)*s,yL=base-(cd.l-
 x.beginPath();x.moveTo(cx+bw/2,yH);x.lineTo(cx+bw/2,yL);x.stroke();
 x.fillRect(cx,Math.min(yO,yC),bw,Math.max(2,Math.abs(yC-yO)));});},
 /* --- S/R, TREND, MARKET STRUCTURE core animations --- */
-hSupport(el){const{x,W,H}=mc(el,520,180);let pts=[];for(let i=0;i<60;i++)pts.push(100+Math.sin(i/5)*12+(Math.random()-.5)*4);
-const supY=140;let f=0;function draw(){x.clearRect(0,0,W,H);x.strokeStyle='#F2B84B';x.setLineDash([4,3]);x.lineWidth=1.5;x.beginPath();x.moveTo(0,supY);x.lineTo(W,supY);x.stroke();x.setLineDash([]);
-x.fillStyle='#8C97AC';x.font='10px IBM Plex Mono,monospace';x.fillText('Support level',8,supY-6);
-x.strokeStyle='#34D6C4';x.lineWidth=2;x.beginPath();const n=Math.min(60,f);
-for(let i=0;i<n;i++){let y=220-(pts[i]-70)*1.8;if(y>supY-3)y=supY-4-Math.random()*3;x.lineTo(i*8.5+10,y);}x.stroke();
-x.fillStyle='#34D6C4';x.font='10px IBM Plex Mono,monospace';x.fillText('Price bounces off support',8,16);f=(f+1)%70;}draw();setInterval(draw,100);},
+hSupport(el){const{x,W,H}=mc(el,520,180);
+const candles=[];let p=105;for(let i=0;i<28;i++){const o=p,mv=(Math.random()-.5)*3;let c=o+mv;if(c<92)c=92+Math.random()*2;const h=Math.max(o,c)+Math.random()*1.5,l=Math.max(90,Math.min(o,c)-Math.random()*1.5);candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H);const gap=W/candles.length,bw=Math.max(3,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawHLine(x,W,p2y(91.5),'#34D6C4','Support — multiple bounces',true);
+drawZone(x,W,p2y(92.5),p2y(90),'rgba(52,214,196,.08)');},
 
-hResist(el){const{x,W,H}=mc(el,520,180);let pts=[];for(let i=0;i<60;i++)pts.push(100+Math.sin(i/5)*12+(Math.random()-.5)*4);
-const resY=50;let f=0;function draw(){x.clearRect(0,0,W,H);x.strokeStyle='#FF6B81';x.setLineDash([4,3]);x.lineWidth=1.5;x.beginPath();x.moveTo(0,resY);x.lineTo(W,resY);x.stroke();x.setLineDash([]);
-x.fillStyle='#8C97AC';x.font='10px IBM Plex Mono,monospace';x.fillText('Resistance level',8,resY+16);
-x.strokeStyle='#FF6B81';x.lineWidth=2;x.beginPath();const n=Math.min(60,f);
-for(let i=0;i<n;i++){let y=20+(120-pts[i])*1.2;if(y<resY+3)y=resY+4+Math.random()*3;x.lineTo(i*8.5+10,y);}x.stroke();
-f=(f+1)%70;}draw();setInterval(draw,100);},
+hResist(el){const{x,W,H}=mc(el,520,180);
+const candles=[];let p=95;for(let i=0;i<28;i++){const o=p,mv=(Math.random()-.5)*3;let c=o+mv;if(c>108)c=108-Math.random()*2;const h=Math.min(110,Math.max(o,c)+Math.random()*1.5),l=Math.min(o,c)-Math.random()*1.5;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H);const gap=W/candles.length,bw=Math.max(3,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawHLine(x,W,p2y(108.5),'#FF6B81','Resistance — multiple rejections',true);
+drawZone(x,W,p2y(110),p2y(107.5),'rgba(255,107,129,.08)');},
 
 srZones(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);
 x.fillStyle='rgba(52,214,196,.12)';x.fillRect(0,110,W,25);x.fillStyle='rgba(255,107,129,.12)';x.fillRect(0,30,W,25);
@@ -787,23 +845,33 @@ x.fillStyle='#8C97AC';x.fillText('15m level',10,94);
 x.strokeStyle='#8C97AC';x.lineWidth=1;x.setLineDash([2,4]);x.beginPath();x.moveTo(0,100);x.lineTo(W,100);x.stroke();x.setLineDash([]);
 x.fillStyle='#E7EAF0';x.fillText('Higher TF levels carry more weight → thicker = stronger',100,H-8);},
 /* --- TREND --- */
-uptrend(el){const{x,W,H}=mc(el,520,200);const pts=[[20,170],[80,110],[130,140],[200,80],[260,115],[330,55],[400,90],[470,30]];const labels=['','HH','HL','HH','HL','HH','HL','HH'];let n=1;
-function draw(){x.clearRect(0,0,W,H);x.strokeStyle='#34D6C4';x.lineWidth=2.5;x.beginPath();pts.slice(0,n+1).forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
-x.font='11px IBM Plex Mono,monospace';pts.slice(1,n+1).forEach((p,i)=>{x.fillStyle=labels[i+1]==='HH'?'#34D6C4':'#F2B84B';x.fillText(labels[i+1],p[0]-8,p[1]-10);});}
-draw();setInterval(()=>{n=n>=pts.length-1?1:n+1;draw();},800);},
+uptrend(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=80;for(let i=0;i<25;i++){const bias=0.8;const o=p,mv=(Math.random()-.5+bias)*2.5,c=o+mv;const h=Math.max(o,c)+Math.random()*1.5,l=Math.min(o,c)-Math.random()*1.5;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H);const gap=W/candles.length,bw=Math.max(4,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+// Mark HH/HL
+x.font='10px IBM Plex Mono,monospace';
+const swings=[[5,'HL'],[8,'HH'],[12,'HL'],[16,'HH'],[20,'HL'],[24,'HH']];
+swings.forEach(([i,lbl])=>{const cd=candles[i];const isH=lbl==='HH';const py=isH?p2y(cd.h)-10:p2y(cd.l)+14;
+x.fillStyle=isH?'#34D6C4':'#F2B84B';x.fillText(lbl,i*gap+2,py);});
+x.fillStyle='#34D6C4';x.font='11px IBM Plex Mono,monospace';x.fillText('UPTREND: Higher Highs + Higher Lows',140,H-6);},
 
-downtrend(el){const{x,W,H}=mc(el,520,200);const pts=[[20,30],[80,90],[130,60],[200,120],[260,90],[330,155],[400,125],[470,180]];const labels=['','LH','LL','LH','LL','LH','LL','LL'];let n=1;
-function draw(){x.clearRect(0,0,W,H);x.strokeStyle='#FF6B81';x.lineWidth=2.5;x.beginPath();pts.slice(0,n+1).forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
-x.font='11px IBM Plex Mono,monospace';pts.slice(1,n+1).forEach((p,i)=>{x.fillStyle=labels[i+1]==='LH'?'#FF6B81':'#F2B84B';x.fillText(labels[i+1],p[0]-8,p[1]>100?p[1]+14:p[1]-10);});}
-draw();setInterval(()=>{n=n>=pts.length-1?1:n+1;draw();},800);},
+downtrend(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=120;for(let i=0;i<25;i++){const bias=-0.8;const o=p,mv=(Math.random()-.5+bias)*2.5,c=o+mv;const h=Math.max(o,c)+Math.random()*1.5,l=Math.min(o,c)-Math.random()*1.5;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H);const gap=W/candles.length,bw=Math.max(4,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+x.font='10px IBM Plex Mono,monospace';
+const swings=[[4,'LH'],[8,'LL'],[12,'LH'],[16,'LL'],[20,'LH'],[24,'LL']];
+swings.forEach(([i,lbl])=>{const cd=candles[i];const isL=lbl==='LH';const py=isL?p2y(cd.h)-10:p2y(cd.l)+14;
+x.fillStyle=isL?'#FF6B81':'#F2B84B';x.fillText(lbl,i*gap+2,py);});
+x.fillStyle='#FF6B81';x.font='11px IBM Plex Mono,monospace';x.fillText('DOWNTREND: Lower Highs + Lower Lows',140,H-6);},
 
-range(el){const{x,W,H}=mc(el,520,180);let f=0;function draw(){x.clearRect(0,0,W,H);
-x.strokeStyle='#FF6B81';x.setLineDash([4,3]);x.beginPath();x.moveTo(0,50);x.lineTo(W,50);x.stroke();
-x.strokeStyle='#34D6C4';x.beginPath();x.moveTo(0,140);x.lineTo(W,140);x.stroke();x.setLineDash([]);
-x.fillStyle='#8C97AC';x.font='10px IBM Plex Mono,monospace';x.fillText('Resistance',W-70,46);x.fillText('Support',W-55,155);
-x.strokeStyle='#E7EAF0';x.lineWidth=2;x.beginPath();const n=Math.min(70,f);
-for(let i=0;i<=n;i++){const y=95+Math.sin(i/5)*38+Math.sin(i/13)*10;x.lineTo(i*7.3+10,y);}x.stroke();
-x.fillStyle='#F2B84B';x.fillText('Range-bound: no directional progression',120,H-6);f=(f+1)%80;}draw();setInterval(draw,70);},
+range(el){const{x,W,H}=mc(el,520,180);
+const candles=[];let p=100;for(let i=0;i<30;i++){const o=p,mv=(Math.random()-.5)*3,c=Math.max(92,Math.min(108,o+mv));const h=Math.min(110,Math.max(o,c)+Math.random()*1.5),l=Math.max(90,Math.min(o,c)-Math.random()*1.5);candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H,20);const gap=W/candles.length,bw=Math.max(3,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+drawHLine(x,W,p2y(109),'#FF6B81','Resistance',true);drawHLine(x,W,p2y(91),'#34D6C4','Support',true);
+x.fillStyle='#F2B84B';x.font='11px IBM Plex Mono,monospace';x.fillText('RANGE: No directional progress',160,H-6);},
 
 maTrend(el){const{x,W,H}=mc(el,520,160);let prices=[100];for(let i=0;i<60;i++)prices.push(prices[prices.length-1]+(Math.random()-.4)*2);
 x.clearRect(0,0,W,H);const max=Math.max(...prices)+3,min=Math.min(...prices)-3,s=130/((max-min)||1);
@@ -840,59 +908,62 @@ const pts=[[290,90],[320,70],[340,80],[360,55],[380,65],[420,40],[460,50],[490,3
 pts.forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
 x.fillStyle='#E7EAF0';x.fillText('Trade WITH the HTF direction',180,H-4);},
 /* --- MARKET STRUCTURE CORE --- */
-swingHL(el){const{x,W,H}=mc(el,520,180);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
-const pts=[[20,100],[80,50],[140,110],[200,40],[260,90],[320,60],[400,120],[460,45]];
-x.strokeStyle='#E7EAF0';x.lineWidth=2;x.beginPath();pts.forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
-pts.forEach((p,i)=>{const isHigh=i%2===1;x.fillStyle=isHigh?'#FF6B81':'#34D6C4';x.beginPath();x.arc(p[0],p[1],4,0,7);x.fill();
-x.fillText(isHigh?'Swing High':'Swing Low',p[0]-25,isHigh?p[1]-10:p[1]+14);});},
+swingHL(el){const{x,W,H}=mc(el,520,180);
+const candles=genCandles(25,100,3);const p2y=chartScale(candles,H);const gap=W/candles.length,bw=Math.max(3,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+// Mark swing highs and lows
+x.font='9px IBM Plex Mono,monospace';
+[3,8,14,20].forEach(i=>{if(candles[i]){x.fillStyle='#FF6B81';x.beginPath();x.arc(i*gap+gap/2,p2y(candles[i].h)-8,3,0,7);x.fill();x.fillText('SH',i*gap,p2y(candles[i].h)-12);}});
+[6,11,17,23].forEach(i=>{if(candles[i]){x.fillStyle='#34D6C4';x.beginPath();x.arc(i*gap+gap/2,p2y(candles[i].l)+8,3,0,7);x.fill();x.fillText('SL',i*gap,p2y(candles[i].l)+16);}});
+x.fillStyle='#8C97AC';x.font='10px IBM Plex Mono,monospace';x.fillText('Swing Highs (SH) and Swing Lows (SL)',150,H-5);},
 
 hhhl(el){this.uptrend(el);},
 lhll(el){this.downtrend(el);},
 
-bos(el){const{x,W,H}=mc(el,520,200);const pts=[[20,170],[80,100],[130,140],[200,70],[260,120],[340,40]];let n=1;
-function draw(){x.clearRect(0,0,W,H);x.strokeStyle='#34D6C4';x.lineWidth=2.5;x.beginPath();
-pts.slice(0,n+1).forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
-if(n>=3){x.strokeStyle='rgba(242,184,75,.4)';x.setLineDash([4,3]);x.beginPath();x.moveTo(pts[1][0],pts[1][1]);x.lineTo(W,pts[1][1]);x.stroke();x.setLineDash([]);}
-if(n>=5){x.strokeStyle='rgba(242,184,75,.4)';x.setLineDash([4,3]);x.beginPath();x.moveTo(pts[3][0],pts[3][1]);x.lineTo(W,pts[3][1]);x.stroke();x.setLineDash([]);
-x.fillStyle='#F2B84B';x.font='13px IBM Plex Mono,monospace';x.fillText('BOS — trend continues!',160,H-8);}
-x.font='11px IBM Plex Mono,monospace';const labels=['','HH','HL','HH','HL','BOS!'];
-pts.slice(1,n+1).forEach((p,i)=>{x.fillStyle=labels[i+1]==='BOS!'?'#F2B84B':'#8C97AC';x.fillText(labels[i+1],p[0]-10,p[1]-10);});}
-draw();setInterval(()=>{n=n>=pts.length-1?1:n+1;draw();},900);},
+bos(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=85;for(let i=0;i<28;i++){const bias=i<20?0.6:1.2;const o=p,mv=(Math.random()-.5+bias)*2,c=o+mv;const h=Math.max(o,c)+Math.random()*1.2,l=Math.min(o,c)-Math.random()*1.2;candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H);const gap=W/candles.length,bw=Math.max(3,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+// Mark the prior high and BOS break
+const priorHigh=Math.max(candles[8].h,candles[9].h,candles[10].h);
+drawHLine(x,W,p2y(priorHigh),'rgba(242,184,75,.5)','Prior HH',true);
+x.fillStyle='#F2B84B';x.font='12px IBM Plex Mono,monospace';x.fillText('BOS ↑',W-80,p2y(priorHigh)-12);
+x.fillStyle='#34D6C4';x.font='10px IBM Plex Mono,monospace';x.fillText('Break of Structure — price breaks above prior HH (continuation)',60,H-5);},
 
-choch(el){const{x,W,H}=mc(el,520,200);const pts=[[20,180],[80,100],[130,145],[200,65],[270,115],[350,155]];let n=1;
-function draw(){x.clearRect(0,0,W,H);x.strokeStyle=n<5?'#34D6C4':'#FF6B81';x.lineWidth=2.5;x.beginPath();
-pts.slice(0,n+1).forEach((p,i)=>i===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]));x.stroke();
-if(n>=4){x.strokeStyle='rgba(255,107,129,.5)';x.setLineDash([4,3]);x.beginPath();x.moveTo(pts[2][0],pts[2][1]);x.lineTo(W,pts[2][1]);x.stroke();x.setLineDash([]);
-x.fillStyle='#8C97AC';x.font='10px IBM Plex Mono,monospace';x.fillText('Prior HL level',pts[2][0]+10,pts[2][1]-6);}
-if(n>=5){x.fillStyle='#FF6B81';x.font='12px IBM Plex Mono,monospace';x.fillText('CHoCH! Price broke below prior HL',100,H-8);}
-const labels=['','HH','HL','HH','HL','CHoCH!'];x.font='11px IBM Plex Mono,monospace';
-pts.slice(1,n+1).forEach((p,i)=>{x.fillStyle=labels[i+1]==='CHoCH!'?'#FF6B81':'#8C97AC';x.fillText(labels[i+1],p[0]-12,p[1]+(p[1]>110?14:-10));});}
-draw();setInterval(()=>{n=n>=pts.length-1?1:n+1;draw();},1000);},
+choch(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=85;
+for(let i=0;i<14;i++){const o=p,mv=(Math.random()-.3)*2.5,c=o+mv;const h=Math.max(o,c)+Math.random(),l=Math.min(o,c)-Math.random();candles.push({o,h,l,c});p=c;}
+for(let i=0;i<10;i++){const o=p,mv=(Math.random()-.7)*2.5,c=o+mv;const h=Math.max(o,c)+Math.random(),l=Math.min(o,c)-Math.random();candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H);const gap=W/candles.length,bw=Math.max(3,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+const hlLevel=Math.min(...candles.slice(8,12).map(c=>c.l));
+drawHLine(x,W,p2y(hlLevel),'rgba(255,107,129,.6)','Prior HL',true);
+x.fillStyle='#FF6B81';x.font='12px IBM Plex Mono,monospace';x.fillText('CHoCH ↓',W-100,p2y(hlLevel)+16);
+x.fillStyle='#FF6B81';x.font='10px IBM Plex Mono,monospace';x.fillText('Change of Character — first break below HL (warning)',80,H-5);},
 
-mss(el){const{x,W,H}=mc(el,520,200);const pts=[[15,175],[70,100],[115,140],[170,65],[225,115],[280,140],[335,120],[400,170],[460,150]];
-const labels=['','HH','HL','HH','CHoCH','LH','LL(MSS)','LH','LL'];
-const colors=['','#34D6C4','#34D6C4','#34D6C4','#FF6B81','#FF6B81','#F2B84B','#FF6B81','#F2B84B'];let n=1;
-function draw(){x.clearRect(0,0,W,H);x.lineWidth=2;x.beginPath();
-pts.slice(0,n+1).forEach((p,i)=>{x.strokeStyle=i<=3?'#34D6C4':'#FF6B81';if(i===0)x.moveTo(p[0],p[1]);else{x.lineTo(p[0],p[1]);x.stroke();x.beginPath();x.moveTo(p[0],p[1]);}});
-x.font='10px IBM Plex Mono,monospace';pts.slice(1,n+1).forEach((p,i)=>{x.fillStyle=colors[i+1];x.fillText(labels[i+1],p[0]-16,p[1]+(p[1]>110?14:-8));});
-if(n>=6){x.fillStyle='#F2B84B';x.font='11px IBM Plex Mono,monospace';x.fillText('MSS confirmed: new bearish structure',100,H-6);}}
-draw();setInterval(()=>{n=n>=pts.length-1?1:n+1;draw();},900);},
+mss(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=85;
+for(let i=0;i<10;i++){const o=p,mv=(Math.random()-.3)*2,c=o+mv;const h=Math.max(o,c)+Math.random(),l=Math.min(o,c)-Math.random();candles.push({o,h,l,c});p=c;}
+for(let i=0;i<5;i++){const o=p,mv=(Math.random()-.6)*2.5,c=o+mv;const h=Math.max(o,c)+Math.random(),l=Math.min(o,c)-Math.random();candles.push({o,h,l,c});p=c;}
+for(let i=0;i<3;i++){const o=p,mv=(Math.random()-.3)*1.5,c=o+mv;const h=Math.max(o,c)+Math.random(),l=Math.min(o,c)-Math.random();candles.push({o,h,l,c});p=c;}
+for(let i=0;i<8;i++){const o=p,mv=(Math.random()-.75)*2.5,c=o+mv;const h=Math.max(o,c)+Math.random(),l=Math.min(o,c)-Math.random();candles.push({o,h,l,c});p=c;}
+const p2y=chartScale(candles,H);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+const chochLvl=Math.min(...candles.slice(6,10).map(c=>c.l));
+drawHLine(x,W,p2y(chochLvl),'rgba(255,107,129,.4)','CHoCH level',true);
+x.fillStyle='#F2B84B';x.font='11px IBM Plex Mono,monospace';x.fillText('MSS confirmed — new bearish structure (LH + LL forming)',60,H-5);},
 /* --- FVG, OB, LIQUIDITY, PREMIUM/DISCOUNT, PO3 --- */
-fvg(el){const{x,W,H}=mc(el,520,200);let f=0;function draw(){x.clearRect(0,0,W,H);
-const s=2.8,base=180;const c1={o:95,c:98,h:100,l:93},c2={o:102,c:120,h:122,l:101},c3={o:120,c:124,h:126,l:118};
-[c1,c2,c3].forEach((cd,i)=>{const cx=80+i*120,bw=60;const yO=base-(cd.o-85)*s,yC=base-(cd.c-85)*s,yH=base-(cd.h-85)*s,yL=base-(cd.l-85)*s;
-x.strokeStyle='#34D6C4';x.fillStyle='#34D6C4';x.lineWidth=1.5;
-x.beginPath();x.moveTo(cx+bw/2,yH);x.lineTo(cx+bw/2,yL);x.stroke();
-x.fillRect(cx,Math.min(yO,yC),bw,Math.max(2,Math.abs(yC-yO)));});
-// FVG zone
-const fvgTop=base-(c3.l-85)*s,fvgBot=base-(c1.h-85)*s;
-x.fillStyle='rgba(156,140,255,.2)';x.fillRect(80,fvgTop,360,fvgBot-fvgTop);
-x.strokeStyle='#9C8CFF';x.setLineDash([3,3]);x.strokeRect(80,fvgTop,360,fvgBot-fvgTop);x.setLineDash([]);
-x.fillStyle='#9C8CFF';x.font='12px IBM Plex Mono,monospace';x.fillText('FVG (gap between C1 wick & C3 wick)',100,fvgTop+(fvgBot-fvgTop)/2+4);
-// price fill
-const t=(f%100)/100;if(t>.5){x.strokeStyle='#F2B84B';x.lineWidth=2;x.beginPath();x.moveTo(380,base-(124-85)*s);x.lineTo(420,base-(120-85)*s);x.lineTo(460,base-(118-85+(t-.5)*20)*s);x.stroke();
-if(t>.7){x.fillStyle='#F2B84B';x.font='10px IBM Plex Mono,monospace';x.fillText('Price fills the gap',400,H-8);}}f++;}
-draw();setInterval(draw,40);},
+fvg(el){const{x,W,H}=mc(el,520,200);
+// Generate candles with an FVG in the middle
+const candles=genCandles(8,95,1.5);candles[4]={o:99,c:99.5,h:100,l:98.5};candles[5]={o:100,c:108,h:109,l:99.8};candles[6]={o:108,c:109,h:110,l:107};candles[7]={o:109,c:110,h:111,l:108.5};
+const p2y=chartScale(candles,H,20);const gap=W/candles.length,bw=Math.max(8,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+// FVG zone: between candle 4 high and candle 6 low
+const fvgTop=p2y(candles[6].l),fvgBot=p2y(candles[4].h);
+x.fillStyle='rgba(156,140,255,.15)';x.fillRect(4*gap,fvgTop,W-4*gap,fvgBot-fvgTop);
+x.strokeStyle='#9C8CFF';x.setLineDash([3,3]);x.lineWidth=1;x.strokeRect(4*gap,fvgTop,W-4*gap,fvgBot-fvgTop);x.setLineDash([]);
+x.fillStyle='#9C8CFF';x.font='11px IBM Plex Mono,monospace';x.fillText('FVG (Fair Value Gap)',5*gap,fvgTop+(fvgBot-fvgTop)/2+4);
+x.fillStyle='#8C97AC';x.font='9px IBM Plex Mono,monospace';x.fillText('Gap between C1 wick and C3 wick = imbalance → price tends to fill',20,H-5);},
 
 imbalance(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='11px IBM Plex Mono,monospace';
 x.fillStyle='#E7EAF0';x.fillText('Imbalance = price moved too fast for fair two-sided trading',30,20);
@@ -1038,17 +1109,25 @@ draw();setInterval(draw,40);},
 accumDist(el){this.po3(el);},expContract(el){this.range(el);},tfAlign(el){this.mtfTrend(el);},
 
 /* --- MODULE 7: SUPPLY/DEMAND ZONES --- */
-demandZone(el){const{x,W,H}=mc(el,520,180);let f=0;function draw(){x.clearRect(0,0,W,H);
-x.fillStyle='rgba(52,214,196,.12)';x.fillRect(0,130,W,35);x.fillStyle='#34D6C4';x.font='10px IBM Plex Mono,monospace';x.fillText('DEMAND ZONE (base of rally)',8,125);
-x.strokeStyle='#E7EAF0';x.lineWidth=2;x.beginPath();const t=Math.min(f,120);
-for(let i=0;i<=t;i++){let y;if(i<40)y=40+i*2.2+Math.sin(i/5)*3;else if(i<60)y=128+Math.sin(i/4)*3;else if(i<80)y=133-(i-60)*4;else y=53-(i-80)*0.3+Math.sin(i/6)*4;x.lineTo(i*4.2+10,y);}x.stroke();
-if(f>60){x.fillStyle='#F2B84B';x.fillText('Price enters zone → buyers activate → rally',150,H-6);}f=(f+1)%140;}draw();setInterval(draw,40);},
+demandZone(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=110;for(let i=0;i<8;i++){candles.push({o:p,h:p+1,l:p-2-Math.random()*2,c:p-1.5});p-=2;}
+for(let i=0;i<4;i++){candles.push({o:p,h:p+0.8,l:p-0.8,c:p+0.3});p+=0.2;}
+for(let i=0;i<10;i++){candles.push({o:p,h:p+2+Math.random()*2,l:p-0.5,c:p+2});p+=2.5;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(4,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+const zoneTop=p2y(candles[8].h+1),zoneBot=p2y(candles[10].l-0.5);
+drawZone(x,W,zoneTop,zoneBot,'rgba(52,214,196,.1)','DEMAND ZONE');
+x.fillStyle='#34D6C4';x.font='10px IBM Plex Mono,monospace';x.fillText('Drop → Base → Rally = Demand Zone (buyers overwhelmed sellers here)',40,H-5);},
 
-supplyZone(el){const{x,W,H}=mc(el,520,180);let f=0;function draw(){x.clearRect(0,0,W,H);
-x.fillStyle='rgba(255,107,129,.12)';x.fillRect(0,20,W,35);x.fillStyle='#FF6B81';x.font='10px IBM Plex Mono,monospace';x.fillText('SUPPLY ZONE (origin of decline)',8,62);
-x.strokeStyle='#E7EAF0';x.lineWidth=2;x.beginPath();const t=Math.min(f,120);
-for(let i=0;i<=t;i++){let y;if(i<40)y=160-i*2.2+Math.sin(i/5)*3;else if(i<60)y=48+Math.sin(i/4)*3;else if(i<80)y=44+(i-60)*4;else y=124+(i-80)*0.3+Math.sin(i/6)*4;x.lineTo(i*4.2+10,y);}x.stroke();
-if(f>60){x.fillStyle='#F2B84B';x.fillText('Price enters zone → sellers activate → decline',150,H-6);}f=(f+1)%140;}draw();setInterval(draw,40);},
+supplyZone(el){const{x,W,H}=mc(el,520,200);
+const candles=[];let p=90;for(let i=0;i<8;i++){candles.push({o:p,h:p+2+Math.random()*2,l:p-1,c:p+1.5});p+=2;}
+for(let i=0;i<4;i++){candles.push({o:p,h:p+0.8,l:p-0.8,c:p-0.3});p-=0.2;}
+for(let i=0;i<10;i++){candles.push({o:p,h:p+0.5,l:p-2-Math.random()*2,c:p-2});p-=2.5;}
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(4,gap*.6);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+const zoneTop=p2y(candles[9].h+0.5),zoneBot=p2y(candles[8].l-1);
+drawZone(x,W,zoneTop,zoneBot,'rgba(255,107,129,.1)','SUPPLY ZONE');
+x.fillStyle='#FF6B81';x.font='10px IBM Plex Mono,monospace';x.fillText('Rally → Base → Drop = Supply Zone (sellers overwhelmed buyers here)',40,H-5);},
 
 rbr(el){const{x,W,H}=mc(el,520,160);x.clearRect(0,0,W,H);x.font='10px IBM Plex Mono,monospace';
 x.strokeStyle='#34D6C4';x.lineWidth=2.5;x.beginPath();x.moveTo(20,140);x.lineTo(120,60);x.lineTo(180,65);x.lineTo(220,58);x.lineTo(320,20);x.stroke();
@@ -1151,51 +1230,60 @@ x.fillStyle='#F2B84B';x.fillText('Cup',150,140);x.fillText('Handle',350,95);x.fi
 rectangle(el){this.range(el);},
 
 /* --- MODULE 9-10: INDICATORS --- */
-sma(el){const{x,W,H}=mc(el,520,160);let prices=[100];for(let i=0;i<70;i++)prices.push(prices[prices.length-1]+(Math.random()-.48)*2);
-const max=Math.max(...prices)+2,min=Math.min(...prices)-2,s=130/((max-min)||1);x.font='9px IBM Plex Mono,monospace';
-x.strokeStyle='rgba(231,234,240,.5)';x.lineWidth=1;x.beginPath();prices.forEach((p,i)=>x.lineTo(i*7.4,10+(max-p)*s));x.stroke();
-let smaArr=[];for(let i=0;i<prices.length;i++){if(i<19){smaArr.push(null);continue;}let sum=0;for(let k=0;k<20;k++)sum+=prices[i-k];smaArr.push(sum/20);}
-x.strokeStyle='#F2B84B';x.lineWidth=2;x.beginPath();smaArr.forEach((v,i)=>{if(v!==null)x.lineTo(i*7.4,10+(max-v)*s);});x.stroke();
-x.fillStyle='#E7EAF0';x.fillText('Price',8,14);x.fillStyle='#F2B84B';x.fillText('20 SMA (equal weight, smooth, slow)',80,14);},
+sma(el){const{x,W,H}=mc(el,520,180);const candles=genCandles(35,100,2);
+const p2y=chartScale(candles,H,20);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+// SMA line
+let sma=[];for(let i=0;i<candles.length;i++){if(i<9){sma.push(null);continue;}let s=0;for(let k=0;k<10;k++)s+=candles[i-k].c;sma.push(s/10);}
+x.strokeStyle='#F2B84B';x.lineWidth=2;x.beginPath();sma.forEach((v,i)=>{if(v)x.lineTo(i*gap+gap/2,p2y(v));});x.stroke();
+x.fillStyle='#F2B84B';x.font='10px IBM Plex Mono,monospace';x.fillText('10 SMA (yellow) — smooth, lags behind price',100,H-5);},
 
-ema(el){const{x,W,H}=mc(el,520,160);let prices=[100];for(let i=0;i<70;i++)prices.push(prices[prices.length-1]+(Math.random()-.48)*2);
-const max=Math.max(...prices)+2,min=Math.min(...prices)-2,s=130/((max-min)||1);
-x.strokeStyle='rgba(231,234,240,.5)';x.lineWidth=1;x.beginPath();prices.forEach((p,i)=>x.lineTo(i*7.4,10+(max-p)*s));x.stroke();
-let e=prices[0];x.strokeStyle='#9C8CFF';x.lineWidth=2;x.beginPath();prices.forEach((p,i)=>{e+=(p-e)*(2/21);if(i>=20)x.lineTo(i*7.4,10+(max-e)*s);});x.stroke();
-x.fillStyle='#9C8CFF';x.font='9px IBM Plex Mono,monospace';x.fillText('20 EMA (more weight on recent = faster)',80,14);},
+ema(el){const{x,W,H}=mc(el,520,180);const candles=genCandles(35,100,2);
+const p2y=chartScale(candles,H,20);const gap=W/candles.length,bw=Math.max(3,gap*.55);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+let e=candles[0].c;x.strokeStyle='#9C8CFF';x.lineWidth=2;x.beginPath();
+candles.forEach((cd,i)=>{e+=(cd.c-e)*(2/11);x.lineTo(i*gap+gap/2,p2y(e));});x.stroke();
+x.fillStyle='#9C8CFF';x.font='10px IBM Plex Mono,monospace';x.fillText('10 EMA (purple) — reacts faster to recent price',100,H-5);},
 
-maCross(el){const{x,W,H}=mc(el,520,160);let prices=[100];for(let i=0;i<100;i++)prices.push(prices[prices.length-1]+(Math.random()-.45)*1.8);
-const max=Math.max(...prices)+2,min=Math.min(...prices)-2,s=130/((max-min)||1);
-function calcEma(arr,period){let e=arr[0],out=[];arr.forEach((p,i)=>{e+=(p-e)*(2/(period+1));out.push(i>=period?e:null);});return out;}
-const ema50=calcEma(prices,50),ema200=calcEma(prices,200);
-x.strokeStyle='rgba(231,234,240,.3)';x.lineWidth=1;x.beginPath();prices.forEach((p,i)=>x.lineTo(i*5.2,10+(max-p)*s));x.stroke();
-x.strokeStyle='#F2B84B';x.lineWidth=1.5;x.beginPath();ema50.forEach((v,i)=>{if(v)x.lineTo(i*5.2,10+(max-v)*s);});x.stroke();
-x.strokeStyle='#9C8CFF';x.lineWidth=1.5;x.beginPath();ema200.forEach((v,i)=>{if(v)x.lineTo(i*5.2,10+(max-v)*s);});x.stroke();
-x.fillStyle='#F2B84B';x.font='9px IBM Plex Mono,monospace';x.fillText('50 EMA',W-60,20);x.fillStyle='#9C8CFF';x.fillText('200 EMA',W-60,34);},
+maCross(el){const{x,W,H}=mc(el,520,180);const candles=genCandles(50,90,1.5);
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(2,gap*.5);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+function calcEma(period){let e=candles[0].c,out=[];candles.forEach((cd,i)=>{e+=(cd.c-e)*(2/(period+1));out.push(i>=period?e:null);});return out;}
+const fast=calcEma(10),slow=calcEma(25);
+x.strokeStyle='#F2B84B';x.lineWidth=1.5;x.beginPath();fast.forEach((v,i)=>{if(v)x.lineTo(i*gap+gap/2,p2y(v));});x.stroke();
+x.strokeStyle='#9C8CFF';x.lineWidth=1.5;x.beginPath();slow.forEach((v,i)=>{if(v)x.lineTo(i*gap+gap/2,p2y(v));});x.stroke();
+x.fillStyle='#F2B84B';x.font='9px IBM Plex Mono,monospace';x.fillText('Fast EMA',W-70,20);x.fillStyle='#9C8CFF';x.fillText('Slow EMA',W-70,34);
+x.fillStyle='#8C97AC';x.fillText('Golden Cross: fast crosses above slow = bullish',100,H-5);},
 
 emaDynamic(el){this.ema(el);},vwap(el){this.sma(el);},multiMA(el){this.maCross(el);},
 
-rsi(el){const{x,W,H}=mc(el,520,220);let prices=[100],rsiV=[50];
-function step(){prices.push(prices[prices.length-1]+(Math.random()-.5)*2.2);if(prices.length>70)prices.shift();let g=0,l=0;for(let i=1;i<prices.length;i++){const d=prices[i]-prices[i-1];if(d>0)g+=d;else l-=d;}const rs=g/(l||1);rsiV.push(100-(100/(1+rs)));if(rsiV.length>70)rsiV.shift();}
-for(let i=0;i<40;i++)step();
-function draw(){x.clearRect(0,0,520,220);const max=Math.max(...prices),min=Math.min(...prices);
-x.strokeStyle='#34D6C4';x.lineWidth=1.5;x.beginPath();prices.forEach((p,i)=>{x.lineTo(i*7.4,70-(p-min)/((max-min)||1)*55);});x.stroke();
-x.strokeStyle='#232C3D';x.beginPath();x.moveTo(0,110);x.lineTo(520,110);x.stroke();
-[70,30].forEach(lv=>{const y=200-lv*1.2;x.strokeStyle=lv===70?'#FF6B81':'#34D6C4';x.setLineDash([3,3]);x.beginPath();x.moveTo(0,y);x.lineTo(520,y);x.stroke();x.setLineDash([]);});
-x.strokeStyle='#F2B84B';x.lineWidth=2;x.beginPath();rsiV.forEach((r,i)=>x.lineTo(i*7.4,200-r*1.2));x.stroke();
-x.fillStyle='#34D6C4';x.font='9px IBM Plex Mono,monospace';x.fillText('Price',8,12);x.fillStyle='#F2B84B';x.fillText('RSI',8,122);}
-draw();setInterval(()=>{step();draw();},140);},
+rsi(el){const{x,W,H}=mc(el,520,220);const candles=genCandles(40,100,2.5);
+const p2y=chartScale(candles,H*0.45,10);const gap=W/candles.length,bw=Math.max(2,gap*.5);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+// RSI below
+const rsiY=H*0.52,rsiH=H*0.42;x.strokeStyle='#232C3D';x.beginPath();x.moveTo(0,rsiY);x.lineTo(W,rsiY);x.stroke();
+drawHLine(x,W,rsiY+rsiH*0.3,'rgba(255,107,129,.4)','70',true);
+drawHLine(x,W,rsiY+rsiH*0.7,'rgba(52,214,196,.4)','30',true);
+// Calculate RSI
+let rsiVals=[];for(let i=1;i<candles.length;i++){let g=0,l=0;for(let k=Math.max(0,i-14);k<i;k++){const d=candles[k+1]?candles[k+1].c-candles[k].c:0;if(d>0)g+=d;else l-=d;}const rs=g/(l||1);rsiVals.push(100-100/(1+rs));}
+x.strokeStyle='#F2B84B';x.lineWidth=1.8;x.beginPath();
+rsiVals.forEach((r,i)=>{x.lineTo((i+1)*gap+gap/2,rsiY+rsiH*(1-r/100));});x.stroke();
+x.fillStyle='#F2B84B';x.font='9px IBM Plex Mono,monospace';x.fillText('RSI (14)',8,rsiY+12);},
 
 rsiDiv(el){this.rsi(el);},stochRsi(el){this.rsi(el);},macd(el){this.rsi(el);},macdDiv(el){this.rsi(el);},
 
-bollinger(el){const{x,W,H}=mc(el,520,180);let prices=[100];for(let i=0;i<70;i++){const vol=.5+Math.abs(Math.sin(i/20))*3;prices.push(prices[prices.length-1]+(Math.random()-.5)*vol);}
-const max=Math.max(...prices)+4,min=Math.min(...prices)-4,s=150/((max-min)||1);
-x.strokeStyle='#E7EAF0';x.lineWidth=1.5;x.beginPath();prices.forEach((p,i)=>x.lineTo(i*7.4,10+(max-p)*s));x.stroke();
-let upper=[],lower=[];for(let i=0;i<prices.length;i++){if(i<19){upper.push(null);lower.push(null);continue;}let sum=0;for(let k=0;k<20;k++)sum+=prices[i-k];const avg=sum/20;let v=0;for(let k=0;k<20;k++)v+=Math.pow(prices[i-k]-avg,2);const std=Math.sqrt(v/20);upper.push(avg+2*std);lower.push(avg-2*std);}
-x.fillStyle='rgba(242,184,75,.06)';x.beginPath();let started=false;upper.forEach((v,i)=>{if(!v)return;if(!started){x.moveTo(i*7.4,10+(max-v)*s);started=true;}else x.lineTo(i*7.4,10+(max-v)*s);});for(let i=lower.length-1;i>=0;i--){if(lower[i])x.lineTo(i*7.4,10+(max-lower[i])*s);}x.closePath();x.fill();
-x.strokeStyle='#F2B84B';x.lineWidth=1;x.beginPath();upper.forEach((v,i)=>{if(v)x.lineTo(i*7.4,10+(max-v)*s);});x.stroke();
-x.beginPath();lower.forEach((v,i)=>{if(v)x.lineTo(i*7.4,10+(max-v)*s);});x.stroke();
-x.fillStyle='#F2B84B';x.font='9px IBM Plex Mono,monospace';x.fillText('Bollinger Bands (20, 2σ) — squeeze = breakout coming',60,H-4);},
+bollinger(el){const{x,W,H}=mc(el,520,180);const candles=genCandles(40,100,2);
+const p2y=chartScale(candles,H,18);const gap=W/candles.length,bw=Math.max(2,gap*.5);
+candles.forEach((cd,i)=>{drawCandle(x,i*gap+(gap-bw)/2,bw,cd.o,cd.h,cd.l,cd.c,p2y);});
+// Bollinger Bands
+const period=10;for(let i=period-1;i<candles.length;i++){
+  let sum=0;for(let k=0;k<period;k++)sum+=candles[i-k].c;const avg=sum/period;
+  let v=0;for(let k=0;k<period;k++)v+=Math.pow(candles[i-k].c-avg,2);const std=Math.sqrt(v/period);
+  const upper=avg+2*std,lower=avg-2*std;
+  x.fillStyle='rgba(242,184,75,.04)';const uy=p2y(upper),ly=p2y(lower);
+  x.fillRect(i*gap,uy,gap,ly-uy);
+}
+x.fillStyle='#F2B84B';x.font='9px IBM Plex Mono,monospace';x.fillText('Bollinger Bands (10,2σ) — bands expand/contract with volatility',80,H-5);},
 
 atr(el){this.bollinger(el);},cci(el){this.rsi(el);},
 
