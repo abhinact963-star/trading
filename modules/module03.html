@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 3 — Candlestick Patterns | Read The Tape</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0E14;--surface:#11161F;--surface-2:#171F2C;--border:#232C3D;--text:#E7EAF0;--text-dim:#8C97AC;--bull:#34D6C4;--bear:#FF6B81;--amber:#F2B84B;--violet:#9C8CFF;--mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;}a{color:var(--amber);text-decoration:none;}a:hover{text-decoration:underline;}::selection{background:var(--amber);color:#0A0E14;}
+.wrap{max-width:860px;margin:0 auto;padding:48px 28px 80px;}.breadcrumb{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-bottom:24px;}.breadcrumb a{color:var(--amber);}h1{font-family:var(--mono);font-size:clamp(26px,4vw,40px);font-weight:700;margin-bottom:8px;}.blurb{color:var(--text-dim);font-size:15px;max-width:680px;margin-bottom:40px;}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:20px;}.topic h2{font-size:18px;font-weight:700;margin-bottom:10px;}.topic p,.topic li{font-size:14.5px;color:var(--text-dim);line-height:1.7;}.topic ul{padding-left:20px;margin-top:8px;}.topic li{margin-bottom:6px;}.tag{display:inline-block;font-family:var(--mono);font-size:10px;color:var(--bull);border:1px solid var(--bull);border-radius:4px;padding:1px 6px;margin-right:6px;}.tag.bear{color:var(--bear);border-color:var(--bear);}
+.anim-box{background:#070A0F;border:1px solid var(--border);border-radius:10px;padding:20px;margin:24px 0;}.anim-box .anim-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;}canvas{display:block;width:100%;height:auto;max-width:600px;}
+.quiz-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px;margin-top:40px;}.quiz-box h2{font-family:var(--mono);font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:20px;}.quiz-q{margin-bottom:24px;}.quiz-q .qtext{font-size:15px;font-weight:600;margin-bottom:12px;}.quiz-opts{display:flex;flex-direction:column;gap:8px;}.quiz-opt{text-align:left;padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;cursor:pointer;font-family:var(--sans);transition:border-color .15s;}.quiz-opt:hover{border-color:var(--text-dim);}.quiz-opt.correct{border-color:var(--bull);background:rgba(52,214,196,0.1);}.quiz-opt.wrong{border-color:var(--bear);background:rgba(255,107,129,0.1);}.quiz-opt:disabled{cursor:default;opacity:.85;}.explain{font-size:13px;color:var(--text-dim);margin-top:8px;display:none;}.explain.show{display:block;}.score-line{font-family:var(--mono);font-size:13px;color:var(--amber);margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.nav-footer{display:flex;justify-content:space-between;margin-top:44px;padding-top:20px;border-top:1px solid var(--border);}.btn{font-family:var(--mono);font-size:13px;font-weight:600;padding:12px 20px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:border-color .15s;}.btn:hover{border-color:var(--amber);}.btn.primary{background:var(--amber);color:#0A0E14;border-color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">Index</a> / Module 03</div>
+<h1>Candlestick Patterns</h1>
+<p class="blurb">Reversal and continuation shapes that recur often enough to be worth knowing — treated as probabilities, not certainties.</p>
+
+<div class="topic">
+  <h2>Bullish Reversal Patterns</h2>
+  <ul>
+    <li><span class="tag">Hammer</span> small body, long lower wick, found after a downtrend.</li>
+    <li><span class="tag">Bullish Engulfing</span> a large bullish candle fully engulfs the prior bearish one.</li>
+    <li><span class="tag">Morning Star</span> a three-candle bottoming sequence.</li>
+    <li><span class="tag">Piercing Pattern</span>, <span class="tag">Three White Soldiers</span></li>
+  </ul>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Hammer forming after a downtrend</div>
+    <canvas id="animHammer" width="1120" height="440"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Bearish Reversal Patterns</h2>
+  <ul>
+    <li><span class="tag bear">Shooting Star</span> small body, long upper wick, after an uptrend.</li>
+    <li><span class="tag bear">Bearish Engulfing</span>, <span class="tag bear">Evening Star</span></li>
+    <li><span class="tag bear">Dark Cloud Cover</span>, <span class="tag bear">Three Black Crows</span></li>
+  </ul>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Bearish Engulfing pattern</div>
+    <canvas id="animEngulfing" width="1120" height="440"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Continuation / Indecision Patterns</h2>
+  <ul>
+    <li><strong>Doji</strong> — open and close nearly equal, signals indecision.</li>
+    <li><strong>Spinning Top</strong> — small body, wicks on both sides.</li>
+    <li><strong>Rising/Falling Three Methods</strong> — a pause within an ongoing trend.</li>
+  </ul>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Pattern step-through (reversal forming)</div>
+    <canvas id="animPattern" width="1120" height="440"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>The Honest Caveat</h2>
+  <p>No candlestick pattern works in isolation reliably. Context — where it forms relative to support/resistance, trend, and volume — matters more than the shape itself.</p>
+</div>
+
+<div class="quiz-box">
+  <h2>Quick Check</h2>
+  <div id="quizContainer"></div>
+  <div class="score-line" id="scoreLine" style="display:none;"></div>
+</div>
+
+<div class="nav-footer">
+  <a href="module02.html" class="btn">&larr; Module 2</a>
+  <a href="module04.html" class="btn primary">Module 4: Support & Resistance &rarr;</a>
+</div>
+</div>
+
+<script>
+// === HAMMER ANIMATION ===
+(function(){
+  const c=document.getElementById('animHammer'),ctx=c.getContext('2d');
+  const W=560,H=220;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  let frame=0;
+  const candles=[
+    {o:100,c:92,h:101,l:90},{o:92,c:85,h:93,l:83},{o:85,c:78,h:86,l:76},
+    {o:78,c:72,h:79,l:70},{o:72,c:68,h:73,l:66}
+  ];
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const n=Math.min(candles.length, 2+Math.floor(frame/20));
+    const allP=candles.slice(0,n).flatMap(c=>[c.h,c.l]);
+    const max=Math.max(...allP)+3,min=Math.min(...allP)-3;
+    const scale=160/((max-min)||1);
+    candles.slice(0,n).forEach((cd,i)=>{
+      const x=60+i*70,bw=40;
+      const bull=cd.c>=cd.o;
+      const yO=30+(max-cd.o)*scale,yC=30+(max-cd.c)*scale,yH=30+(max-cd.h)*scale,yL=30+(max-cd.l)*scale;
+      ctx.strokeStyle=bull?'#34D6C4':'#FF6B81';ctx.fillStyle=bull?'#34D6C4':'#FF6B81';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(x+bw/2,yH);ctx.lineTo(x+bw/2,yL);ctx.stroke();
+      ctx.fillRect(x,Math.min(yO,yC),bw,Math.max(2,Math.abs(yC-yO)));
+    });
+    // hammer at end
+    if(n>=candles.length){
+      const hm={o:68,c:69,h:70,l:55};
+      const x=60+n*70,bw=40;
+      const yO=30+(max-hm.o)*scale,yC=30+(max-hm.c)*scale,yH=30+(max-hm.h)*scale,yL=30+(max-hm.l)*scale;
+      ctx.strokeStyle='#34D6C4';ctx.fillStyle='#34D6C4';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(x+bw/2,yH);ctx.lineTo(x+bw/2,yL);ctx.stroke();
+      ctx.fillRect(x,Math.min(yO,yC),bw,Math.max(3,Math.abs(yC-yO)));
+      ctx.fillStyle='#F2B84B';ctx.font='12px IBM Plex Mono,monospace';
+      ctx.fillText('HAMMER',x-5,yL+20);
+    }
+    frame=(frame+1)%140;
+  }
+  draw();setInterval(draw,80);
+})();
+
+// === BEARISH ENGULFING ===
+(function(){
+  const c=document.getElementById('animEngulfing'),ctx=c.getContext('2d');
+  const W=560,H=220;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  let frame=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // uptrend candles
+    const up=[{o:80,c:90,h:92,l:78},{o:90,c:100,h:102,l:88},{o:100,c:108,h:110,l:98},{o:108,c:115,h:117,l:106}];
+    const max=120,min=60,scale=160/((max-min));
+    up.forEach((cd,i)=>{
+      const x=40+i*70,bw=40;
+      const yO=20+(max-cd.o)*scale,yC=20+(max-cd.c)*scale,yH=20+(max-cd.h)*scale,yL=20+(max-cd.l)*scale;
+      ctx.strokeStyle='#34D6C4';ctx.fillStyle='#34D6C4';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(x+bw/2,yH);ctx.lineTo(x+bw/2,yL);ctx.stroke();
+      ctx.fillRect(x,Math.min(yO,yC),bw,Math.max(2,Math.abs(yC-yO)));
+    });
+    // engulfing candle
+    const t=Math.min(1,(frame%80)/40);
+    const eng={o:115,c:115-(30*t),h:117,l:115-(32*t)};
+    const x=40+4*70,bw=50;
+    const yO=20+(max-eng.o)*scale,yC=20+(max-eng.c)*scale,yH=20+(max-eng.h)*scale,yL=20+(max-eng.l)*scale;
+    ctx.strokeStyle='#FF6B81';ctx.fillStyle='#FF6B81';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(x+bw/2,yH);ctx.lineTo(x+bw/2,yL);ctx.stroke();
+    ctx.fillRect(x,Math.min(yO,yC),bw,Math.max(2,Math.abs(yC-yO)));
+    if(t>=1){ctx.fillStyle='#F2B84B';ctx.font='12px IBM Plex Mono,monospace';ctx.fillText('BEARISH ENGULFING',x-30,yL+22);}
+    frame++;if(frame>160)frame=0;
+  }
+  draw();setInterval(draw,60);
+})();
+
+// === PATTERN STEP THROUGH ===
+(function(){
+  const c=document.getElementById('animPattern'),ctx=c.getContext('2d');
+  const W=560,H=220;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  const labels=['Downtrend forming','Hammer candle prints','Buyers absorb selling','Price reverses upward'];
+  let stage=0;
+  const pts=[[60,140],[120,160],[180,175],[240,155],[300,145],[360,105],[420,75],[480,55]];
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='#8C97AC';ctx.lineWidth=2;ctx.beginPath();
+    const n=Math.min(pts.length,4+stage);
+    pts.slice(0,n).forEach((p,i)=>{i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]);});
+    ctx.stroke();
+    if(stage>=1){ctx.fillStyle='#34D6C4';ctx.fillRect(238,153,12,4);ctx.strokeStyle='#34D6C4';ctx.beginPath();ctx.moveTo(244,153);ctx.lineTo(244,185);ctx.stroke();}
+    ctx.font='13px IBM Plex Mono,monospace';ctx.fillStyle='#F2B84B';ctx.fillText(labels[stage],20,H-8);
+  }
+  draw();setInterval(()=>{stage=(stage+1)%4;draw();},1300);
+})();
+
+// === QUIZ ===
+(function(){
+  const questions=[
+    {q:'A Hammer pattern is most meaningful when it appears:',opts:['In the middle of a sideways range','After a sustained downtrend','On a 1-minute chart only','Without any wick at all'],a:1,e:'Context matters — a hammer after a downtrend signals possible reversal.'},
+    {q:'A Doji candle primarily signals:',opts:['Strong bullish continuation','Strong bearish continuation','Indecision between buyers and sellers','Guaranteed reversal'],a:2,e:'Open ≈ close means neither side won the session.'},
+    {q:'Bearish Engulfing requires:',opts:['A small bearish candle inside a large bullish one','A large bearish candle fully covering the prior bullish candle\'s body','Three consecutive dojis','A gap up only'],a:1,e:'Engulfing patterns are defined by full-body coverage of the prior candle.'},
+    {q:'Why shouldn\'t candlestick patterns be traded in isolation?',opts:['They are only valid on weekly charts','Their reliability depends heavily on context like trend and S/R location','They never work','They require leverage to trade'],a:1,e:'Context (trend, location, volume) changes a pattern\'s reliability significantly.'},
+  ];
+  const container=document.getElementById('quizContainer');let answered=0,score=0;
+  questions.forEach((q,qi)=>{const div=document.createElement('div');div.className='quiz-q';div.innerHTML=`<div class="qtext">${qi+1}. ${q.q}</div><div class="quiz-opts"></div><div class="explain">${q.e}</div>`;container.appendChild(div);const optsDiv=div.querySelector('.quiz-opts');q.opts.forEach((opt,oi)=>{const btn=document.createElement('button');btn.className='quiz-opt';btn.textContent=opt;btn.onclick=()=>{if(btn.dataset.done)return;optsDiv.querySelectorAll('.quiz-opt').forEach(b=>{b.dataset.done='1';b.disabled=true;});if(oi===q.a){btn.classList.add('correct');score++;}else{btn.classList.add('wrong');optsDiv.children[q.a].classList.add('correct');}div.querySelector('.explain').classList.add('show');answered++;if(answered===questions.length){const sl=document.getElementById('scoreLine');sl.style.display='block';sl.textContent=`Score: ${score} / ${questions.length}`;}};optsDiv.appendChild(btn);});});
+})();
+</script>
+</body>
+</html>

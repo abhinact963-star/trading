@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 6 — Market Structure (BOS, CHoCH, MSS) | Read The Tape</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0E14;--surface:#11161F;--surface-2:#171F2C;--border:#232C3D;--text:#E7EAF0;--text-dim:#8C97AC;--bull:#34D6C4;--bear:#FF6B81;--amber:#F2B84B;--violet:#9C8CFF;--mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;}a{color:var(--amber);text-decoration:none;}a:hover{text-decoration:underline;}::selection{background:var(--amber);color:#0A0E14;}
+.wrap{max-width:860px;margin:0 auto;padding:48px 28px 80px;}.breadcrumb{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-bottom:24px;}.breadcrumb a{color:var(--amber);}h1{font-family:var(--mono);font-size:clamp(26px,4vw,40px);font-weight:700;margin-bottom:8px;}.blurb{color:var(--text-dim);font-size:15px;max-width:680px;margin-bottom:40px;}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:20px;}.topic h2{font-size:18px;font-weight:700;margin-bottom:10px;}.topic p,.topic li{font-size:14.5px;color:var(--text-dim);line-height:1.7;}.topic ul{padding-left:20px;margin-top:8px;}.topic li{margin-bottom:6px;}
+.anim-box{background:#070A0F;border:1px solid var(--border);border-radius:10px;padding:20px;margin:24px 0;}.anim-box .anim-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;}canvas{display:block;width:100%;height:auto;max-width:600px;}
+.quiz-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px;margin-top:40px;}.quiz-box h2{font-family:var(--mono);font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:20px;}.quiz-q{margin-bottom:24px;}.quiz-q .qtext{font-size:15px;font-weight:600;margin-bottom:12px;}.quiz-opts{display:flex;flex-direction:column;gap:8px;}.quiz-opt{text-align:left;padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;cursor:pointer;font-family:var(--sans);transition:border-color .15s;}.quiz-opt:hover{border-color:var(--text-dim);}.quiz-opt.correct{border-color:var(--bull);background:rgba(52,214,196,0.1);}.quiz-opt.wrong{border-color:var(--bear);background:rgba(255,107,129,0.1);}.quiz-opt:disabled{cursor:default;opacity:.85;}.explain{font-size:13px;color:var(--text-dim);margin-top:8px;display:none;}.explain.show{display:block;}.score-line{font-family:var(--mono);font-size:13px;color:var(--amber);margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.nav-footer{display:flex;justify-content:space-between;margin-top:44px;padding-top:20px;border-top:1px solid var(--border);}.btn{font-family:var(--mono);font-size:13px;font-weight:600;padding:12px 20px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:border-color .15s;}.btn:hover{border-color:var(--amber);}.btn.primary{background:var(--amber);color:#0A0E14;border-color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">Index</a> / Module 06</div>
+<h1>Market Structure</h1>
+<p class="blurb">The formal vocabulary for describing exactly when and how a trend changes — BOS, CHoCH, MSS.</p>
+
+<div class="topic">
+  <h2>The Four Swing Labels</h2>
+  <p><strong>HH</strong> Higher High &middot; <strong>HL</strong> Higher Low &middot; <strong>LH</strong> Lower High &middot; <strong>LL</strong> Lower Low — the raw vocabulary every structure concept is built from.</p>
+</div>
+
+<div class="topic">
+  <h2>Break of Structure (BOS)</h2>
+  <p>Price closes beyond a prior significant swing point <em>in the direction of the existing trend</em> — confirmation that the trend is continuing.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — BOS in an uptrend (breaking above prior HH)</div>
+    <canvas id="animBOS" width="1120" height="480"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Change of Character (CHoCH)</h2>
+  <p>The first sign a trend may be ending: price breaks a swing point <em>against</em> the prevailing trend (e.g. breaking below the most recent Higher Low in an uptrend).</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — CHoCH: uptrend HL broken, first bearish signal</div>
+    <canvas id="animCHoCH" width="1120" height="480"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Market Structure Shift (MSS)</h2>
+  <p>A more decisive confirmation that the trend has actually reversed, not just paused. Typically requires a CHoCH followed by a new structure forming in the opposite direction.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — MSS: full trend reversal confirmed</div>
+    <canvas id="animMSS" width="1120" height="480"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Internal vs. External Structure</h2>
+  <p>"External" structure refers to the major swing highs/lows. "Internal" structure refers to the smaller swings inside each leg — useful for timing entries within the broader move.</p>
+</div>
+
+<div class="quiz-box">
+  <h2>Quick Check</h2>
+  <div id="quizContainer"></div>
+  <div class="score-line" id="scoreLine" style="display:none;"></div>
+</div>
+
+<div class="nav-footer">
+  <a href="module05.html" class="btn">&larr; Module 5</a>
+  <a href="module07.html" class="btn primary">Module 7: Supply & Demand &rarr;</a>
+</div>
+</div>
+
+<script>
+// === BOS ANIMATION ===
+(function(){
+  const c=document.getElementById('animBOS'),ctx=c.getContext('2d');
+  const W=560,H=240;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  // Uptrend: HH, HL, then price breaks above prior HH = BOS
+  const pts=[[30,200],[100,130],[150,165],[230,95],[290,140],[370,60]];
+  const labels=['','HH','HL','HH','HL','BOS!'];
+  let n=1;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='#34D6C4';ctx.lineWidth=2.5;ctx.beginPath();
+    pts.slice(0,n+1).forEach((p,i)=>i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]));ctx.stroke();
+    // HH level line
+    if(n>=3){
+      ctx.strokeStyle='rgba(242,184,75,0.4)';ctx.setLineDash([4,4]);ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(pts[1][0],pts[1][1]);ctx.lineTo(W,pts[1][1]);ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    if(n>=5){
+      ctx.strokeStyle='rgba(242,184,75,0.4)';ctx.setLineDash([4,4]);ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(pts[3][0],pts[3][1]);ctx.lineTo(W,pts[3][1]);ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    ctx.font='13px IBM Plex Mono,monospace';
+    pts.slice(1,n+1).forEach((p,i)=>{
+      const lbl=labels[i+1];
+      ctx.fillStyle=lbl==='BOS!'?'#F2B84B':lbl.includes('HH')?'#34D6C4':'#8C97AC';
+      ctx.fillText(lbl,p[0]-12,p[1]-12);
+    });
+    if(n>=5){ctx.fillStyle='#F2B84B';ctx.font='12px IBM Plex Mono,monospace';ctx.fillText('Break of Structure — trend continues',120,H-10);}
+  }
+  draw();setInterval(()=>{n=n>=pts.length-1?1:n+1;draw();},1000);
+})();
+
+// === CHoCH ANIMATION ===
+(function(){
+  const c=document.getElementById('animCHoCH'),ctx=c.getContext('2d');
+  const W=560,H=240;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  // Uptrend then HL broken
+  const pts=[[30,200],[100,120],[150,160],[230,80],[290,130],[370,150]];
+  // pts[4] is the last HL at y=130, pts[5] breaks below it
+  let n=1;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle=n<5?'#34D6C4':'#FF6B81';ctx.lineWidth=2.5;ctx.beginPath();
+    pts.slice(0,n+1).forEach((p,i)=>i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]));ctx.stroke();
+    // HL level
+    if(n>=4){
+      ctx.strokeStyle='rgba(255,107,129,0.5)';ctx.setLineDash([4,4]);ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(pts[2][0],pts[2][1]);ctx.lineTo(W,pts[2][1]);ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle='#8C97AC';ctx.font='11px IBM Plex Mono,monospace';ctx.fillText('Previous HL level',pts[2][0]+10,pts[2][1]-6);
+    }
+    const labels=['','HH','HL','HH','HL','CHoCH!'];
+    ctx.font='13px IBM Plex Mono,monospace';
+    pts.slice(1,n+1).forEach((p,i)=>{
+      const lbl=labels[i+1];
+      ctx.fillStyle=lbl==='CHoCH!'?'#FF6B81':'#8C97AC';
+      ctx.fillText(lbl,p[0]-14,p[1]+(lbl.includes('L')?16:-10));
+    });
+    if(n>=5){ctx.fillStyle='#FF6B81';ctx.font='12px IBM Plex Mono,monospace';ctx.fillText('Change of Character — trend may be ending',80,H-8);}
+  }
+  draw();setInterval(()=>{n=n>=pts.length-1?1:n+1;draw();},1100);
+})();
+
+// === MSS ANIMATION ===
+(function(){
+  const c=document.getElementById('animMSS'),ctx=c.getContext('2d');
+  const W=560,H=240;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  // Uptrend → CHoCH → new LH → new LL = MSS confirmed
+  const pts=[[20,190],[80,110],[130,150],[190,75],[250,130],[310,160],[370,140],[430,190]];
+  const labels=['','HH','HL','HH','HL(CHoCH)','LH','LL','MSS confirmed'];
+  const colors=['','#34D6C4','#34D6C4','#34D6C4','#FF6B81','#FF6B81','#FF6B81','#F2B84B'];
+  let n=1;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // draw price
+    ctx.lineWidth=2.5;ctx.beginPath();
+    pts.slice(0,n+1).forEach((p,i)=>{
+      if(i===0)ctx.moveTo(p[0],p[1]);
+      else{ctx.strokeStyle=i<=4?'#34D6C4':'#FF6B81';ctx.lineTo(p[0],p[1]);ctx.stroke();ctx.beginPath();ctx.moveTo(p[0],p[1]);}
+    });
+    // labels
+    ctx.font='11px IBM Plex Mono,monospace';
+    pts.slice(1,n+1).forEach((p,i)=>{ctx.fillStyle=colors[i+1];ctx.fillText(labels[i+1],p[0]-20,p[1]+(p[1]>120?16:-10));});
+    if(n>=7){ctx.fillStyle='#F2B84B';ctx.font='12px IBM Plex Mono,monospace';ctx.fillText('Market Structure Shift — reversal confirmed (new LH + new LL)',20,H-6);}
+  }
+  draw();setInterval(()=>{n=n>=pts.length-1?1:n+1;draw();},1000);
+})();
+
+// === QUIZ ===
+(function(){
+  const questions=[
+    {q:'BOS (Break of Structure) confirms:',opts:['A trend reversal','Continuation of the existing trend','A liquidity sweep only','Indecision'],a:1,e:'BOS breaks a swing point in the direction of the current trend — continuation.'},
+    {q:'CHoCH is best described as:',opts:['Confirmation of trend continuation','The first warning sign a trend might be reversing','A candlestick pattern','A type of indicator'],a:1,e:'CHoCH = price breaking structure against the prevailing trend for the first time.'},
+    {q:'"External structure" refers to:',opts:['Indicators outside the price chart','The major, larger swing highs and lows','News events','Volume data'],a:1,e:'External structure = the big picture swings; internal = smaller swings within each leg.'},
+    {q:'Which sequence shows a CHoCH happening?',opts:['HH, HL, HH, HL (uptrend continues)','HH, HL, HH, then price breaks below the prior HL','LH, LL, LH, LL','A doji forming at resistance'],a:1,e:'Breaking the most recent HL in an uptrend is the textbook CHoCH trigger.'},
+  ];
+  const container=document.getElementById('quizContainer');let answered=0,score=0;
+  questions.forEach((q,qi)=>{const div=document.createElement('div');div.className='quiz-q';div.innerHTML=`<div class="qtext">${qi+1}. ${q.q}</div><div class="quiz-opts"></div><div class="explain">${q.e}</div>`;container.appendChild(div);const optsDiv=div.querySelector('.quiz-opts');q.opts.forEach((opt,oi)=>{const btn=document.createElement('button');btn.className='quiz-opt';btn.textContent=opt;btn.onclick=()=>{if(btn.dataset.done)return;optsDiv.querySelectorAll('.quiz-opt').forEach(b=>{b.dataset.done='1';b.disabled=true;});if(oi===q.a){btn.classList.add('correct');score++;}else{btn.classList.add('wrong');optsDiv.children[q.a].classList.add('correct');}div.querySelector('.explain').classList.add('show');answered++;if(answered===questions.length){const sl=document.getElementById('scoreLine');sl.style.display='block';sl.textContent=`Score: ${score} / ${questions.length}`;}};optsDiv.appendChild(btn);});});
+})();
+</script>
+</body>
+</html>

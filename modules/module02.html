@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 2 — Candlestick Basics | Read The Tape</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0E14;--surface:#11161F;--surface-2:#171F2C;--border:#232C3D;--text:#E7EAF0;--text-dim:#8C97AC;--bull:#34D6C4;--bear:#FF6B81;--amber:#F2B84B;--violet:#9C8CFF;--mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;}a{color:var(--amber);text-decoration:none;}a:hover{text-decoration:underline;}::selection{background:var(--amber);color:#0A0E14;}
+.wrap{max-width:860px;margin:0 auto;padding:48px 28px 80px;}.breadcrumb{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-bottom:24px;}.breadcrumb a{color:var(--amber);}h1{font-family:var(--mono);font-size:clamp(26px,4vw,40px);font-weight:700;margin-bottom:8px;}.blurb{color:var(--text-dim);font-size:15px;max-width:680px;margin-bottom:40px;}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:20px;}.topic h2{font-size:18px;font-weight:700;margin-bottom:10px;}.topic p,.topic li{font-size:14.5px;color:var(--text-dim);line-height:1.7;}.topic ul{padding-left:20px;margin-top:8px;}.topic li{margin-bottom:6px;}
+.anim-box{background:#070A0F;border:1px solid var(--border);border-radius:10px;padding:20px;margin:24px 0;}.anim-box .anim-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;}canvas{display:block;width:100%;height:auto;max-width:600px;}
+.quiz-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px;margin-top:40px;}.quiz-box h2{font-family:var(--mono);font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:20px;}.quiz-q{margin-bottom:24px;}.quiz-q .qtext{font-size:15px;font-weight:600;margin-bottom:12px;}.quiz-opts{display:flex;flex-direction:column;gap:8px;}.quiz-opt{text-align:left;padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;cursor:pointer;font-family:var(--sans);transition:border-color .15s;}.quiz-opt:hover{border-color:var(--text-dim);}.quiz-opt.correct{border-color:var(--bull);background:rgba(52,214,196,0.1);}.quiz-opt.wrong{border-color:var(--bear);background:rgba(255,107,129,0.1);}.quiz-opt:disabled{cursor:default;opacity:.85;}.explain{font-size:13px;color:var(--text-dim);margin-top:8px;display:none;}.explain.show{display:block;}.score-line{font-family:var(--mono);font-size:13px;color:var(--amber);margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.nav-footer{display:flex;justify-content:space-between;margin-top:44px;padding-top:20px;border-top:1px solid var(--border);}.btn{font-family:var(--mono);font-size:13px;font-weight:600;padding:12px 20px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:border-color .15s;}.btn:hover{border-color:var(--amber);}.btn.primary{background:var(--amber);color:#0A0E14;border-color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">Index</a> / Module 02</div>
+<h1>Candlestick Basics</h1>
+<p class="blurb">The single building block of almost every chart you will ever read.</p>
+
+<div class="topic">
+  <h2>Anatomy of a Candle</h2>
+  <p>Every candle encodes four numbers for its time period: <strong>Open</strong>, <strong>High</strong>, <strong>Low</strong>, <strong>Close</strong>. The thick part is the "body" (open-to-close range); the thin lines above and below are "wicks" or "shadows" (high and low beyond the body).</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Candle Anatomy (labeled)</div>
+    <canvas id="animAnatomy" width="1120" height="500"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Color Convention</h2>
+  <p>A candle where close &gt; open is shown in the "bull" color (price rose). Close &lt; open is the "bear" color (price fell). This site uses <span style="color:var(--bull)">teal</span> for bullish and <span style="color:var(--bear)">coral</span> for bearish.</p>
+</div>
+
+<div class="topic">
+  <h2>Watch a Candle Build, Tick by Tick</h2>
+  <p>A line chart only shows the close. A candle shows the entire fight during the period — how far buyers pushed up, sellers pushed down, and who won by the end.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Candle forming in real-time</div>
+    <canvas id="animBuild" width="1120" height="440"></canvas>
+  </div>
+</div>
+
+<div class="quiz-box">
+  <h2>Quick Check</h2>
+  <div id="quizContainer"></div>
+  <div class="score-line" id="scoreLine" style="display:none;"></div>
+</div>
+
+<div class="nav-footer">
+  <a href="module01.html" class="btn">&larr; Module 1</a>
+  <a href="module03.html" class="btn primary">Module 3: Candlestick Patterns &rarr;</a>
+</div>
+</div>
+
+<script>
+// === CANDLE ANATOMY ===
+(function(){
+  const c=document.getElementById('animAnatomy'),ctx=c.getContext('2d');
+  const W=560,H=250; ctx.scale(2,2); c.style.maxWidth=W+'px';
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // bullish candle
+    const cx=160,bw=60;
+    const o=160,cl=80,hi=50,lo=210;
+    ctx.strokeStyle='#34D6C4';ctx.fillStyle='#34D6C4';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(cx+bw/2,hi);ctx.lineTo(cx+bw/2,lo);ctx.stroke();
+    ctx.fillRect(cx,cl,bw,o-cl);
+    ctx.font='12px IBM Plex Mono,monospace';ctx.fillStyle='#E7EAF0';
+    ctx.fillText('High',cx+bw+12,hi+5);ctx.fillText('Low',cx+bw+12,lo+5);
+    ctx.fillText('Close (top of body)',cx+bw+12,cl+5);ctx.fillText('Open (bottom of body)',cx+bw+12,o+5);
+    ctx.fillStyle='#8C97AC';ctx.fillText('Upper wick',cx-80,hi+20);ctx.fillText('Lower wick',cx-80,lo-10);
+    ctx.fillText('Body',cx+18,130);
+    ctx.fillStyle='#34D6C4';ctx.fillText('BULLISH',cx+15,H-10);
+    // bearish candle
+    const cx2=380;
+    const o2=80,cl2=160;
+    ctx.strokeStyle='#FF6B81';ctx.fillStyle='#FF6B81';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(cx2+bw/2,hi);ctx.lineTo(cx2+bw/2,lo);ctx.stroke();
+    ctx.fillRect(cx2,o2,bw,cl2-o2);
+    ctx.fillStyle='#E7EAF0';
+    ctx.fillText('Open (top)',cx2+bw+12,o2+5);ctx.fillText('Close (bottom)',cx2+bw+12,cl2+5);
+    ctx.fillStyle='#FF6B81';ctx.fillText('BEARISH',cx2+15,H-10);
+  }
+  draw();
+})();
+
+// === CANDLE BUILD TICK BY TICK ===
+(function(){
+  const c=document.getElementById('animBuild'),ctx=c.getContext('2d');
+  const W=560,H=220; ctx.scale(2,2); c.style.maxWidth=W+'px';
+  let t=0, o=100, points=[];
+  function reset(){o=100+(Math.random()-0.5)*4;points=[o];t=0;}
+  function step(){t++;points.push(points[points.length-1]+(Math.random()-0.48)*1.6);if(t>40)reset();}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const h=Math.max(...points),l=Math.min(...points),scale=140/((h-l)||1),mid=(h+l)/2;
+    const cx=280,w=70,cl=points[points.length-1];
+    const yO=110-(o-mid)*scale,yC=110-(cl-mid)*scale,yH=110-(h-mid)*scale,yL=110-(l-mid)*scale;
+    const bull=cl>=o;
+    ctx.strokeStyle=bull?'#34D6C4':'#FF6B81';ctx.fillStyle=bull?'#34D6C4':'#FF6B81';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(cx+w/2,yH);ctx.lineTo(cx+w/2,yL);ctx.stroke();
+    ctx.fillRect(cx,Math.min(yO,yC),w,Math.max(2,Math.abs(yC-yO)));
+    // tick line
+    ctx.strokeStyle='rgba(231,234,240,0.3)';ctx.lineWidth=1;ctx.beginPath();
+    points.forEach((p,i)=>{const x=20+i*12,y=110-(p-mid)*scale;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+    ctx.stroke();
+    ctx.font='11px IBM Plex Mono,monospace';ctx.fillStyle='#8C97AC';
+    ctx.fillText('O '+o.toFixed(2),20,30);ctx.fillText('H '+h.toFixed(2),20,48);
+    ctx.fillText('L '+l.toFixed(2),20,66);ctx.fillText('C '+cl.toFixed(2),20,84);
+    ctx.fillText('Tick '+t,20,H-10);
+  }
+  reset();draw();setInterval(()=>{step();draw();},140);
+})();
+
+// === QUIZ ===
+(function(){
+  const questions=[
+    {q:"A candle's body represents the range between:",opts:['High and low','Open and close','Previous close and current open','Average price and close'],a:1,e:'The body is open-to-close; wicks show the high/low beyond that.'},
+    {q:'If a candle closes below where it opened, it is generally colored:',opts:['Bullish','Bearish','Neutral','Doji'],a:1,e:'Close < open = bearish candle.'},
+    {q:'What does a long upper wick with a small body suggest?',opts:['Price opened and never moved','Buyers pushed price up but it was rejected back down','The session had no volume','The close equals the high'],a:1,e:'A long upper wick means price reached higher before being pushed back down.'},
+    {q:'The main advantage of a candlestick chart over a line chart is:',opts:['It uses less data','It shows the full OHLC range, not just the close','It is always more accurate','It removes the need for volume data'],a:1,e:'Candles encode open, high, low and close — a line chart only shows close.'},
+  ];
+  const container=document.getElementById('quizContainer');let answered=0,score=0;
+  questions.forEach((q,qi)=>{
+    const div=document.createElement('div');div.className='quiz-q';
+    div.innerHTML=`<div class="qtext">${qi+1}. ${q.q}</div><div class="quiz-opts" id="opts${qi}"></div><div class="explain" id="exp${qi}">${q.e}</div>`;
+    container.appendChild(div);const optsDiv=div.querySelector('.quiz-opts');
+    q.opts.forEach((opt,oi)=>{const btn=document.createElement('button');btn.className='quiz-opt';btn.textContent=opt;btn.onclick=()=>{if(btn.dataset.done)return;optsDiv.querySelectorAll('.quiz-opt').forEach(b=>{b.dataset.done='1';b.disabled=true;});if(oi===q.a){btn.classList.add('correct');score++;}else{btn.classList.add('wrong');optsDiv.children[q.a].classList.add('correct');}div.querySelector('.explain').classList.add('show');answered++;if(answered===questions.length){const sl=document.getElementById('scoreLine');sl.style.display='block';sl.textContent=`Score: ${score} / ${questions.length}`;}};optsDiv.appendChild(btn);});
+  });
+})();
+</script>
+</body>
+</html>

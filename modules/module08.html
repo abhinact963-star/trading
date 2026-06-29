@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 8 — Smart Money Concepts (SMC) | Read The Tape</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0E14;--surface:#11161F;--surface-2:#171F2C;--border:#232C3D;--text:#E7EAF0;--text-dim:#8C97AC;--bull:#34D6C4;--bear:#FF6B81;--amber:#F2B84B;--violet:#9C8CFF;--mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;}a{color:var(--amber);text-decoration:none;}a:hover{text-decoration:underline;}::selection{background:var(--amber);color:#0A0E14;}
+.wrap{max-width:860px;margin:0 auto;padding:48px 28px 80px;}.breadcrumb{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-bottom:24px;}.breadcrumb a{color:var(--amber);}h1{font-family:var(--mono);font-size:clamp(26px,4vw,40px);font-weight:700;margin-bottom:8px;}.blurb{color:var(--text-dim);font-size:15px;max-width:680px;margin-bottom:40px;}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:20px;}.topic h2{font-size:18px;font-weight:700;margin-bottom:10px;}.topic p,.topic li{font-size:14.5px;color:var(--text-dim);line-height:1.7;}.topic ul{padding-left:20px;margin-top:8px;}.topic li{margin-bottom:6px;}
+.anim-box{background:#070A0F;border:1px solid var(--border);border-radius:10px;padding:20px;margin:24px 0;}.anim-box .anim-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;}canvas{display:block;width:100%;height:auto;max-width:600px;}
+.quiz-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px;margin-top:40px;}.quiz-box h2{font-family:var(--mono);font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:20px;}.quiz-q{margin-bottom:24px;}.quiz-q .qtext{font-size:15px;font-weight:600;margin-bottom:12px;}.quiz-opts{display:flex;flex-direction:column;gap:8px;}.quiz-opt{text-align:left;padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;cursor:pointer;font-family:var(--sans);transition:border-color .15s;}.quiz-opt:hover{border-color:var(--text-dim);}.quiz-opt.correct{border-color:var(--bull);background:rgba(52,214,196,0.1);}.quiz-opt.wrong{border-color:var(--bear);background:rgba(255,107,129,0.1);}.quiz-opt:disabled{cursor:default;opacity:.85;}.explain{font-size:13px;color:var(--text-dim);margin-top:8px;display:none;}.explain.show{display:block;}.score-line{font-family:var(--mono);font-size:13px;color:var(--amber);margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.nav-footer{display:flex;justify-content:space-between;margin-top:44px;padding-top:20px;border-top:1px solid var(--border);}.btn{font-family:var(--mono);font-size:13px;font-weight:600;padding:12px 20px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:border-color .15s;}.btn:hover{border-color:var(--amber);}.btn.primary{background:var(--amber);color:#0A0E14;border-color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">Index</a> / Module 08</div>
+<h1>Smart Money Concepts</h1>
+<p class="blurb">A framework for thinking about price action as a record of where larger participants are likely positioned.</p>
+
+<div class="topic">
+  <h2>Liquidity</h2>
+  <p><strong>Buy-side liquidity</strong> sits above old highs (stop-losses of short sellers, breakout buy orders). <strong>Sell-side liquidity</strong> sits below old lows. Price is often drawn toward these pools before reversing.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Liquidity sweep above equal highs, then reversal</div>
+    <canvas id="animLiquidity" width="1120" height="480"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Order Blocks</h2>
+  <p>An <strong>order block</strong> is the last opposing candle before a strong impulsive move — treated as a zone of likely institutional interest on retest.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Order block identification & retest</div>
+    <canvas id="animOB" width="1120" height="440"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Fair Value Gap (FVG)</h2>
+  <p>A three-candle imbalance where the middle candle moves so fast it leaves a visible gap between candle 1's wick and candle 3's wick — often a magnet for price to return and "fill."</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — FVG formation and fill</div>
+    <canvas id="animFVG" width="1120" height="480"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Equal Highs/Lows, Premium & Discount, Inducement</h2>
+  <ul>
+    <li><strong>Equal highs/lows</strong> mark obvious liquidity pools.</li>
+    <li><strong>Premium/discount</strong> splits a recent range at its midpoint.</li>
+    <li><strong>Inducement</strong> is a deliberate-looking small move designed to trap traders before the real move.</li>
+  </ul>
+</div>
+
+<div class="quiz-box">
+  <h2>Quick Check</h2>
+  <div id="quizContainer"></div>
+  <div class="score-line" id="scoreLine" style="display:none;"></div>
+</div>
+
+<div class="nav-footer">
+  <a href="module07.html" class="btn">&larr; Module 7</a>
+  <a href="module09.html" class="btn primary">Module 9: Technical Analysis &rarr;</a>
+</div>
+</div>
+
+<script>
+// === LIQUIDITY SWEEP ===
+(function(){
+  const c=document.getElementById('animLiquidity'),ctx=c.getContext('2d');
+  const W=560,H=240;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  let frame=0;
+  const eqY=70;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // equal highs line
+    ctx.strokeStyle='#232C3D';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(0,eqY);ctx.lineTo(W,eqY);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='#8C97AC';ctx.font='11px IBM Plex Mono,monospace';ctx.fillText('Equal highs (buy-side liquidity)',8,eqY-8);
+    ctx.fillStyle='rgba(255,107,129,0.1)';ctx.fillRect(0,eqY-20,W,20);
+    const t=frame%140;
+    let path=[];
+    for(let x=0;x<=t;x++){
+      let yy;
+      if(x<60)yy=eqY+20-Math.sin(x/12)*8;
+      else if(x<85)yy=eqY-(x-60)*1.2; // sweep above
+      else yy=(eqY-30)+(x-85)*2.4; // sharp reversal
+      path.push([x*4,yy]);
+    }
+    ctx.strokeStyle=t>85?'#FF6B81':'#34D6C4';ctx.lineWidth=2.5;ctx.beginPath();
+    path.forEach((p,i)=>i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]));ctx.stroke();
+    if(t>60&&t<86){ctx.fillStyle='#F2B84B';ctx.font='12px IBM Plex Mono,monospace';ctx.fillText('Sweeping liquidity...',280,50);}
+    if(t>=86){ctx.fillStyle='#FF6B81';ctx.font='12px IBM Plex Mono,monospace';ctx.fillText('Reversal after liquidity grab',280,50);}
+    frame++;
+  }
+  draw();setInterval(draw,35);
+})();
+
+// === ORDER BLOCK ===
+(function(){
+  const c=document.getElementById('animOB'),ctx=c.getContext('2d');
+  const W=560,H=220;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  let frame=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const t=Math.min(1,(frame%120)/60);
+    // candles before the move
+    const candles=[{o:100,c:105,h:107,l:98},{o:105,c:110,h:112,l:104},{o:110,c:106,h:111,l:104}]; // last one is the OB (bearish before rally)
+    const scale=2.2,baseY=180;
+    candles.forEach((cd,i)=>{
+      const x=40+i*80,bw=50;
+      const bull=cd.c>=cd.o;
+      const yO=baseY-(cd.o-90)*scale,yC=baseY-(cd.c-90)*scale,yH=baseY-(cd.h-90)*scale,yL=baseY-(cd.l-90)*scale;
+      ctx.strokeStyle=bull?'#34D6C4':'#FF6B81';ctx.fillStyle=bull?'#34D6C4':'#FF6B81';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(x+bw/2,yH);ctx.lineTo(x+bw/2,yL);ctx.stroke();
+      ctx.fillRect(x,Math.min(yO,yC),bw,Math.max(2,Math.abs(yC-yO)));
+      if(i===2){
+        ctx.strokeStyle='#F2B84B';ctx.setLineDash([3,3]);ctx.strokeRect(x-4,Math.min(yO,yC)-4,bw+8,Math.abs(yC-yO)+8);ctx.setLineDash([]);
+        ctx.fillStyle='#F2B84B';ctx.font='10px IBM Plex Mono,monospace';ctx.fillText('ORDER BLOCK',x-10,yL+16);
+      }
+    });
+    // impulsive move up from OB
+    if(t>0){
+      const bigCandle={o:106,c:106+30*t,h:106+32*t,l:104};
+      const x=280,bw=50;
+      const yO=baseY-(bigCandle.o-90)*scale,yC=baseY-(bigCandle.c-90)*scale,yH=baseY-(bigCandle.h-90)*scale,yL=baseY-(bigCandle.l-90)*scale;
+      ctx.strokeStyle='#34D6C4';ctx.fillStyle='#34D6C4';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(x+bw/2,yH);ctx.lineTo(x+bw/2,yL);ctx.stroke();
+      ctx.fillRect(x,Math.min(yO,yC),bw,Math.max(2,Math.abs(yC-yO)));
+      ctx.fillStyle='#34D6C4';ctx.font='11px IBM Plex Mono,monospace';ctx.fillText('Impulsive move',x-10,yC-10);
+    }
+    frame++;
+  }
+  draw();setInterval(draw,50);
+})();
+
+// === FVG ===
+(function(){
+  const c=document.getElementById('animFVG'),ctx=c.getContext('2d');
+  const W=560,H=240;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  let frame=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const scale=2.5,baseY=200;
+    // Three candles creating FVG
+    const c1={o:100,c:104,h:106,l:99}; // candle 1
+    const c2={o:108,c:125,h:127,l:107}; // middle (gap creator)
+    const c3={o:125,c:128,h:130,l:123}; // candle 3
+    const candles=[c1,c2,c3];
+    candles.forEach((cd,i)=>{
+      const x=60+i*120,bw=60;
+      const yO=baseY-(cd.o-90)*scale,yC=baseY-(cd.c-90)*scale,yH=baseY-(cd.h-90)*scale,yL=baseY-(cd.l-90)*scale;
+      ctx.strokeStyle='#34D6C4';ctx.fillStyle='#34D6C4';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(x+bw/2,yH);ctx.lineTo(x+bw/2,yL);ctx.stroke();
+      ctx.fillRect(x,Math.min(yO,yC),bw,Math.max(2,Math.abs(yC-yO)));
+    });
+    // FVG zone: gap between candle 1 high and candle 3 low
+    const fvgTop=baseY-(c3.l-90)*scale;
+    const fvgBot=baseY-(c1.h-90)*scale;
+    ctx.fillStyle='rgba(156,140,255,0.2)';ctx.fillRect(60,fvgTop,360,fvgBot-fvgTop);
+    ctx.strokeStyle='#9C8CFF';ctx.setLineDash([3,3]);ctx.strokeRect(60,fvgTop,360,fvgBot-fvgTop);ctx.setLineDash([]);
+    ctx.fillStyle='#9C8CFF';ctx.font='12px IBM Plex Mono,monospace';ctx.fillText('FAIR VALUE GAP (FVG)',140,fvgTop+(fvgBot-fvgTop)/2+4);
+    // price returning to fill
+    const t=(frame%100)/100;
+    if(t>0.4){
+      const fillProgress=(t-0.4)/0.6;
+      ctx.strokeStyle='#F2B84B';ctx.lineWidth=2;ctx.beginPath();
+      ctx.moveTo(380,baseY-(128-90)*scale);
+      ctx.lineTo(420,baseY-(126-90)*scale);
+      ctx.lineTo(460,baseY-(123-90+fillProgress*17)*scale);
+      if(fillProgress>0.5)ctx.lineTo(500,baseY-(110-90)*scale+((fillProgress-0.5)*40));
+      ctx.stroke();
+      if(fillProgress>0.3){ctx.fillStyle='#F2B84B';ctx.font='11px IBM Plex Mono,monospace';ctx.fillText('Price fills the gap',420,H-10);}
+    }
+    frame++;
+  }
+  draw();setInterval(draw,50);
+})();
+
+// === QUIZ ===
+(function(){
+  const questions=[
+    {q:'Buy-side liquidity typically rests:',opts:['Below recent lows','Above recent highs','Exactly at the 50% level','Only in forex'],a:1,e:'Stops of short-sellers and breakout buy orders cluster above old highs.'},
+    {q:'A Fair Value Gap (FVG) is formed by:',opts:['A single doji candle','A three-candle sequence with a visible imbalance/gap','Two consecutive equal highs','An indicator crossover'],a:1,e:'FVGs come from a 3-candle pattern where the middle candle creates an imbalance.'},
+    {q:'An order block is generally identified as:',opts:['The candle with highest volume in a year','The last opposing candle before a strong impulsive move','Any candle near a round number','A candle with a doji body'],a:1,e:'Order blocks mark the last "wrong-direction" candle before the big move.'},
+    {q:'"Inducement" refers to:',opts:['A guaranteed reversal signal','A small engineered move designed to trap traders before the real move','A type of indicator','Government regulation of liquidity'],a:1,e:'Inducement sets a trap of obvious liquidity before the actual intended move.'},
+  ];
+  const container=document.getElementById('quizContainer');let answered=0,score=0;
+  questions.forEach((q,qi)=>{const div=document.createElement('div');div.className='quiz-q';div.innerHTML=`<div class="qtext">${qi+1}. ${q.q}</div><div class="quiz-opts"></div><div class="explain">${q.e}</div>`;container.appendChild(div);const optsDiv=div.querySelector('.quiz-opts');q.opts.forEach((opt,oi)=>{const btn=document.createElement('button');btn.className='quiz-opt';btn.textContent=opt;btn.onclick=()=>{if(btn.dataset.done)return;optsDiv.querySelectorAll('.quiz-opt').forEach(b=>{b.dataset.done='1';b.disabled=true;});if(oi===q.a){btn.classList.add('correct');score++;}else{btn.classList.add('wrong');optsDiv.children[q.a].classList.add('correct');}div.querySelector('.explain').classList.add('show');answered++;if(answered===questions.length){const sl=document.getElementById('scoreLine');sl.style.display='block';sl.textContent=`Score: ${score} / ${questions.length}`;}};optsDiv.appendChild(btn);});});
+})();
+</script>
+</body>
+</html>

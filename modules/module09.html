@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 9 — Technical Analysis: Lines & Chart Patterns | Read The Tape</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0E14;--surface:#11161F;--surface-2:#171F2C;--border:#232C3D;--text:#E7EAF0;--text-dim:#8C97AC;--bull:#34D6C4;--bear:#FF6B81;--amber:#F2B84B;--violet:#9C8CFF;--mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;}a{color:var(--amber);text-decoration:none;}a:hover{text-decoration:underline;}::selection{background:var(--amber);color:#0A0E14;}
+.wrap{max-width:860px;margin:0 auto;padding:48px 28px 80px;}.breadcrumb{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-bottom:24px;}.breadcrumb a{color:var(--amber);}h1{font-family:var(--mono);font-size:clamp(26px,4vw,40px);font-weight:700;margin-bottom:8px;}.blurb{color:var(--text-dim);font-size:15px;max-width:680px;margin-bottom:40px;}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:20px;}.topic h2{font-size:18px;font-weight:700;margin-bottom:10px;}.topic p,.topic li{font-size:14.5px;color:var(--text-dim);line-height:1.7;}.topic ul{padding-left:20px;margin-top:8px;}.topic li{margin-bottom:6px;}.tag{display:inline-block;font-family:var(--mono);font-size:10px;color:var(--bull);border:1px solid var(--bull);border-radius:4px;padding:1px 6px;margin-right:6px;}.tag.bear{color:var(--bear);border-color:var(--bear);}
+.anim-box{background:#070A0F;border:1px solid var(--border);border-radius:10px;padding:20px;margin:24px 0;}.anim-box .anim-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;}canvas{display:block;width:100%;height:auto;max-width:600px;}
+.quiz-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px;margin-top:40px;}.quiz-box h2{font-family:var(--mono);font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:20px;}.quiz-q{margin-bottom:24px;}.quiz-q .qtext{font-size:15px;font-weight:600;margin-bottom:12px;}.quiz-opts{display:flex;flex-direction:column;gap:8px;}.quiz-opt{text-align:left;padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;cursor:pointer;font-family:var(--sans);transition:border-color .15s;}.quiz-opt:hover{border-color:var(--text-dim);}.quiz-opt.correct{border-color:var(--bull);background:rgba(52,214,196,0.1);}.quiz-opt.wrong{border-color:var(--bear);background:rgba(255,107,129,0.1);}.quiz-opt:disabled{cursor:default;opacity:.85;}.explain{font-size:13px;color:var(--text-dim);margin-top:8px;display:none;}.explain.show{display:block;}.score-line{font-family:var(--mono);font-size:13px;color:var(--amber);margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.nav-footer{display:flex;justify-content:space-between;margin-top:44px;padding-top:20px;border-top:1px solid var(--border);}.btn{font-family:var(--mono);font-size:13px;font-weight:600;padding:12px 20px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:border-color .15s;}.btn:hover{border-color:var(--amber);}.btn.primary{background:var(--amber);color:#0A0E14;border-color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">Index</a> / Module 09</div>
+<h1>Technical Analysis: Lines & Chart Patterns</h1>
+<p class="blurb">Trendlines, channels, and the classic geometric shapes that recur across every liquid market.</p>
+
+<div class="topic">
+  <h2>Trendlines & Channels</h2>
+  <p>A trendline connects a series of swing highs or lows. A channel is two parallel trendlines bracketing price on both sides.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Ascending channel with price bouncing inside</div>
+    <canvas id="animChannel" width="1120" height="440"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Bullish Chart Patterns</h2>
+  <ul>
+    <li><span class="tag">Ascending Triangle</span> flat resistance, rising lows compressing toward breakout.</li>
+    <li><span class="tag">Cup & Handle</span> rounded bottom, brief consolidation, then breakout.</li>
+    <li><span class="tag">Bull Flag</span> sharp rally, tight pullback channel, then continuation.</li>
+  </ul>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Ascending Triangle forming and breaking out</div>
+    <canvas id="animTriangle" width="1120" height="440"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Bearish Chart Patterns</h2>
+  <ul>
+    <li><span class="tag bear">Descending Triangle</span> flat support, falling highs.</li>
+    <li><span class="tag bear">Bear Flag</span> sharp decline, brief pullback, continuation down.</li>
+    <li><span class="tag bear">Head & Shoulders</span> three peaks, middle tallest, neckline break = reversal.</li>
+  </ul>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Head & Shoulders pattern forming</div>
+    <canvas id="animHS" width="1120" height="440"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Neutral Patterns</h2>
+  <p><strong>Symmetrical Triangle</strong> and <strong>Rectangle</strong> — direction is unresolved until a confirmed breakout in either direction.</p>
+</div>
+
+<div class="quiz-box">
+  <h2>Quick Check</h2>
+  <div id="quizContainer"></div>
+  <div class="score-line" id="scoreLine" style="display:none;"></div>
+</div>
+
+<div class="nav-footer">
+  <a href="module08.html" class="btn">&larr; Module 8</a>
+  <a href="module10.html" class="btn primary">Module 10: Indicators &rarr;</a>
+</div>
+</div>
+
+<script>
+// === ASCENDING CHANNEL ===
+(function(){
+  const c=document.getElementById('animChannel'),ctx=c.getContext('2d');
+  const W=560,H=220;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  let frame=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // channel lines
+    ctx.strokeStyle='#F2B84B';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(20,180);ctx.lineTo(520,60);ctx.stroke(); // lower
+    ctx.beginPath();ctx.moveTo(20,130);ctx.lineTo(520,10);ctx.stroke(); // upper
+    ctx.setLineDash([]);
+    // price bouncing in channel
+    ctx.strokeStyle='#34D6C4';ctx.lineWidth=2;ctx.beginPath();
+    const n=Math.min(80,frame);
+    for(let i=0;i<=n;i++){
+      const x=20+i*6.2;
+      const midY=180-(i/80)*120;
+      const amp=22;
+      const y=midY+Math.sin(i/8)*amp;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.fillStyle='#8C97AC';ctx.font='11px IBM Plex Mono,monospace';
+    ctx.fillText('Upper trendline (resistance)',300,20);ctx.fillText('Lower trendline (support)',300,H-10);
+    frame++;if(frame>100)frame=0;
+  }
+  draw();setInterval(draw,60);
+})();
+
+// === ASCENDING TRIANGLE ===
+(function(){
+  const c=document.getElementById('animTriangle'),ctx=c.getContext('2d');
+  const W=560,H=220;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  let frame=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const resistY=60;
+    // flat resistance
+    ctx.strokeStyle='#FF6B81';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(30,resistY);ctx.lineTo(450,resistY);ctx.stroke();ctx.setLineDash([]);
+    // rising support
+    ctx.strokeStyle='#34D6C4';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(30,190);ctx.lineTo(400,resistY+10);ctx.stroke();ctx.setLineDash([]);
+    // price zigzag
+    const pts=[[30,190],[80,65],[130,165],[190,63],[240,140],[300,62],[350,120],[400,61]];
+    ctx.strokeStyle='#E7EAF0';ctx.lineWidth=2;ctx.beginPath();
+    const n=Math.min(pts.length,2+Math.floor(frame/15));
+    pts.slice(0,n).forEach((p,i)=>i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]));
+    ctx.stroke();
+    // breakout
+    if(n>=pts.length){
+      ctx.strokeStyle='#34D6C4';ctx.lineWidth=2.5;ctx.beginPath();
+      ctx.moveTo(400,61);ctx.lineTo(460,30);ctx.lineTo(520,20);ctx.stroke();
+      ctx.fillStyle='#F2B84B';ctx.font='12px IBM Plex Mono,monospace';ctx.fillText('BREAKOUT',440,50);
+    }
+    frame++;if(frame>140)frame=0;
+  }
+  draw();setInterval(draw,60);
+})();
+
+// === HEAD & SHOULDERS ===
+(function(){
+  const c=document.getElementById('animHS'),ctx=c.getContext('2d');
+  const W=560,H=220;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  const pts=[[20,160],[80,100],[130,140],[200,50],[270,140],[330,100],[390,140],[440,160],[500,190]];
+  let n=1;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='#E7EAF0';ctx.lineWidth=2.5;ctx.beginPath();
+    pts.slice(0,n+1).forEach((p,i)=>i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]));ctx.stroke();
+    // neckline
+    if(n>=6){
+      ctx.strokeStyle='#F2B84B';ctx.setLineDash([4,3]);ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(130,140);ctx.lineTo(450,140);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='#F2B84B';ctx.font='10px IBM Plex Mono,monospace';ctx.fillText('Neckline',450,138);
+    }
+    // labels
+    const labels=['','Left Shoulder','','Head','','Right Shoulder','','Neckline break','Sell-off'];
+    ctx.font='10px IBM Plex Mono,monospace';
+    pts.slice(1,n+1).forEach((p,i)=>{
+      if(labels[i+1]){ctx.fillStyle=i+1>=7?'#FF6B81':'#8C97AC';ctx.fillText(labels[i+1],p[0]-30,p[1]-10);}
+    });
+    if(n>=8){ctx.fillStyle='#FF6B81';ctx.font='12px IBM Plex Mono,monospace';ctx.fillText('Head & Shoulders \u2192 Bearish reversal',100,H-8);}
+  }
+  draw();setInterval(()=>{n=n>=pts.length-1?1:n+1;draw();},900);
+})();
+
+// === QUIZ ===
+(function(){
+  const questions=[
+    {q:'A Head & Shoulders pattern is generally considered:',opts:['Bullish continuation','Bearish reversal','A neutral consolidation only','A type of candlestick'],a:1,e:'Head & Shoulders typically signals a top and potential reversal lower.'},
+    {q:'A Symmetrical Triangle is classified as:',opts:['Always bullish','Always bearish','Neutral until a confirmed breakout direction','Only valid on monthly charts'],a:2,e:"Symmetrical triangles don't pre-determine direction — the breakout does."},
+    {q:'A channel is built from:',opts:['One trendline only','Two parallel trendlines bracketing price','A moving average and RSI','Volume bars only'],a:1,e:'Channels use two parallel trendlines, one on each side of price.'},
+  ];
+  const container=document.getElementById('quizContainer');let answered=0,score=0;
+  questions.forEach((q,qi)=>{const div=document.createElement('div');div.className='quiz-q';div.innerHTML=`<div class="qtext">${qi+1}. ${q.q}</div><div class="quiz-opts"></div><div class="explain">${q.e}</div>`;container.appendChild(div);const optsDiv=div.querySelector('.quiz-opts');q.opts.forEach((opt,oi)=>{const btn=document.createElement('button');btn.className='quiz-opt';btn.textContent=opt;btn.onclick=()=>{if(btn.dataset.done)return;optsDiv.querySelectorAll('.quiz-opt').forEach(b=>{b.dataset.done='1';b.disabled=true;});if(oi===q.a){btn.classList.add('correct');score++;}else{btn.classList.add('wrong');optsDiv.children[q.a].classList.add('correct');}div.querySelector('.explain').classList.add('show');answered++;if(answered===questions.length){const sl=document.getElementById('scoreLine');sl.style.display='block';sl.textContent=`Score: ${score} / ${questions.length}`;}};optsDiv.appendChild(btn);});});
+})();
+</script>
+</body>
+</html>

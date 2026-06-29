@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 12 — Fibonacci | Read The Tape</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0E14;--surface:#11161F;--surface-2:#171F2C;--border:#232C3D;--text:#E7EAF0;--text-dim:#8C97AC;--bull:#34D6C4;--bear:#FF6B81;--amber:#F2B84B;--violet:#9C8CFF;--mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;}a{color:var(--amber);text-decoration:none;}a:hover{text-decoration:underline;}::selection{background:var(--amber);color:#0A0E14;}
+.wrap{max-width:860px;margin:0 auto;padding:48px 28px 80px;}.breadcrumb{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-bottom:24px;}.breadcrumb a{color:var(--amber);}h1{font-family:var(--mono);font-size:clamp(26px,4vw,40px);font-weight:700;margin-bottom:8px;}.blurb{color:var(--text-dim);font-size:15px;max-width:680px;margin-bottom:40px;}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:20px;}.topic h2{font-size:18px;font-weight:700;margin-bottom:10px;}.topic p,.topic li{font-size:14.5px;color:var(--text-dim);line-height:1.7;}.topic ul{padding-left:20px;margin-top:8px;}.topic li{margin-bottom:6px;}
+.anim-box{background:#070A0F;border:1px solid var(--border);border-radius:10px;padding:20px;margin:24px 0;}.anim-box .anim-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;}canvas{display:block;width:100%;height:auto;max-width:600px;cursor:pointer;}
+.quiz-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px;margin-top:40px;}.quiz-box h2{font-family:var(--mono);font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:20px;}.quiz-q{margin-bottom:24px;}.quiz-q .qtext{font-size:15px;font-weight:600;margin-bottom:12px;}.quiz-opts{display:flex;flex-direction:column;gap:8px;}.quiz-opt{text-align:left;padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;cursor:pointer;font-family:var(--sans);transition:border-color .15s;}.quiz-opt:hover{border-color:var(--text-dim);}.quiz-opt.correct{border-color:var(--bull);background:rgba(52,214,196,0.1);}.quiz-opt.wrong{border-color:var(--bear);background:rgba(255,107,129,0.1);}.quiz-opt:disabled{cursor:default;opacity:.85;}.explain{font-size:13px;color:var(--text-dim);margin-top:8px;display:none;}.explain.show{display:block;}.score-line{font-family:var(--mono);font-size:13px;color:var(--amber);margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.nav-footer{display:flex;justify-content:space-between;margin-top:44px;padding-top:20px;border-top:1px solid var(--border);}.btn{font-family:var(--mono);font-size:13px;font-weight:600;padding:12px 20px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:border-color .15s;}.btn:hover{border-color:var(--amber);}.btn.primary{background:var(--amber);color:#0A0E14;border-color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">Index</a> / Module 12</div>
+<h1>Fibonacci</h1>
+<p class="blurb">Ratios derived from a number sequence, used to estimate where a retracement or extension might pause.</p>
+
+<div class="topic">
+  <h2>Fibonacci Retracement</h2>
+  <p>Drawn from a swing low to swing high (or vice versa), retracement levels — 23.6%, 38.2%, 50%, 61.8%, 78.6% — mark where a pullback might find support/resistance.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Drag the swing points to draw Fibonacci levels</div>
+    <canvas id="animFib" width="1120" height="480"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Fibonacci Extension</h2>
+  <p>Used to project potential price targets <em>beyond</em> the original swing, for when a move continues past its starting range.</p>
+</div>
+
+<div class="topic">
+  <h2>The Honest Caveat</h2>
+  <p>Fibonacci levels are watched by enough traders that they can become somewhat self-fulfilling, but they are not a law of physics — treat them as one input among several.</p>
+</div>
+
+<div class="quiz-box">
+  <h2>Quick Check</h2>
+  <div id="quizContainer"></div>
+  <div class="score-line" id="scoreLine" style="display:none;"></div>
+</div>
+
+<div class="nav-footer">
+  <a href="module11.html" class="btn">&larr; Module 11</a>
+  <a href="module13.html" class="btn primary">Module 13: Risk Management &rarr;</a>
+</div>
+</div>
+
+<script>
+// === FIBONACCI INTERACTIVE ===
+(function(){
+  const c=document.getElementById('animFib'),ctx=c.getContext('2d');
+  const W=560,H=240;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  let high={x:460,y:40},low={x:80,y:200};
+  let dragging=null;
+  const levels=[0,0.236,0.382,0.5,0.618,0.786,1];
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    levels.forEach(l=>{
+      const y=low.y+(high.y-low.y)*l;
+      ctx.strokeStyle=l===0||l===1?'#8C97AC':'#F2B84B';ctx.setLineDash(l===0||l===1?[]:[4,3]);ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='#8C97AC';ctx.font='10px IBM Plex Mono,monospace';ctx.fillText((l*100).toFixed(1)+'%',4,y-3);
+    });
+    ctx.fillStyle='#34D6C4';ctx.beginPath();ctx.arc(high.x,high.y,6,0,7);ctx.fill();
+    ctx.fillStyle='#FF6B81';ctx.beginPath();ctx.arc(low.x,low.y,6,0,7);ctx.fill();
+    ctx.fillStyle='#E7EAF0';ctx.font='11px IBM Plex Mono,monospace';
+    ctx.fillText('Swing High (drag)',high.x-50,high.y-12);ctx.fillText('Swing Low (drag)',low.x-45,low.y+18);
+  }
+  draw();
+  c.addEventListener('mousedown',e=>{
+    const rect=c.getBoundingClientRect();const mx=(e.clientX-rect.left)*(W/rect.width),my=(e.clientY-rect.top)*(H/rect.height);
+    if(Math.hypot(mx-high.x,my-high.y)<16)dragging='high';
+    else if(Math.hypot(mx-low.x,my-low.y)<16)dragging='low';
+  });
+  window.addEventListener('mouseup',()=>dragging=null);
+  c.addEventListener('mousemove',e=>{
+    if(!dragging)return;const rect=c.getBoundingClientRect();
+    const my=(e.clientY-rect.top)*(H/rect.height);const mx=(e.clientX-rect.left)*(W/rect.width);
+    if(dragging==='high'){high.y=my;high.x=mx;}else{low.y=my;low.x=mx;}
+    draw();
+  });
+})();
+
+// === QUIZ ===
+(function(){
+  const questions=[
+    {q:'Fibonacci retracement levels are drawn between:',opts:['Two random points on the chart','A significant swing low and swing high','The open and close of one candle','Today and exactly one year ago'],a:1,e:'Retracements are anchored to a defined swing move.'},
+    {q:'Which of these is a standard Fibonacci retracement level?',opts:['50%','61.8%','38.2%','All of the above'],a:3,e:'23.6, 38.2, 50, 61.8, and 78.6% are all standard retracement levels.'},
+    {q:'Fibonacci extensions are used to:',opts:['Mark where a pullback might end','Project targets beyond the original swing','Calculate position size','Measure trading volume'],a:1,e:'Extensions project beyond the original move.'},
+  ];
+  const container=document.getElementById('quizContainer');let answered=0,score=0;
+  questions.forEach((q,qi)=>{const div=document.createElement('div');div.className='quiz-q';div.innerHTML=`<div class="qtext">${qi+1}. ${q.q}</div><div class="quiz-opts"></div><div class="explain">${q.e}</div>`;container.appendChild(div);const optsDiv=div.querySelector('.quiz-opts');q.opts.forEach((opt,oi)=>{const btn=document.createElement('button');btn.className='quiz-opt';btn.textContent=opt;btn.onclick=()=>{if(btn.dataset.done)return;optsDiv.querySelectorAll('.quiz-opt').forEach(b=>{b.dataset.done='1';b.disabled=true;});if(oi===q.a){btn.classList.add('correct');score++;}else{btn.classList.add('wrong');optsDiv.children[q.a].classList.add('correct');}div.querySelector('.explain').classList.add('show');answered++;if(answered===questions.length){const sl=document.getElementById('scoreLine');sl.style.display='block';sl.textContent=`Score: ${score} / ${questions.length}`;}};optsDiv.appendChild(btn);});});
+})();
+</script>
+</body>
+</html>

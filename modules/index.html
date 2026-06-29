@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Read The Tape — Module Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0E14;--surface:#11161F;--surface-2:#171F2C;--border:#232C3D;
+  --text:#E7EAF0;--text-dim:#8C97AC;--bull:#34D6C4;--bear:#FF6B81;
+  --amber:#F2B84B;--violet:#9C8CFF;
+  --mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;}
+a{color:var(--amber);text-decoration:none;}
+a:hover{text-decoration:underline;}
+::selection{background:var(--amber);color:#0A0E14;}
+.wrap{max-width:900px;margin:0 auto;padding:60px 28px 80px;}
+h1{font-family:var(--mono);font-size:clamp(30px,5vw,48px);font-weight:700;margin-bottom:8px;}
+h1 .accent{color:var(--amber);}
+.subtitle{color:var(--text-dim);font-size:16px;max-width:600px;margin-bottom:48px;}
+.group-title{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);margin:36px 0 12px;padding-top:20px;border-top:1px solid var(--border);}
+.group-title:first-of-type{border-top:none;margin-top:0;}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:8px;}
+.mod-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 22px;transition:border-color .15s,transform .1s;}
+.mod-card:hover{border-color:var(--amber);transform:translateY(-2px);}
+.mod-card .num{font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:.06em;}
+.mod-card h3{font-size:16px;font-weight:700;margin:6px 0 8px;}
+.mod-card p{font-size:13px;color:var(--text-dim);line-height:1.5;}
+.mod-card.new .num::after{content:" \2022 NEW";color:var(--violet);}
+footer{text-align:center;color:var(--text-dim);font-size:12px;font-family:var(--mono);padding:40px 20px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Read The <span class="accent">Tape.</span></h1>
+  <p class="subtitle">A field manual for understanding price. 17 modules, interactive simulators, quizzes. Pick a module below to begin.</p>
+
+  <div class="group-title">Foundations</div>
+  <div class="modules-grid">
+    <a href="module01.html" class="mod-card"><span class="num">01</span><h3>Trading Fundamentals</h3><p>What a market is, who you trade against, and the vocabulary everything builds on.</p></a>
+    <a href="module02.html" class="mod-card"><span class="num">02</span><h3>Candlestick Basics</h3><p>The single building block of almost every chart you will ever read.</p></a>
+  </div>
+
+  <div class="group-title">Price Action</div>
+  <div class="modules-grid">
+    <a href="module03.html" class="mod-card"><span class="num">03</span><h3>Candlestick Patterns</h3><p>Reversal and continuation shapes treated as probabilities, not certainties.</p></a>
+    <a href="module04.html" class="mod-card"><span class="num">04</span><h3>Support & Resistance</h3><p>The most basic and most load-bearing concept in technical analysis.</p></a>
+    <a href="module05.html" class="mod-card"><span class="num">05</span><h3>Trend Analysis</h3><p>Higher highs and higher lows — the backbone of directional bias.</p></a>
+    <a href="module09.html" class="mod-card"><span class="num">09</span><h3>Technical Analysis: Lines & Patterns</h3><p>Trendlines, channels, and classic geometric chart patterns.</p></a>
+  </div>
+
+  <div class="group-title">Smart Money & Structure</div>
+  <div class="modules-grid">
+    <a href="module06.html" class="mod-card"><span class="num">06</span><h3>Market Structure</h3><p>BOS, CHoCH, and the vocabulary for when a trend changes.</p></a>
+    <a href="module07.html" class="mod-card"><span class="num">07</span><h3>Supply & Demand</h3><p>Zones where sharp moves began — clues about bigger players.</p></a>
+    <a href="module08.html" class="mod-card"><span class="num">08</span><h3>Smart Money Concepts</h3><p>Liquidity, order blocks, FVGs, and how larger participants leave footprints.</p></a>
+    <a href="module15.html" class="mod-card"><span class="num">15</span><h3>ICT, Wyckoff & Elliott</h3><p>Frameworks modeling institutional behavior and recurring market cycles.</p></a>
+  </div>
+
+  <div class="group-title">Indicators & Volume</div>
+  <div class="modules-grid">
+    <a href="module10.html" class="mod-card"><span class="num">10</span><h3>Indicators</h3><p>MA, RSI, MACD, Bollinger Bands, ATR, VWAP — quantifying momentum and volatility.</p></a>
+    <a href="module11.html" class="mod-card"><span class="num">11</span><h3>Volume Analysis & Profile</h3><p>Volume tells you how convicted the move was. POC, VAH, VAL explained.</p></a>
+    <a href="module12.html" class="mod-card"><span class="num">12</span><h3>Fibonacci</h3><p>Ratios used to estimate where retracements or extensions might pause.</p></a>
+  </div>
+
+  <div class="group-title">Risk & Psychology</div>
+  <div class="modules-grid">
+    <a href="module13.html" class="mod-card"><span class="num">13</span><h3>Risk Management</h3><p>Position sizing, stop-losses, and why this determines survival.</p></a>
+    <a href="module14.html" class="mod-card"><span class="num">14</span><h3>Trading Psychology</h3><p>Fear, greed, FOMO, revenge trading — and the habits that counter them.</p></a>
+  </div>
+
+  <div class="group-title">Options & Algo (New)</div>
+  <div class="modules-grid">
+    <a href="module16.html" class="mod-card new"><span class="num">16</span><h3>Options Trading & Volatility</h3><p>Calls, puts, Greeks, IV, and credit spreads — essential for index derivatives.</p></a>
+    <a href="module17.html" class="mod-card new"><span class="num">17</span><h3>Algorithmic Trading & Backtesting</h3><p>Testing strategies, avoiding overfitting, and realistic friction.</p></a>
+  </div>
+</div>
+<footer>READ THE TAPE — built for learning, not financial advice.</footer>
+</body>
+</html>

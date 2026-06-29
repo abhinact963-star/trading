@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 14 — Trading Psychology | Read The Tape</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0E14;--surface:#11161F;--surface-2:#171F2C;--border:#232C3D;--text:#E7EAF0;--text-dim:#8C97AC;--bull:#34D6C4;--bear:#FF6B81;--amber:#F2B84B;--violet:#9C8CFF;--mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;}a{color:var(--amber);text-decoration:none;}a:hover{text-decoration:underline;}::selection{background:var(--amber);color:#0A0E14;}
+.wrap{max-width:860px;margin:0 auto;padding:48px 28px 80px;}.breadcrumb{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-bottom:24px;}.breadcrumb a{color:var(--amber);}h1{font-family:var(--mono);font-size:clamp(26px,4vw,40px);font-weight:700;margin-bottom:8px;}.blurb{color:var(--text-dim);font-size:15px;max-width:680px;margin-bottom:40px;}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:20px;}.topic h2{font-size:18px;font-weight:700;margin-bottom:10px;}.topic p,.topic li{font-size:14.5px;color:var(--text-dim);line-height:1.7;}.topic ul{padding-left:20px;margin-top:8px;}.topic li{margin-bottom:6px;}
+.anim-box{background:#070A0F;border:1px solid var(--border);border-radius:10px;padding:20px;margin:24px 0;}.anim-box .anim-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;}canvas{display:block;width:100%;height:auto;max-width:600px;}
+.quiz-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px;margin-top:40px;}.quiz-box h2{font-family:var(--mono);font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:20px;}.quiz-q{margin-bottom:24px;}.quiz-q .qtext{font-size:15px;font-weight:600;margin-bottom:12px;}.quiz-opts{display:flex;flex-direction:column;gap:8px;}.quiz-opt{text-align:left;padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;cursor:pointer;font-family:var(--sans);transition:border-color .15s;}.quiz-opt:hover{border-color:var(--text-dim);}.quiz-opt.correct{border-color:var(--bull);background:rgba(52,214,196,0.1);}.quiz-opt.wrong{border-color:var(--bear);background:rgba(255,107,129,0.1);}.quiz-opt:disabled{cursor:default;opacity:.85;}.explain{font-size:13px;color:var(--text-dim);margin-top:8px;display:none;}.explain.show{display:block;}.score-line{font-family:var(--mono);font-size:13px;color:var(--amber);margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.nav-footer{display:flex;justify-content:space-between;margin-top:44px;padding-top:20px;border-top:1px solid var(--border);}.btn{font-family:var(--mono);font-size:13px;font-weight:600;padding:12px 20px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:border-color .15s;}.btn:hover{border-color:var(--amber);}.btn.primary{background:var(--amber);color:#0A0E14;border-color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">Index</a> / Module 14</div>
+<h1>Trading Psychology</h1>
+<p class="blurb">The mechanism by which a sound strategy gets undone by the person executing it.</p>
+
+<div class="topic">
+  <h2>Fear & Greed</h2>
+  <p>Fear causes premature exits and hesitation to take valid setups. Greed causes oversized positions and holding past a planned exit.</p>
+</div>
+
+<div class="topic">
+  <h2>FOMO & Overtrading</h2>
+  <p>Fear of missing out drives entries with no real setup. Overtrading — far more trades than the strategy calls for — usually follows.</p>
+</div>
+
+<div class="topic">
+  <h2>Revenge Trading</h2>
+  <p>Trying to immediately "win back" a loss with a larger, less disciplined trade — one of the most reliable ways to turn one loss into an account-ending sequence.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Revenge trading cycle: loss spiraling into larger losses</div>
+    <canvas id="animRevenge" width="1120" height="400"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Discipline & Journaling</h2>
+  <p>Keeping a written trade journal — entry reason, outcome, what was followed or broken — is one of the few habits with strong evidence of improving performance over time.</p>
+</div>
+
+<div class="quiz-box">
+  <h2>Quick Check</h2>
+  <div id="quizContainer"></div>
+  <div class="score-line" id="scoreLine" style="display:none;"></div>
+</div>
+
+<div class="nav-footer">
+  <a href="module13.html" class="btn">&larr; Module 13</a>
+  <a href="module15.html" class="btn primary">Module 15: ICT, Wyckoff & Elliott &rarr;</a>
+</div>
+</div>
+
+<script>
+// === REVENGE TRADING SPIRAL ===
+(function(){
+  const c=document.getElementById('animRevenge'),ctx=c.getContext('2d');
+  const W=560,H=200;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  const trades=[
+    {label:'Trade 1: normal loss',size:1,result:-1},
+    {label:'Trade 2: 2x size (revenge)',size:2,result:-2},
+    {label:'Trade 3: 3x size (desperate)',size:3,result:-3},
+    {label:'Trade 4: 4x (tilt)',size:4,result:-4},
+  ];
+  let equity=[100];
+  trades.forEach(t=>equity.push(equity[equity.length-1]+t.result*5));
+  let n=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const max=105,min=Math.min(...equity)-5,scale=160/((max-min));
+    // equity line
+    ctx.strokeStyle='#FF6B81';ctx.lineWidth=2.5;ctx.beginPath();
+    const shown=equity.slice(0,n+1);
+    shown.forEach((e,i)=>{const x=40+i*120,y=10+(max-e)*scale;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});ctx.stroke();
+    // dots and labels
+    shown.forEach((e,i)=>{
+      const x=40+i*120,y=10+(max-e)*scale;
+      ctx.fillStyle=i===0?'#34D6C4':'#FF6B81';ctx.beginPath();ctx.arc(x,y,4,0,7);ctx.fill();
+      if(i>0&&trades[i-1]){
+        ctx.fillStyle='#8C97AC';ctx.font='10px IBM Plex Mono,monospace';ctx.fillText(trades[i-1].label,x-60,y+16);
+        // size indicator
+        ctx.fillStyle='rgba(255,107,129,0.3)';ctx.fillRect(x-trades[i-1].size*8,y-10,trades[i-1].size*16,8);
+      }
+    });
+    ctx.fillStyle='#F2B84B';ctx.font='12px IBM Plex Mono,monospace';
+    if(n>=4)ctx.fillText('Each loss triggers a bigger, less disciplined trade',40,H-8);
+  }
+  draw();setInterval(()=>{n=(n+1)%(equity.length+10);if(n>=equity.length)n=equity.length-1;draw();},900);
+})();
+
+// === QUIZ ===
+(function(){
+  const questions=[
+    {q:'Revenge trading is best described as:',opts:['Carefully reviewing a loss before the next trade','Immediately taking a larger, undisciplined trade to recover a loss fast','A formal risk management technique','Trading only during news events'],a:1,e:'Revenge trading is an emotional, undisciplined attempt to "win back" losses fast.'},
+    {q:'FOMO-driven entries are typically characterized by:',opts:['Following the pre-defined strategy rules','Entering because price is moving, without a real setup','Waiting patiently for confirmation','Using smaller position sizes than usual'],a:1,e:'FOMO entries skip the actual setup criteria in favor of chasing movement.'},
+    {q:'Keeping a trade journal primarily helps by:',opts:['Guaranteeing higher win rate','Making patterns of rule-breaking and mistakes visible over time','Replacing the need for a strategy','Reducing taxes'],a:1,e:'Journaling surfaces recurring behavioral patterns.'},
+  ];
+  const container=document.getElementById('quizContainer');let answered=0,score=0;
+  questions.forEach((q,qi)=>{const div=document.createElement('div');div.className='quiz-q';div.innerHTML=`<div class="qtext">${qi+1}. ${q.q}</div><div class="quiz-opts"></div><div class="explain">${q.e}</div>`;container.appendChild(div);const optsDiv=div.querySelector('.quiz-opts');q.opts.forEach((opt,oi)=>{const btn=document.createElement('button');btn.className='quiz-opt';btn.textContent=opt;btn.onclick=()=>{if(btn.dataset.done)return;optsDiv.querySelectorAll('.quiz-opt').forEach(b=>{b.dataset.done='1';b.disabled=true;});if(oi===q.a){btn.classList.add('correct');score++;}else{btn.classList.add('wrong');optsDiv.children[q.a].classList.add('correct');}div.querySelector('.explain').classList.add('show');answered++;if(answered===questions.length){const sl=document.getElementById('scoreLine');sl.style.display='block';sl.textContent=`Score: ${score} / ${questions.length}`;}};optsDiv.appendChild(btn);});});
+})();
+</script>
+</body>
+</html>

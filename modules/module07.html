@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 7 — Supply & Demand | Read The Tape</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0E14;--surface:#11161F;--surface-2:#171F2C;--border:#232C3D;--text:#E7EAF0;--text-dim:#8C97AC;--bull:#34D6C4;--bear:#FF6B81;--amber:#F2B84B;--violet:#9C8CFF;--mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;}a{color:var(--amber);text-decoration:none;}a:hover{text-decoration:underline;}::selection{background:var(--amber);color:#0A0E14;}
+.wrap{max-width:860px;margin:0 auto;padding:48px 28px 80px;}.breadcrumb{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-bottom:24px;}.breadcrumb a{color:var(--amber);}h1{font-family:var(--mono);font-size:clamp(26px,4vw,40px);font-weight:700;margin-bottom:8px;}.blurb{color:var(--text-dim);font-size:15px;max-width:680px;margin-bottom:40px;}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:20px;}.topic h2{font-size:18px;font-weight:700;margin-bottom:10px;}.topic p,.topic li{font-size:14.5px;color:var(--text-dim);line-height:1.7;}.topic ul{padding-left:20px;margin-top:8px;}.topic li{margin-bottom:6px;}
+.anim-box{background:#070A0F;border:1px solid var(--border);border-radius:10px;padding:20px;margin:24px 0;}.anim-box .anim-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;}canvas{display:block;width:100%;height:auto;max-width:600px;}
+.quiz-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px;margin-top:40px;}.quiz-box h2{font-family:var(--mono);font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:20px;}.quiz-q{margin-bottom:24px;}.quiz-q .qtext{font-size:15px;font-weight:600;margin-bottom:12px;}.quiz-opts{display:flex;flex-direction:column;gap:8px;}.quiz-opt{text-align:left;padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;cursor:pointer;font-family:var(--sans);transition:border-color .15s;}.quiz-opt:hover{border-color:var(--text-dim);}.quiz-opt.correct{border-color:var(--bull);background:rgba(52,214,196,0.1);}.quiz-opt.wrong{border-color:var(--bear);background:rgba(255,107,129,0.1);}.quiz-opt:disabled{cursor:default;opacity:.85;}.explain{font-size:13px;color:var(--text-dim);margin-top:8px;display:none;}.explain.show{display:block;}.score-line{font-family:var(--mono);font-size:13px;color:var(--amber);margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.nav-footer{display:flex;justify-content:space-between;margin-top:44px;padding-top:20px;border-top:1px solid var(--border);}.btn{font-family:var(--mono);font-size:13px;font-weight:600;padding:12px 20px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:border-color .15s;}.btn:hover{border-color:var(--amber);}.btn.primary{background:var(--amber);color:#0A0E14;border-color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">Index</a> / Module 07</div>
+<h1>Supply & Demand</h1>
+<p class="blurb">Zones where a sharp, fast move began — read as a clue that bigger players were active there.</p>
+
+<div class="topic">
+  <h2>Demand Zones</h2>
+  <p>A <strong>demand zone</strong> is a price area where a strong rally began — implying buyers absorbed all available sellers there. When price returns, it often reacts.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Price entering a demand zone and bouncing</div>
+    <canvas id="animDemand" width="1120" height="440"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Supply Zones</h2>
+  <p>A <strong>supply zone</strong> is where a sharp decline began — where sellers overwhelmed buyers. The mirror of demand.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Price entering a supply zone and rejecting</div>
+    <canvas id="animSupply" width="1120" height="440"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Fresh Zones & Retest</h2>
+  <p>Zones are "fresh" if price hasn't returned since formation. The theory: large institutional orders often can't be filled in one go, leaving unfilled orders behind. A retest either holds (zone valid) or fails through (zone invalidated).</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Fresh zone retest: hold vs. invalidation</div>
+    <canvas id="animRetest" width="1120" height="440"></canvas>
+  </div>
+</div>
+
+<div class="quiz-box">
+  <h2>Quick Check</h2>
+  <div id="quizContainer"></div>
+  <div class="score-line" id="scoreLine" style="display:none;"></div>
+</div>
+
+<div class="nav-footer">
+  <a href="module06.html" class="btn">&larr; Module 6</a>
+  <a href="module08.html" class="btn primary">Module 8: Smart Money Concepts &rarr;</a>
+</div>
+</div>
+
+<script>
+// === DEMAND ZONE ===
+(function(){
+  const c=document.getElementById('animDemand'),ctx=c.getContext('2d');
+  const W=560,H=220;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  let y=40,dir=1;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='rgba(52,214,196,0.15)';ctx.fillRect(0,150,W,40);
+    ctx.fillStyle='#34D6C4';ctx.font='11px IBM Plex Mono,monospace';ctx.fillText('DEMAND ZONE',8,145);
+    // price approaching
+    ctx.strokeStyle='#E7EAF0';ctx.lineWidth=2;ctx.beginPath();
+    const path=[];
+    for(let x=0;x<W;x+=4){
+      let py;
+      if(x<200)py=40+x*0.5+Math.sin(x/20)*5;
+      else if(x<300)py=140+(x-200)*0.12+Math.sin(x/15)*3;
+      else if(x<350)py=165-((x-300)*0.6);
+      else py=135-((x-350)*0.3)+Math.sin(x/18)*4;
+      path.push([x,py]);
+    }
+    const n=Math.min(path.length,Math.floor(y*3));
+    path.slice(0,n).forEach((p,i)=>i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]));
+    ctx.stroke();
+    y+=0.5;if(y>path.length/3)y=0;
+  }
+  draw();setInterval(draw,40);
+})();
+
+// === SUPPLY ZONE ===
+(function(){
+  const c=document.getElementById('animSupply'),ctx=c.getContext('2d');
+  const W=560,H=220;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  let frame=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='rgba(255,107,129,0.15)';ctx.fillRect(0,30,W,40);
+    ctx.fillStyle='#FF6B81';ctx.font='11px IBM Plex Mono,monospace';ctx.fillText('SUPPLY ZONE',8,80);
+    ctx.strokeStyle='#E7EAF0';ctx.lineWidth=2;ctx.beginPath();
+    const t=frame%160;
+    for(let x=0;x<=Math.min(t*4,W);x+=4){
+      let py;
+      if(x<200)py=180-x*0.5+Math.sin(x/20)*5;
+      else if(x<300)py=60-(x-200)*0.08+Math.sin(x/15)*3;
+      else if(x<350)py=50+((x-300)*0.8);
+      else py=90+((x-350)*0.4)+Math.sin(x/18)*4;
+      x===0?ctx.moveTo(x,py):ctx.lineTo(x,py);
+    }
+    ctx.stroke();
+    frame++;
+  }
+  draw();setInterval(draw,40);
+})();
+
+// === RETEST ===
+(function(){
+  const c=document.getElementById('animRetest'),ctx=c.getContext('2d');
+  const W=560,H=220;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  let frame=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // two scenarios side by side
+    ctx.fillStyle='rgba(52,214,196,0.12)';ctx.fillRect(0,130,260,35);ctx.fillRect(300,130,260,35);
+    ctx.fillStyle='#34D6C4';ctx.font='10px IBM Plex Mono,monospace';ctx.fillText('Demand zone',5,128);ctx.fillText('Demand zone',305,128);
+    ctx.fillStyle='#8C97AC';ctx.fillText('HOLD (valid)',80,H-6);ctx.fillText('FAIL (invalidated)',360,H-6);
+    const t=(frame%120)/120;
+    // left: hold
+    ctx.strokeStyle='#34D6C4';ctx.lineWidth=2;ctx.beginPath();
+    ctx.moveTo(20,50);ctx.lineTo(80,80);ctx.lineTo(130,60+t*80);
+    if(t>0.6){ctx.lineTo(180,140-((t-0.6)/0.4)*60);ctx.lineTo(240,80);}
+    ctx.stroke();
+    // right: fail
+    ctx.strokeStyle='#FF6B81';ctx.lineWidth=2;ctx.beginPath();
+    ctx.moveTo(320,50);ctx.lineTo(380,80);ctx.lineTo(430,60+t*100);
+    if(t>0.5){ctx.lineTo(480,160+((t-0.5)/0.5)*30);ctx.lineTo(540,195);}
+    ctx.stroke();
+    frame++;
+  }
+  draw();setInterval(draw,50);
+})();
+
+// === QUIZ ===
+(function(){
+  const questions=[
+    {q:'A demand zone is defined by:',opts:['Where price moved sideways for days','Where a strong, fast rally originated','Any round number price level','The 50-day moving average'],a:1,e:'Demand zones mark the origin of a sharp upward move.'},
+    {q:'A "fresh" zone means:',opts:['It formed within the last minute','Price has not yet returned to retest it','It has been tested five times already','It only exists on weekly charts'],a:1,e:'Freshness refers to zones not yet revisited since formation.'},
+    {q:'On a retest of a demand zone, which outcome invalidates the zone?',opts:['Price bounces and continues up','Price closes through it and continues down','Price pauses briefly then resumes up','Volume increases at the zone'],a:1,e:'A clean breakdown through the zone invalidates it as demand.'},
+  ];
+  const container=document.getElementById('quizContainer');let answered=0,score=0;
+  questions.forEach((q,qi)=>{const div=document.createElement('div');div.className='quiz-q';div.innerHTML=`<div class="qtext">${qi+1}. ${q.q}</div><div class="quiz-opts"></div><div class="explain">${q.e}</div>`;container.appendChild(div);const optsDiv=div.querySelector('.quiz-opts');q.opts.forEach((opt,oi)=>{const btn=document.createElement('button');btn.className='quiz-opt';btn.textContent=opt;btn.onclick=()=>{if(btn.dataset.done)return;optsDiv.querySelectorAll('.quiz-opt').forEach(b=>{b.dataset.done='1';b.disabled=true;});if(oi===q.a){btn.classList.add('correct');score++;}else{btn.classList.add('wrong');optsDiv.children[q.a].classList.add('correct');}div.querySelector('.explain').classList.add('show');answered++;if(answered===questions.length){const sl=document.getElementById('scoreLine');sl.style.display='block';sl.textContent=`Score: ${score} / ${questions.length}`;}};optsDiv.appendChild(btn);});});
+})();
+</script>
+</body>
+</html>

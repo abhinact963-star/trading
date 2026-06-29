@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 16 — Options Trading & Volatility | Read The Tape</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0E14;--surface:#11161F;--surface-2:#171F2C;--border:#232C3D;--text:#E7EAF0;--text-dim:#8C97AC;--bull:#34D6C4;--bear:#FF6B81;--amber:#F2B84B;--violet:#9C8CFF;--mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;}a{color:var(--amber);text-decoration:none;}a:hover{text-decoration:underline;}::selection{background:var(--amber);color:#0A0E14;}
+.wrap{max-width:860px;margin:0 auto;padding:48px 28px 80px;}.breadcrumb{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-bottom:24px;}.breadcrumb a{color:var(--amber);}h1{font-family:var(--mono);font-size:clamp(26px,4vw,40px);font-weight:700;margin-bottom:8px;}.blurb{color:var(--text-dim);font-size:15px;max-width:680px;margin-bottom:40px;}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:20px;}.topic h2{font-size:18px;font-weight:700;margin-bottom:10px;}.topic p,.topic li{font-size:14.5px;color:var(--text-dim);line-height:1.7;}.topic ul{padding-left:20px;margin-top:8px;}.topic li{margin-bottom:6px;}
+.anim-box{background:#070A0F;border:1px solid var(--border);border-radius:10px;padding:20px;margin:24px 0;}.anim-box .anim-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;}canvas{display:block;width:100%;height:auto;max-width:600px;}
+.controls{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;align-items:center;}.controls label{font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:6px;}.controls input[type=range]{width:120px;}.controls input[type=checkbox]{accent-color:var(--amber);}.readout{font-family:var(--mono);font-size:12px;color:var(--amber);}
+.quiz-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px;margin-top:40px;}.quiz-box h2{font-family:var(--mono);font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:20px;}.quiz-q{margin-bottom:24px;}.quiz-q .qtext{font-size:15px;font-weight:600;margin-bottom:12px;}.quiz-opts{display:flex;flex-direction:column;gap:8px;}.quiz-opt{text-align:left;padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;cursor:pointer;font-family:var(--sans);transition:border-color .15s;}.quiz-opt:hover{border-color:var(--text-dim);}.quiz-opt.correct{border-color:var(--bull);background:rgba(52,214,196,0.1);}.quiz-opt.wrong{border-color:var(--bear);background:rgba(255,107,129,0.1);}.quiz-opt:disabled{cursor:default;opacity:.85;}.explain{font-size:13px;color:var(--text-dim);margin-top:8px;display:none;}.explain.show{display:block;}.score-line{font-family:var(--mono);font-size:13px;color:var(--amber);margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.nav-footer{display:flex;justify-content:space-between;margin-top:44px;padding-top:20px;border-top:1px solid var(--border);}.btn{font-family:var(--mono);font-size:13px;font-weight:600;padding:12px 20px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:border-color .15s;}.btn:hover{border-color:var(--amber);}.btn.primary{background:var(--amber);color:#0A0E14;border-color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">Index</a> / Module 16</div>
+<h1>Options Trading & Volatility</h1>
+<p class="blurb">Calls, puts, Greeks, IV — essential for anyone trading index derivatives.</p>
+
+<div class="topic">
+  <h2>Calls, Puts, and Premium</h2>
+  <p>A <strong>call</strong> gives the right to buy at a fixed strike. A <strong>put</strong> gives the right to sell. The <strong>premium</strong> is the price paid for that right.</p>
+</div>
+
+<div class="topic">
+  <h2>Implied Volatility (IV) and IV Rank</h2>
+  <p>IV is the market's estimate of future movement baked into option prices. <strong>IV Rank</strong> tells you whether current IV is high or low relative to its own past year.</p>
+</div>
+
+<div class="topic">
+  <h2>The Greeks</h2>
+  <ul>
+    <li><strong>Delta</strong> — price change per 1-unit move in underlying.</li>
+    <li><strong>Theta</strong> — daily value lost from time decay (sellers earn it, buyers pay it).</li>
+    <li><strong>Gamma</strong> — how fast delta changes, accelerates near expiry.</li>
+    <li><strong>Vega</strong> — sensitivity to IV change.</li>
+  </ul>
+</div>
+
+<div class="topic">
+  <h2>Buying vs. Selling Premium</h2>
+  <p>Buying has defined risk but fights theta daily and is vulnerable to IV crush. Selling collects theta but carries larger risk unless hedged.</p>
+</div>
+
+<div class="topic">
+  <h2>Credit Spreads</h2>
+  <p>Sell one option, buy a further-out hedge. Caps max loss at strike difference minus premium collected.</p>
+  <div class="anim-box">
+    <div class="anim-label">Simulator — Option payoff diagram (single leg or credit spread)</div>
+    <canvas id="animOptions" width="1120" height="440"></canvas>
+    <div class="controls">
+      <label><input type="checkbox" id="opSpread"> Credit spread (add hedge)</label>
+      <label>Strike offset <input type="range" id="opStrike" min="-40" max="40" value="10"></label>
+      <label>Premium <input type="range" id="opPremium" min="1" max="20" value="6"></label>
+      <span class="readout" id="opReadout"></span>
+    </div>
+  </div>
+</div>
+
+<div class="quiz-box">
+  <h2>Quick Check</h2>
+  <div id="quizContainer"></div>
+  <div class="score-line" id="scoreLine" style="display:none;"></div>
+</div>
+
+<div class="nav-footer">
+  <a href="module15.html" class="btn">&larr; Module 15</a>
+  <a href="module17.html" class="btn primary">Module 17: Algo & Backtesting &rarr;</a>
+</div>
+</div>
+
+<script>
+// === OPTIONS PAYOFF ===
+(function(){
+  const c=document.getElementById('animOptions'),ctx=c.getContext('2d');
+  const W=560,H=220;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  function draw(){
+    const strike=+document.getElementById('opStrike').value;
+    const premium=+document.getElementById('opPremium').value;
+    const spread=document.getElementById('opSpread').checked;
+    ctx.clearRect(0,0,W,H);
+    const cx=280,scaleX=4,scaleY=4,midY=110;
+    ctx.strokeStyle='#232C3D';ctx.beginPath();ctx.moveTo(0,midY);ctx.lineTo(W,midY);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.stroke();
+    ctx.fillStyle='#8C97AC';ctx.font='10px IBM Plex Mono,monospace';ctx.fillText('Spot at expiry \u2192',cx+6,16);
+    const hedgeStrike=strike+20;
+    ctx.strokeStyle='#F2B84B';ctx.lineWidth=2.5;ctx.beginPath();
+    for(let px=-60;px<=60;px++){
+      const x=cx+px*scaleX;
+      let pnl=premium;if(px>strike)pnl-=(px-strike);
+      if(spread&&px>hedgeStrike)pnl+=(px-hedgeStrike);
+      const y=midY-pnl*scaleY;
+      px===-60?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    // zero line label
+    ctx.fillStyle='#FF6B81';ctx.font='11px IBM Plex Mono,monospace';
+    ctx.fillText('Short strike',cx+strike*scaleX-10,midY+20);
+    if(spread){ctx.fillStyle='#34D6C4';ctx.fillText('Hedge',cx+hedgeStrike*scaleX-10,midY+34);}
+    const maxLoss=spread?(hedgeStrike-strike-premium):'Uncapped (naked)';
+    document.getElementById('opReadout').textContent=`Max profit: ${premium} | Max loss: ${spread?maxLoss:'uncapped'}`;
+  }
+  ['opStrike','opPremium','opSpread'].forEach(id=>document.getElementById(id).addEventListener('input',draw));
+  draw();
+})();
+
+// === QUIZ ===
+(function(){
+  const questions=[
+    {q:'IV Rank tells you:',opts:['The exact future price','Whether current IV is high or low relative to its own past year','The strike price closest to expiry','The volume of options traded today'],a:1,e:'IV Rank contextualizes today\'s IV against that instrument\'s own history.'},
+    {q:'Theta represents:',opts:['Sensitivity to volatility','Daily value lost purely from time passing','The strike price','Sensitivity to interest rates'],a:1,e:'Theta is time decay — sellers collect it, buyers pay it.'},
+    {q:'A primary risk of buying options around a known event is:',opts:['Unlimited loss potential','IV crush erasing value even if direction was correct','Margin calls','Negative theta for the seller'],a:1,e:'IV often collapses after the event, hurting buyers even on correct direction.'},
+    {q:'A credit spread caps maximum loss by:',opts:['Buying a further-out option as a hedge','Using more leverage','Avoiding stop-losses','Only trading at-the-money options'],a:0,e:'The hedge leg defines and limits the worst-case loss.'},
+  ];
+  const container=document.getElementById('quizContainer');let answered=0,score=0;
+  questions.forEach((q,qi)=>{const div=document.createElement('div');div.className='quiz-q';div.innerHTML=`<div class="qtext">${qi+1}. ${q.q}</div><div class="quiz-opts"></div><div class="explain">${q.e}</div>`;container.appendChild(div);const optsDiv=div.querySelector('.quiz-opts');q.opts.forEach((opt,oi)=>{const btn=document.createElement('button');btn.className='quiz-opt';btn.textContent=opt;btn.onclick=()=>{if(btn.dataset.done)return;optsDiv.querySelectorAll('.quiz-opt').forEach(b=>{b.dataset.done='1';b.disabled=true;});if(oi===q.a){btn.classList.add('correct');score++;}else{btn.classList.add('wrong');optsDiv.children[q.a].classList.add('correct');}div.querySelector('.explain').classList.add('show');answered++;if(answered===questions.length){const sl=document.getElementById('scoreLine');sl.style.display='block';sl.textContent=`Score: ${score} / ${questions.length}`;}};optsDiv.appendChild(btn);});});
+})();
+</script>
+</body>
+</html>

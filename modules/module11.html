@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 11 — Volume Analysis & Volume Profile | Read The Tape</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0E14;--surface:#11161F;--surface-2:#171F2C;--border:#232C3D;--text:#E7EAF0;--text-dim:#8C97AC;--bull:#34D6C4;--bear:#FF6B81;--amber:#F2B84B;--violet:#9C8CFF;--mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;}a{color:var(--amber);text-decoration:none;}a:hover{text-decoration:underline;}::selection{background:var(--amber);color:#0A0E14;}
+.wrap{max-width:860px;margin:0 auto;padding:48px 28px 80px;}.breadcrumb{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-bottom:24px;}.breadcrumb a{color:var(--amber);}h1{font-family:var(--mono);font-size:clamp(26px,4vw,40px);font-weight:700;margin-bottom:8px;}.blurb{color:var(--text-dim);font-size:15px;max-width:680px;margin-bottom:40px;}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:20px;}.topic h2{font-size:18px;font-weight:700;margin-bottom:10px;}.topic p,.topic li{font-size:14.5px;color:var(--text-dim);line-height:1.7;}.topic ul{padding-left:20px;margin-top:8px;}.topic li{margin-bottom:6px;}
+.anim-box{background:#070A0F;border:1px solid var(--border);border-radius:10px;padding:20px;margin:24px 0;}.anim-box .anim-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;}canvas{display:block;width:100%;height:auto;max-width:600px;}
+.quiz-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px;margin-top:40px;}.quiz-box h2{font-family:var(--mono);font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:20px;}.quiz-q{margin-bottom:24px;}.quiz-q .qtext{font-size:15px;font-weight:600;margin-bottom:12px;}.quiz-opts{display:flex;flex-direction:column;gap:8px;}.quiz-opt{text-align:left;padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;cursor:pointer;font-family:var(--sans);transition:border-color .15s;}.quiz-opt:hover{border-color:var(--text-dim);}.quiz-opt.correct{border-color:var(--bull);background:rgba(52,214,196,0.1);}.quiz-opt.wrong{border-color:var(--bear);background:rgba(255,107,129,0.1);}.quiz-opt:disabled{cursor:default;opacity:.85;}.explain{font-size:13px;color:var(--text-dim);margin-top:8px;display:none;}.explain.show{display:block;}.score-line{font-family:var(--mono);font-size:13px;color:var(--amber);margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.nav-footer{display:flex;justify-content:space-between;margin-top:44px;padding-top:20px;border-top:1px solid var(--border);}.btn{font-family:var(--mono);font-size:13px;font-weight:600;padding:12px 20px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:border-color .15s;}.btn:hover{border-color:var(--amber);}.btn.primary{background:var(--amber);color:#0A0E14;border-color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">Index</a> / Module 11</div>
+<h1>Volume Analysis & Volume Profile</h1>
+<p class="blurb">Price tells you where; volume tells you how convicted the move was.</p>
+
+<div class="topic">
+  <h2>Volume Basics & Confirmation</h2>
+  <p>A move on rising volume is generally more reliable than the same move on shrinking volume — volume is read as a proxy for participation and conviction.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Price with volume bars (strong vs weak moves)</div>
+    <canvas id="animVol" width="1120" height="480"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Climactic Volume & Divergence</h2>
+  <p>A sudden volume spike far above average often marks exhaustion. Volume divergence — price making a new high/low while volume shrinks — can foreshadow a reversal.</p>
+</div>
+
+<div class="topic">
+  <h2>Volume Profile, POC, and the Value Area</h2>
+  <p>Volume Profile plots volume against <em>price</em>, showing which levels traded the most. <strong>POC</strong> = price with most volume. <strong>Value Area</strong> = ~70% of total volume. <strong>VAH/VAL</strong> = boundaries.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Volume Profile with POC, VAH, VAL</div>
+    <canvas id="animVP" width="1120" height="520"></canvas>
+  </div>
+</div>
+
+<div class="quiz-box">
+  <h2>Quick Check</h2>
+  <div id="quizContainer"></div>
+  <div class="score-line" id="scoreLine" style="display:none;"></div>
+</div>
+
+<div class="nav-footer">
+  <a href="module10.html" class="btn">&larr; Module 10</a>
+  <a href="module12.html" class="btn primary">Module 12: Fibonacci &rarr;</a>
+</div>
+</div>
+
+<script>
+// === VOLUME BARS ===
+(function(){
+  const c=document.getElementById('animVol'),ctx=c.getContext('2d');
+  const W=560,H=240;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  let prices=[100],vols=[];
+  function step(){
+    const d=(Math.random()-0.48)*2;prices.push(prices[prices.length-1]+d);
+    vols.push(10+Math.random()*30+Math.abs(d)*8);
+    if(prices.length>60){prices.shift();vols.shift();}
+  }
+  for(let i=0;i<50;i++)step();
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const max=Math.max(...prices)+2,min=Math.min(...prices)-2,scale=100/((max-min)||1);
+    const maxV=Math.max(...vols);
+    // volume bars
+    vols.forEach((v,i)=>{
+      const x=i*9+10,barH=(v/maxV)*60;
+      const bull=i>0&&prices[i]>=prices[i-1];
+      ctx.fillStyle=bull?'rgba(52,214,196,0.4)':'rgba(255,107,129,0.4)';
+      ctx.fillRect(x,H-barH,7,barH);
+    });
+    // price line
+    ctx.strokeStyle='#E7EAF0';ctx.lineWidth=2;ctx.beginPath();
+    prices.forEach((p,i)=>{const x=i*9+13,y=20+(max-p)*scale;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});ctx.stroke();
+    ctx.fillStyle='#8C97AC';ctx.font='10px IBM Plex Mono,monospace';ctx.fillText('Price',8,16);ctx.fillText('Volume',8,H-65);
+  }
+  draw();setInterval(()=>{step();draw();},180);
+})();
+
+// === VOLUME PROFILE ===
+(function(){
+  const c=document.getElementById('animVP'),ctx=c.getContext('2d');
+  const W=560,H=260;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  const n=40;const bars=[];let poc=0,maxV=0;
+  for(let i=0;i<n;i++){const dist=Math.abs(i-n/2);const v=Math.max(2,40-dist*1.6+(Math.random()*8-4));bars.push(v);if(v>maxV){maxV=v;poc=i;}}
+  const total=bars.reduce((a,b)=>a+b,0);let covered=bars[poc],lo=poc,hi=poc;
+  while(covered/total<0.70&&(lo>0||hi<n-1)){const lv=lo>0?bars[lo-1]:-1;const rv=hi<n-1?bars[hi+1]:-1;if(rv>=lv){hi++;covered+=bars[hi];}else{lo--;covered+=bars[lo];}}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const barH=220/n;
+    bars.forEach((v,i)=>{
+      const y=10+i*barH;const inVA=i>=lo&&i<=hi;
+      ctx.fillStyle=i===poc?'#F2B84B':(inVA?'rgba(52,214,196,0.5)':'rgba(140,151,172,0.35)');
+      ctx.fillRect(80,y,v*4,barH-1.5);
+    });
+    ctx.fillStyle='#8C97AC';ctx.font='11px IBM Plex Mono,monospace';
+    ctx.fillText('VAH',10,10+lo*barH+10);ctx.fillText('VAL',10,10+hi*barH+10);
+    ctx.fillStyle='#F2B84B';ctx.fillText('POC',10,10+poc*barH+10);
+    ctx.strokeStyle='#232C3D';ctx.beginPath();ctx.moveTo(80,0);ctx.lineTo(80,250);ctx.stroke();
+    // legend
+    ctx.fillStyle='#8C97AC';ctx.fillText('Volume Profile (horizontal)',200,H-5);
+  }
+  draw();
+})();
+
+// === QUIZ ===
+(function(){
+  const questions=[
+    {q:'The Point of Control (POC) is:',opts:['The highest price reached that day','The price level with the most traded volume','The opening price','The average of high and low'],a:1,e:'POC = the single price level with peak traded volume.'},
+    {q:'The Value Area typically contains approximately:',opts:['10% of volume','50% of volume','70% of volume','100% of volume'],a:2,e:'The Value Area is conventionally ~70% of total session volume around the POC.'},
+    {q:'Volume divergence (price makes new high, volume shrinks) is often read as:',opts:['Confirmation of strength','A possible warning sign of exhaustion','Irrelevant noise','A buy signal'],a:1,e:'Shrinking volume on a new extreme can signal weakening participation.'},
+    {q:'VAH and VAL are often used as:',opts:['Stop-loss levels only','Entry trigger points for fading back toward POC','Indicators of trend strength','Volume confirmation tools only'],a:1,e:'VAH/VAL extremes are classic mean-reversion entry references.'},
+  ];
+  const container=document.getElementById('quizContainer');let answered=0,score=0;
+  questions.forEach((q,qi)=>{const div=document.createElement('div');div.className='quiz-q';div.innerHTML=`<div class="qtext">${qi+1}. ${q.q}</div><div class="quiz-opts"></div><div class="explain">${q.e}</div>`;container.appendChild(div);const optsDiv=div.querySelector('.quiz-opts');q.opts.forEach((opt,oi)=>{const btn=document.createElement('button');btn.className='quiz-opt';btn.textContent=opt;btn.onclick=()=>{if(btn.dataset.done)return;optsDiv.querySelectorAll('.quiz-opt').forEach(b=>{b.dataset.done='1';b.disabled=true;});if(oi===q.a){btn.classList.add('correct');score++;}else{btn.classList.add('wrong');optsDiv.children[q.a].classList.add('correct');}div.querySelector('.explain').classList.add('show');answered++;if(answered===questions.length){const sl=document.getElementById('scoreLine');sl.style.display='block';sl.textContent=`Score: ${score} / ${questions.length}`;}};optsDiv.appendChild(btn);});});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 4 — Support & Resistance | Read The Tape</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0E14;--surface:#11161F;--surface-2:#171F2C;--border:#232C3D;--text:#E7EAF0;--text-dim:#8C97AC;--bull:#34D6C4;--bear:#FF6B81;--amber:#F2B84B;--violet:#9C8CFF;--mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;}a{color:var(--amber);text-decoration:none;}a:hover{text-decoration:underline;}::selection{background:var(--amber);color:#0A0E14;}
+.wrap{max-width:860px;margin:0 auto;padding:48px 28px 80px;}.breadcrumb{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-bottom:24px;}.breadcrumb a{color:var(--amber);}h1{font-family:var(--mono);font-size:clamp(26px,4vw,40px);font-weight:700;margin-bottom:8px;}.blurb{color:var(--text-dim);font-size:15px;max-width:680px;margin-bottom:40px;}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:20px;}.topic h2{font-size:18px;font-weight:700;margin-bottom:10px;}.topic p,.topic li{font-size:14.5px;color:var(--text-dim);line-height:1.7;}.topic ul{padding-left:20px;margin-top:8px;}.topic li{margin-bottom:6px;}
+.anim-box{background:#070A0F;border:1px solid var(--border);border-radius:10px;padding:20px;margin:24px 0;}.anim-box .anim-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;}canvas{display:block;width:100%;height:auto;max-width:600px;cursor:ns-resize;}
+.quiz-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px;margin-top:40px;}.quiz-box h2{font-family:var(--mono);font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:20px;}.quiz-q{margin-bottom:24px;}.quiz-q .qtext{font-size:15px;font-weight:600;margin-bottom:12px;}.quiz-opts{display:flex;flex-direction:column;gap:8px;}.quiz-opt{text-align:left;padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;cursor:pointer;font-family:var(--sans);transition:border-color .15s;}.quiz-opt:hover{border-color:var(--text-dim);}.quiz-opt.correct{border-color:var(--bull);background:rgba(52,214,196,0.1);}.quiz-opt.wrong{border-color:var(--bear);background:rgba(255,107,129,0.1);}.quiz-opt:disabled{cursor:default;opacity:.85;}.explain{font-size:13px;color:var(--text-dim);margin-top:8px;display:none;}.explain.show{display:block;}.score-line{font-family:var(--mono);font-size:13px;color:var(--amber);margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.nav-footer{display:flex;justify-content:space-between;margin-top:44px;padding-top:20px;border-top:1px solid var(--border);}.btn{font-family:var(--mono);font-size:13px;font-weight:600;padding:12px 20px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:border-color .15s;}.btn:hover{border-color:var(--amber);}.btn.primary{background:var(--amber);color:#0A0E14;border-color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">Index</a> / Module 04</div>
+<h1>Support & Resistance</h1>
+<p class="blurb">The most basic — and most load-bearing — concept in technical analysis.</p>
+
+<div class="topic">
+  <h2>Horizontal Support & Resistance</h2>
+  <p><strong>Support</strong> is a price level where buying pressure has historically halted declines. <strong>Resistance</strong> is the mirror — where selling pressure halts advances.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Drag the support line, watch price react</div>
+    <canvas id="animSR" width="1120" height="480"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Dynamic Support & Resistance</h2>
+  <p>Instead of a flat line, the level itself moves — a rising trendline or a moving average can act as dynamic support in an uptrend.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Dynamic S/R (moving average as support)</div>
+    <canvas id="animDynamic" width="1120" height="440"></canvas>
+  </div>
+</div>
+
+<div class="topic">
+  <h2>Role Reversal</h2>
+  <p>Once broken, old resistance frequently becomes new support (and vice versa), because traders who missed the breakout often buy the retest of the old level.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Resistance becomes support after breakout</div>
+    <canvas id="animRoleReversal" width="1120" height="440"></canvas>
+  </div>
+</div>
+
+<div class="quiz-box">
+  <h2>Quick Check</h2>
+  <div id="quizContainer"></div>
+  <div class="score-line" id="scoreLine" style="display:none;"></div>
+</div>
+
+<div class="nav-footer">
+  <a href="module03.html" class="btn">&larr; Module 3</a>
+  <a href="module05.html" class="btn primary">Module 5: Trend Analysis &rarr;</a>
+</div>
+</div>
+
+<script>
+// === DRAGGABLE S/R ===
+(function(){
+  const c=document.getElementById('animSR'),ctx=c.getContext('2d');
+  const W=560,H=240;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  let supportY=160,resistY=60;
+  let path=[];for(let i=0;i<60;i++)path.push(110+Math.sin(i/6)*15+(Math.random()-0.5)*5);
+  let dragging=null;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // resistance line
+    ctx.strokeStyle='#FF6B81';ctx.setLineDash([5,4]);ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(0,resistY);ctx.lineTo(W,resistY);ctx.stroke();
+    // support line
+    ctx.strokeStyle='#F2B84B';
+    ctx.beginPath();ctx.moveTo(0,supportY);ctx.lineTo(W,supportY);ctx.stroke();
+    ctx.setLineDash([]);
+    // labels
+    ctx.fillStyle='#FF6B81';ctx.font='11px IBM Plex Mono,monospace';ctx.fillText('Resistance (drag)',8,resistY-8);
+    ctx.fillStyle='#F2B84B';ctx.fillText('Support (drag)',8,supportY-8);
+    // price line
+    ctx.strokeStyle='#34D6C4';ctx.lineWidth=2;ctx.beginPath();
+    path.forEach((p,i)=>{const x=i*9.3+10;i===0?ctx.moveTo(x,p):ctx.lineTo(x,p);});
+    ctx.stroke();
+  }
+  function evolve(){
+    const last=path[path.length-1];
+    let drift=(Math.random()-0.5)*6;
+    let next=last+drift;
+    if(next>supportY-4)next=supportY-6-Math.random()*4;
+    if(next<resistY+4)next=resistY+6+Math.random()*4;
+    path.push(next);if(path.length>60)path.shift();
+  }
+  draw();
+  c.addEventListener('mousedown',e=>{
+    const rect=c.getBoundingClientRect();const my=(e.clientY-rect.top)*(H/rect.height);
+    if(Math.abs(my-supportY)<12)dragging='s';
+    else if(Math.abs(my-resistY)<12)dragging='r';
+  });
+  window.addEventListener('mouseup',()=>dragging=null);
+  c.addEventListener('mousemove',e=>{
+    if(!dragging)return;
+    const rect=c.getBoundingClientRect();const my=(e.clientY-rect.top)*(H/rect.height);
+    if(dragging==='s')supportY=Math.max(my,resistY+20);
+    else resistY=Math.min(my,supportY-20);
+    draw();
+  });
+  setInterval(()=>{evolve();draw();},180);
+})();
+
+// === DYNAMIC S/R ===
+(function(){
+  const c=document.getElementById('animDynamic'),ctx=c.getContext('2d');
+  const W=560,H=220;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  let prices=[100];
+  function step(){prices.push(prices[prices.length-1]+(Math.random()-0.42)*2);if(prices.length>80)prices.shift();}
+  for(let i=0;i<60;i++)step();
+  function sma(arr,period){return arr.map((_,i)=>{if(i<period-1)return null;let s=0;for(let k=0;k<period;k++)s+=arr[i-k];return s/period;});}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const ma=sma(prices,20);
+    const max=Math.max(...prices)+3,min=Math.min(...prices)-3;
+    const scale=170/((max-min)||1);
+    ctx.strokeStyle='#34D6C4';ctx.lineWidth=1.5;ctx.beginPath();
+    prices.forEach((p,i)=>{const x=i*7,y=20+(max-p)*scale;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});ctx.stroke();
+    ctx.strokeStyle='#F2B84B';ctx.lineWidth=2;ctx.beginPath();
+    ma.forEach((v,i)=>{if(v===null)return;const x=i*7,y=20+(max-v)*scale;i===ma.indexOf(ma.find(x=>x!==null))?ctx.moveTo(x,y):ctx.lineTo(x,y);});ctx.stroke();
+    ctx.fillStyle='#8C97AC';ctx.font='11px IBM Plex Mono,monospace';
+    ctx.fillText('Price',8,14);ctx.fillStyle='#F2B84B';ctx.fillText('20-period SMA (dynamic support)',100,14);
+  }
+  draw();setInterval(()=>{step();draw();},160);
+})();
+
+// === ROLE REVERSAL ===
+(function(){
+  const c=document.getElementById('animRoleReversal'),ctx=c.getContext('2d');
+  const W=560,H=220;ctx.scale(2,2);c.style.maxWidth=W+'px';
+  let frame=0;
+  const level=110;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='#F2B84B';ctx.setLineDash([5,4]);ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(0,level);ctx.lineTo(W,level);ctx.stroke();ctx.setLineDash([]);
+    const t=frame%200;
+    ctx.strokeStyle='#34D6C4';ctx.lineWidth=2;ctx.beginPath();
+    for(let x=0;x<=Math.min(t*3,W);x++){
+      let y;
+      if(x<150)y=level+20+Math.sin(x/30)*15; // below resistance
+      else if(x<200)y=level+20-(x-150)*0.7; // breakout up
+      else if(x<300)y=level-20+Math.sin((x-200)/25)*10; // above
+      else if(x<360)y=level-20+(x-300)*0.5; // retest from above
+      else y=level-5-Math.sin((x-360)/20)*8-(x-360)*0.05; // bounces off as support
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.fillStyle='#8C97AC';ctx.font='11px IBM Plex Mono,monospace';
+    if(t<50)ctx.fillText('Resistance holds...',10,level-14);
+    else if(t<80)ctx.fillText('Breakout!',200,level-30);
+    else if(t<140)ctx.fillText('Old resistance = new support',200,level+20);
+    else ctx.fillText('Retest holds — role reversal confirmed',200,level+20);
+    frame++;
+  }
+  draw();setInterval(draw,40);
+})();
+
+// === QUIZ ===
+(function(){
+  const questions=[
+    {q:'Support is best described as:',opts:['A level where price always reverses with certainty','A level where buying pressure has historically slowed or reversed declines','Only relevant on daily charts','A line drawn by exchanges'],a:1,e:'Support is a historical tendency, not a guarantee.'},
+    {q:'"Role reversal" in S/R refers to:',opts:['Resistance becoming support after being broken','Support always being stronger than resistance','Switching from buying to selling','A pattern only seen in forex'],a:0,e:'Broken resistance often acts as support on a retest.'},
+    {q:'A rising trendline acting as support is an example of:',opts:['Horizontal support','Dynamic support','Resistance','A reversal pattern'],a:1,e:'Dynamic S/R levels move with price, unlike a flat horizontal line.'},
+    {q:'Why do many traders watch the retest of a broken resistance level?',opts:['Because retests never fail','Because it offers a second entry chance for those who missed the breakout','Because volume disappears at retests','Because it guarantees a reversal'],a:1,e:'The retest gives latecomers an entry near the old level, reinforcing role reversal.'},
+  ];
+  const container=document.getElementById('quizContainer');let answered=0,score=0;
+  questions.forEach((q,qi)=>{const div=document.createElement('div');div.className='quiz-q';div.innerHTML=`<div class="qtext">${qi+1}. ${q.q}</div><div class="quiz-opts"></div><div class="explain">${q.e}</div>`;container.appendChild(div);const optsDiv=div.querySelector('.quiz-opts');q.opts.forEach((opt,oi)=>{const btn=document.createElement('button');btn.className='quiz-opt';btn.textContent=opt;btn.onclick=()=>{if(btn.dataset.done)return;optsDiv.querySelectorAll('.quiz-opt').forEach(b=>{b.dataset.done='1';b.disabled=true;});if(oi===q.a){btn.classList.add('correct');score++;}else{btn.classList.add('wrong');optsDiv.children[q.a].classList.add('correct');}div.querySelector('.explain').classList.add('show');answered++;if(answered===questions.length){const sl=document.getElementById('scoreLine');sl.style.display='block';sl.textContent=`Score: ${score} / ${questions.length}`;}};optsDiv.appendChild(btn);});});
+})();
+</script>
+</body>
+</html>
