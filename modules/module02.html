@@ -19,11 +19,11 @@
 <div class="wrap">
 <div class="breadcrumb"><a href="index.html">Index</a> / Module 02</div>
 <h1>Candlestick Basics</h1>
-<p class="blurb">The single building block of almost every chart you will ever read.</p>
+<p class="blurb">Every chart is made of candles. Once you understand one candle, you understand all of them.</p>
 
 <div class="topic">
-  <h2>Anatomy of a Candle</h2>
-  <p>Every candle encodes four numbers for its time period: <strong>Open</strong>, <strong>High</strong>, <strong>Low</strong>, <strong>Close</strong>. The thick part is the "body" (open-to-close range); the thin lines above and below are "wicks" or "shadows" (high and low beyond the body).</p>
+  <h2>What Does a Candle Show You?</h2>
+  <p>Each candle records four things for that time period. <strong>Open</strong> — where price started. <strong>High</strong> — the highest it went. <strong>Low</strong> — the lowest it went. <strong>Close</strong> — where it ended. The fat part in the middle is the <strong>body</strong>. The thin lines above and below are called <strong>wicks</strong>. The wick shows how far price went before getting pulled back.</p>
   <div class="anim-box">
     <div class="anim-label">Animation — Candle Anatomy (labeled)</div>
     <canvas id="animAnatomy" width="1120" height="500"></canvas>
@@ -31,13 +31,13 @@
 </div>
 
 <div class="topic">
-  <h2>Color Convention</h2>
-  <p>A candle where close &gt; open is shown in the "bull" color (price rose). Close &lt; open is the "bear" color (price fell). This site uses <span style="color:var(--bull)">teal</span> for bullish and <span style="color:var(--bear)">coral</span> for bearish.</p>
+  <h2>Green Candle vs. Red Candle</h2>
+  <p>Green candle (teal on this site) = price went UP during that period. Buyers won. Red candle (coral) = price went DOWN. Sellers won. That's it. Every candle is a tiny battle between buyers and sellers. The colour tells you who won.</p>
 </div>
 
 <div class="topic">
-  <h2>Watch a Candle Build, Tick by Tick</h2>
-  <p>A line chart only shows the close. A candle shows the entire fight during the period — how far buyers pushed up, sellers pushed down, and who won by the end.</p>
+  <h2>Why Candles Are Better Than Line Charts</h2>
+  <p>A normal line chart only shows you where price ended. It hides everything else. A candle shows you the whole story: how far buyers pushed up, how far sellers pushed down, and who was in control when time ran out. More information = better decisions. That's why traders worldwide use candlestick charts.</p>
   <div class="anim-box">
     <div class="anim-label">Animation — Candle forming in real-time</div>
     <canvas id="animBuild" width="1120" height="440"></canvas>

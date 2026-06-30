@@ -20,16 +20,16 @@
 <div class="wrap">
 <div class="breadcrumb"><a href="index.html">Index</a> / Module 17</div>
 <h1>Algorithmic Trading & Backtesting</h1>
-<p class="blurb">Testing strategies, avoiding overfitting, and accounting for realistic friction.</p>
+<p class="blurb">Can you turn a trading idea into a system? Here's how to test it honestly — and avoid the traps that fool almost everyone.</p>
 
 <div class="topic">
-  <h2>What a Backtest Is</h2>
-  <p>Running a strategy's exact rules against historical data to see how it would have performed — useful only to the extent conditions realistically resemble live trading.</p>
+  <h2>What Is Backtesting?</h2>
+  <p>Backtesting means taking your strategy's rules and running them against old price data to see how they would have performed. For example: "Every time the 20-day MA crossed above the 50-day MA, I would buy. How would that have done over 5 years?" You apply this to historical data and look at the results. It's a useful test — but NOT a guarantee the strategy will work going forward.</p>
 </div>
 
 <div class="topic">
-  <h2>Overfitting — The Biggest Backtest Trap</h2>
-  <p>Tuning parameters until a strategy matches the noise in one dataset, rather than capturing a real repeatable edge. Fewer parameters + larger trade sample = less overfitting risk.</p>
+  <h2>Overfitting — Why Most Backtests Lie</h2>
+  <p>This is the trap everyone falls into. You test a strategy. It fails. You adjust settings. Test again. Still fails. Adjust again. After many adjustments, it finally "works perfectly" on old data. But this is worthless. You haven't found a real edge — you've just memorised past events. This is called <strong>overfitting</strong>. A strategy that works on old data but fails on new data is not a strategy — it's just pattern-matching noise. The fix: fewer adjustments, bigger sample of trades.</p>
   <div class="anim-box">
     <div class="anim-label">Simulator — In-sample fit vs out-of-sample degradation</div>
     <canvas id="animOverfit" width="1120" height="440"></canvas>
@@ -41,18 +41,18 @@
 </div>
 
 <div class="topic">
-  <h2>Walk-Forward Validation</h2>
-  <p>Tune parameters on one period (in-sample), then test unchanged on a later period (out-of-sample). If performance collapses, the strategy was likely fit to noise.</p>
+  <h2>Walk-Forward Testing — The Only Honest Test</h2>
+  <p>Split your historical data into two parts. Use Part 1 to build and set up your strategy. Then, without changing anything at all, run it on Part 2 — data the strategy has never seen. If it still performs reasonably well on Part 2, you may have a real edge. If it collapses, it was overfitting and you need to start again.</p>
 </div>
 
 <div class="topic">
-  <h2>Slippage & Realistic Friction</h2>
-  <p>Backtests assuming perfect fills overstate performance. Build in realistic slippage and transaction costs before trusting numbers.</p>
+  <h2>Slippage — Real Trading Is Never Perfect</h2>
+  <p>In a backtest, every trade fills at exactly the price you wanted. In real trading, that almost never happens. You want to buy at ₹500 and get filled at ₹501. This small difference is called <strong>slippage</strong>. Over hundreds of trades, small slippage adds up and can turn a "profitable" backtest into a real-world loser. Always build in realistic slippage and brokerage costs before trusting any backtest.</p>
 </div>
 
 <div class="topic">
-  <h2>Position Sizing & Portfolio Heat</h2>
-  <p>Even a sound edge ruins an account with aggressive sizing. Cap total simultaneous open risk ("portfolio heat") regardless of signal confidence.</p>
+  <h2>Total Risk Across All Trades</h2>
+  <p>Imagine you have 5 trades open at the same time and all 5 go wrong at once. How bad is the damage? This is why you need to cap your total open risk at all times. Example rule: never have more than 5% of your account at risk across ALL open trades simultaneously. Even a great strategy cannot protect you if your sizing is too large and everything goes wrong together.</p>
 </div>
 
 <div class="quiz-box">

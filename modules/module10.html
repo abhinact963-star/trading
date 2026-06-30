@@ -19,11 +19,11 @@
 <div class="wrap">
 <div class="breadcrumb"><a href="index.html">Index</a> / Module 10</div>
 <h1>Indicators</h1>
-<p class="blurb">Mathematical transforms of price that help quantify momentum, trend, and volatility.</p>
+<p class="blurb">Indicators are tools that process price data and show it to you in a different way — making trends, momentum, and volatility easier to see.</p>
 
 <div class="topic">
-  <h2>Moving Averages (SMA & EMA)</h2>
-  <p><strong>SMA</strong> weights every price equally. <strong>EMA</strong> weights recent prices more heavily, so it turns faster. Common uses: trend direction, dynamic S/R, crossover signals.</p>
+  <h2>Moving Averages — Smoothing Out the Noise</h2>
+  <p>Price zigzags every day. A <strong>moving average</strong> takes the average price over a set number of days and draws a smooth line. This makes the trend easier to see. The <strong>SMA</strong> (Simple Moving Average) treats every day equally. The <strong>EMA</strong> (Exponential Moving Average) gives more weight to recent days, so it reacts faster. Common use: if price is above the 50-day moving average, the trend is likely up.</p>
   <div class="anim-box">
     <div class="anim-label">Animation — Price with SMA(20) and EMA(20) overlaid</div>
     <canvas id="animMA" width="1120" height="440"></canvas>
@@ -31,8 +31,8 @@
 </div>
 
 <div class="topic">
-  <h2>RSI (Relative Strength Index)</h2>
-  <p>Oscillates 0-100 based on recent gains vs losses. Above 70 = overbought, below 30 = oversold — though in strong trends RSI can stay extreme longer than expected.</p>
+  <h2>RSI — Has Price Gone Too Far Too Fast?</h2>
+  <p>RSI (Relative Strength Index) moves between 0 and 100. Above 70 means price has risen very fast recently — it may be due for a rest. Below 30 means price has fallen very fast — it may be due for a bounce. Think of it like a person running: at some point they need to stop and catch their breath. RSI tells you how tired the market is. But in a very strong trend, RSI can stay "tired" for a long time before reversing.</p>
   <div class="anim-box">
     <div class="anim-label">Animation — Price vs RSI, synced in real-time</div>
     <canvas id="animRSI" width="1120" height="520"></canvas>
@@ -40,13 +40,13 @@
 </div>
 
 <div class="topic">
-  <h2>MACD</h2>
-  <p>The difference between two EMAs, plotted with a signal line. Crossovers and divergence from price are the two most common uses.</p>
+  <h2>MACD — Is Momentum Speeding Up or Slowing Down?</h2>
+  <p>MACD shows whether momentum is building or fading. It is calculated from two moving averages. When the faster line crosses above the slower line, momentum is building upward (possible buy signal). When it crosses below, momentum is shifting down (possible sell signal). Divergence is also useful: if price makes a new high but MACD doesn't, the upward momentum is fading even though price looks strong.</p>
 </div>
 
 <div class="topic">
-  <h2>Bollinger Bands & ATR</h2>
-  <p>Bollinger Bands plot a moving average with bands at a multiple of standard deviation — bands widen in high volatility, narrow in low. ATR measures volatility directly, often used for stop-loss sizing.</p>
+  <h2>Bollinger Bands — How Much Is Price Moving?</h2>
+  <p><strong>Bollinger Bands</strong> draw two lines around a moving average — one above, one below. When the market is calm and quiet, the bands come close together (squeeze). When the market is moving a lot, the bands expand wide. A squeeze followed by a breakout often signals a big move is coming. Think of squeezing a spring — the tighter it gets, the bigger the release.</p>
   <div class="anim-box">
     <div class="anim-label">Animation — Bollinger Bands expanding and contracting</div>
     <canvas id="animBB" width="1120" height="440"></canvas>
@@ -54,8 +54,8 @@
 </div>
 
 <div class="topic">
-  <h2>VWAP</h2>
-  <p>Volume-Weighted Average Price — the average price weighted by volume. Used as a fairness benchmark and intraday bias line by institutional traders.</p>
+  <h2>VWAP — The Average Price of the Day</h2>
+  <p><strong>VWAP</strong> stands for Volume Weighted Average Price. It is the average price of every trade made today, with bigger trades having more weight. If price is above VWAP, buyers have been in control today. Below VWAP, sellers have been winning. Large banks and funds use VWAP to measure whether they got a good price on their large orders.</p>
 </div>
 
 <div class="quiz-box">

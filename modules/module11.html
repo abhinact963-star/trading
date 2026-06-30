@@ -19,11 +19,11 @@
 <div class="wrap">
 <div class="breadcrumb"><a href="index.html">Index</a> / Module 11</div>
 <h1>Volume Analysis & Volume Profile</h1>
-<p class="blurb">Price tells you where; volume tells you how convicted the move was.</p>
+<p class="blurb">Volume tells you how many people participated in a move. A price move without volume is like a rumour without evidence.</p>
 
 <div class="topic">
-  <h2>Volume Basics & Confirmation</h2>
-  <p>A move on rising volume is generally more reliable than the same move on shrinking volume — volume is read as a proxy for participation and conviction.</p>
+  <h2>Volume — How Many People Cared About This Move?</h2>
+  <p>Volume is the number of shares or contracts traded in a period. Think of it like foot traffic in a shop. If a price change happened with high volume — many people participated and the move is probably real. If price moved with low volume — very few people were involved and the move can reverse easily. Always ask: did this move have the volume to back it up?</p>
   <div class="anim-box">
     <div class="anim-label">Animation — Price with volume bars (strong vs weak moves)</div>
     <canvas id="animVol" width="1120" height="480"></canvas>
@@ -31,13 +31,13 @@
 </div>
 
 <div class="topic">
-  <h2>Climactic Volume & Divergence</h2>
-  <p>A sudden volume spike far above average often marks exhaustion. Volume divergence — price making a new high/low while volume shrinks — can foreshadow a reversal.</p>
+  <h2>Climax Volume — The Crowd Has Gone Crazy</h2>
+  <p>Sometimes you see a volume bar that is 3x or 4x bigger than normal. This is called <strong>climax volume</strong>. It usually happens at the END of a trend — everyone who wanted to buy (or panic-sell) did it at once. After that, no one is left to push price further, and a reversal often follows. Also watch for: price making a new high but volume getting smaller. That's a warning the move is running out of steam.</p>
 </div>
 
 <div class="topic">
-  <h2>Volume Profile, POC, and the Value Area</h2>
-  <p>Volume Profile plots volume against <em>price</em>, showing which levels traded the most. <strong>POC</strong> = price with most volume. <strong>Value Area</strong> = ~70% of total volume. <strong>VAH/VAL</strong> = boundaries.</p>
+  <h2>Volume Profile — Where Did Most Trading Actually Happen?</h2>
+  <p>Volume Profile is a horizontal bar chart that shows how much volume traded at each price level. The tallest bar is the <strong>Point of Control (POC)</strong> — the price where the most trades happened. The range containing 70% of all volume is the <strong>Value Area</strong>. Price tends to keep coming back to the POC like a magnet. If price is far from the POC, it may return there.</p>
   <div class="anim-box">
     <div class="anim-label">Animation — Volume Profile with POC, VAH, VAL</div>
     <canvas id="animVP" width="1120" height="520"></canvas>

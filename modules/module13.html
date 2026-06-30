@@ -20,21 +20,26 @@
 <div class="wrap">
 <div class="breadcrumb"><a href="index.html">Index</a> / Module 13</div>
 <h1>Risk Management</h1>
-<p class="blurb">The part of trading that determines whether you survive long enough for your edge to matter.</p>
+<p class="blurb">This is the most important module. Without this, even the best strategy will eventually lose all your money.</p>
 
 <div class="topic">
-  <h2>Position Sizing</h2>
-  <p>How large a position to take, usually expressed as a fixed percentage of account risked per trade (commonly 1-2%) — keeping risk proportional as account size changes.</p>
+  <h2>How Much of Your Money to Risk Per Trade</h2>
+  <p>Here is one of the most important rules in trading: <strong>never risk more than 1–2% of your account on a single trade.</strong> If your account has ₹1,00,000, risk at most ₹1,000 on one trade. Why? Because even the best traders have losing streaks. If you risk 20% per trade and lose 5 in a row, your account is gone. Risk 1% and you can lose 20 in a row and still survive to keep going.</p>
 </div>
 
 <div class="topic">
-  <h2>Stop-Loss & Take-Profit</h2>
-  <p>A <strong>stop-loss</strong> defines maximum acceptable loss. A <strong>take-profit</strong> defines where gains are locked in. Both should be set before entry.</p>
+  <h2>Stop-Loss — Your Safety Net</h2>
+  <p>A <strong>stop-loss</strong> is a price level where you tell the market: "if price goes here, exit my trade automatically." It limits how much you can lose on any one trade. You decide this BEFORE entering — not after. Most people who blow their accounts did so because they moved their stop-loss further away when the trade was losing. Don't do this. Honor your stop every time.</p>
 </div>
 
 <div class="topic">
-  <h2>Risk:Reward Ratio</h2>
-  <p>The ratio between what you stand to lose (entry to stop) vs gain (entry to target). A 1:2 RR means risking 1 to potentially make 2 — it lets you be profitable even with sub-50% win rate.</p>
+  <h2>Take-Profit — Lock in Your Gains</h2>
+  <p>A <strong>take-profit</strong> is the price where you exit and lock in your profit. Also decide this before entering. If price hits your target, take the money. Don't get greedy and hold for more. Many winning trades have turned into losses because the trader held too long.</p>
+</div>
+
+<div class="topic">
+  <h2>Risk-to-Reward — Is This Trade Worth Taking?</h2>
+  <p>Before any trade, ask: how much could I lose versus how much could I gain? A <strong>1:2 risk-to-reward ratio</strong> means you risk ₹100 to potentially make ₹200. This is powerful: even if you win only 4 trades out of 10, you are still profitable. You made 4 × ₹200 = ₹800, and lost 6 × ₹100 = ₹600. Net profit: ₹200. This is why professionals always ask about risk-to-reward before every trade.</p>
   <div class="anim-box">
     <div class="anim-label">Simulator — Risk:Reward slider</div>
     <canvas id="animRR" width="1120" height="400"></canvas>
@@ -47,8 +52,8 @@
 </div>
 
 <div class="topic">
-  <h2>Maximum Drawdown</h2>
-  <p>The largest peak-to-trough decline an account has experienced. Small per-trade loss can still produce large drawdown if losses cluster — portfolio-level risk caps matter.</p>
+  <h2>Drawdown — Surviving a Losing Streak</h2>
+  <p><strong>Drawdown</strong> is how much your account dropped from its peak. If your account was at ₹1,00,000 and dropped to ₹80,000 — that's a 20% drawdown. Every trader has drawdowns. The goal is to keep them small. Small risk per trade = small drawdowns = you stay in the game long enough to recover.</p>
   <div class="anim-box">
     <div class="anim-label">Animation — Equity curve with drawdown visualization</div>
     <canvas id="animDD" width="1120" height="400"></canvas>

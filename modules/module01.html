@@ -49,35 +49,35 @@ canvas{display:block;width:100%;height:auto;max-width:600px;}
 <div class="wrap">
 <div class="breadcrumb"><a href="index.html">Index</a> / Module 01</div>
 <h1>Trading Fundamentals</h1>
-<p class="blurb">What a market actually is, who you are trading against, and the vocabulary everything else builds on.</p>
+<p class="blurb">Start here. You'll learn what trading is, what you can trade, and the basic words you'll hear every day.</p>
 
 <div class="topic">
   <h2>What is Trading?</h2>
-  <p>Buying and selling an asset with the intent of profiting from a change in its price — distinct from investing, which is usually longer-horizon and ownership-driven.</p>
+  <p>Trading is simple. You buy something at one price and sell it at a higher price. The difference is your profit. For example: you buy a share of Reliance for ₹2,400. Later it goes to ₹2,500. You sell. You made ₹100. That's trading. It's different from investing — investors hold for years. Traders hold for minutes, hours, or days.</p>
 </div>
 
 <div class="topic">
-  <h2>Markets You Can Trade</h2>
+  <h2>What Can You Trade?</h2>
   <ul>
-    <li><span class="tag">Stocks</span> Ownership stakes in companies, traded on exchanges like NSE/BSE.</li>
-    <li><span class="tag">Forex</span> Currency pairs, the largest and most liquid market, open 24/5.</li>
-    <li><span class="tag">Crypto</span> Digital assets, trades 24/7, typically higher volatility.</li>
+    <li><span class="tag">Stocks</span> Shares in companies like Reliance, TCS, Infosys. You buy a tiny piece of the company.</li>
+    <li><span class="tag">Forex</span> Currencies like USD/INR (Dollar vs Rupee). You bet on which currency gets stronger.</li>
+    <li><span class="tag">Crypto</span> Digital coins like Bitcoin. It trades 24/7. Prices move a lot — more risk, more chance of profit.</li>
   </ul>
 </div>
 
 <div class="topic">
-  <h2>Types of Traders (by holding time)</h2>
+  <h2>What Kind of Trader Are You?</h2>
   <ul>
-    <li><strong>Scalper</strong> — seconds to minutes, many small trades.</li>
-    <li><strong>Day trader</strong> — opens and closes within the same session.</li>
-    <li><strong>Swing trader</strong> — days to weeks, rides a directional move.</li>
-    <li><strong>Position trader</strong> — weeks to months, closer to investing.</li>
+    <li><strong>Scalper</strong> — You enter and exit in seconds or minutes. You take many tiny profits per day.</li>
+    <li><strong>Day Trader</strong> — You open and close all trades before the market closes. You never hold overnight.</li>
+    <li><strong>Swing Trader</strong> — You hold a trade for a few days or weeks to catch one big move.</li>
+    <li><strong>Position Trader</strong> — You hold for months. Very slow. Almost like investing.</li>
   </ul>
 </div>
 
 <div class="topic">
-  <h2>Bid, Ask, and the Spread</h2>
-  <p>The <strong>bid</strong> is the highest price a buyer will pay right now. The <strong>ask</strong> is the lowest price a seller will accept. The gap between them is the <strong>spread</strong> — effectively the cost of immediacy.</p>
+  <h2>Bid, Ask, and Spread — The Cost of Buying</h2>
+  <p>Imagine you want to buy mangoes. The seller wants ₹100 per kg. You want to pay ₹98. The gap between what you will pay and what the seller wants is the <strong>spread</strong>. In trading: the <strong>bid</strong> is what buyers will pay right now. The <strong>ask</strong> is what sellers want right now. Every time you trade, you pay the spread. Smaller spread = cheaper to trade.</p>
   <div class="anim-box">
     <div class="anim-label">Animation — Order Book (Bids vs Asks)</div>
     <canvas id="animOrderbook" width="1120" height="440"></canvas>
@@ -85,8 +85,13 @@ canvas{display:block;width:100%;height:auto;max-width:600px;}
 </div>
 
 <div class="topic">
-  <h2>Leverage and Margin</h2>
-  <p>Leverage lets you control a larger position than your capital alone would allow, by borrowing the rest. Margin is the capital you must keep aside as collateral. Leverage amplifies gains exactly as much as it amplifies losses — it does not change the underlying odds.</p>
+  <h2>Leverage — Trading With Borrowed Money</h2>
+  <p>Leverage lets you control a bigger trade than the money you actually have. With 10x leverage, ₹10,000 of your own money controls ₹1,00,000 of a trade. Sounds great — but here's the catch: if the trade goes your way, you make 10x more. If it goes against you, you lose 10x more. Leverage does NOT make bad trades good. It just makes everything bigger. Use it carefully.</p>
+  <div class="anim-box">
+    <div class="anim-label">Animation — Leverage Effect on P&amp;L</div>
+    <canvas id="animLeverage" width="1120" height="400"></canvas>
+  </div>
+</div>
   <div class="anim-box">
     <div class="anim-label">Animation — Leverage Effect on P&L</div>
     <canvas id="animLeverage" width="1120" height="400"></canvas>

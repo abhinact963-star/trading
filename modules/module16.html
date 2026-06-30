@@ -20,36 +20,36 @@
 <div class="wrap">
 <div class="breadcrumb"><a href="index.html">Index</a> / Module 16</div>
 <h1>Options Trading & Volatility</h1>
-<p class="blurb">Calls, puts, Greeks, IV — essential for anyone trading index derivatives.</p>
+<p class="blurb">Options are powerful tools. But they can also destroy accounts quickly if you don't understand how they work. Start here.</p>
 
 <div class="topic">
-  <h2>Calls, Puts, and Premium</h2>
-  <p>A <strong>call</strong> gives the right to buy at a fixed strike. A <strong>put</strong> gives the right to sell. The <strong>premium</strong> is the price paid for that right.</p>
+  <h2>What Is an Option?</h2>
+  <p>An option gives you the <em>right</em> (but not the obligation) to buy or sell a stock at a fixed price before a specific date. You pay a small fee called the <strong>premium</strong>. There are two types: <strong>Call option</strong> — right to BUY. You profit if the stock goes UP. <strong>Put option</strong> — right to SELL. You profit if the stock goes DOWN. The maximum you can lose when buying an option is just the premium you paid.</p>
 </div>
 
 <div class="topic">
-  <h2>Implied Volatility (IV) and IV Rank</h2>
-  <p>IV is the market's estimate of future movement baked into option prices. <strong>IV Rank</strong> tells you whether current IV is high or low relative to its own past year.</p>
+  <h2>Implied Volatility — Cheap vs. Expensive Options</h2>
+  <p><strong>Implied Volatility (IV)</strong> tells you whether options are cheap or expensive right now. High IV means the market expects big moves — options cost more. Low IV means things are calm — options are cheap. The simple rule: buy options when IV is LOW (cheap). Sell options when IV is HIGH (expensive). <strong>IV Rank</strong> compares today's IV to the past year to tell you which one it is.</p>
 </div>
 
 <div class="topic">
-  <h2>The Greeks</h2>
+  <h2>The Greeks — Simple Explanations</h2>
   <ul>
-    <li><strong>Delta</strong> — price change per 1-unit move in underlying.</li>
-    <li><strong>Theta</strong> — daily value lost from time decay (sellers earn it, buyers pay it).</li>
-    <li><strong>Gamma</strong> — how fast delta changes, accelerates near expiry.</li>
-    <li><strong>Vega</strong> — sensitivity to IV change.</li>
+    <li><strong>Delta</strong> — if the stock moves ₹1, the option moves by Delta. Delta 0.5 means the option moves ₹0.50 per ₹1 stock move.</li>
+    <li><strong>Theta</strong> — every single day, the option loses some value just because time is passing. If you BUY an option, theta hurts you. If you SELL an option, theta pays you.</li>
+    <li><strong>Gamma</strong> — how fast delta changes. Matters most near expiry.</li>
+    <li><strong>Vega</strong> — if you buy an option when IV is high and IV then drops, your option loses value even if the stock moves the right way. That's vega working against you.</li>
   </ul>
 </div>
 
 <div class="topic">
-  <h2>Buying vs. Selling Premium</h2>
-  <p>Buying has defined risk but fights theta daily and is vulnerable to IV crush. Selling collects theta but carries larger risk unless hedged.</p>
+  <h2>Buying vs. Selling Options</h2>
+  <p><strong>Buying options</strong>: you can never lose more than the premium you paid. But every day that passes without the stock moving costs you money (theta). You need a big, fast move. <strong>Selling options</strong>: you collect the premium upfront. Every day that passes without a move, you keep earning. But if the market moves sharply against you, losses can be very large.</p>
 </div>
 
 <div class="topic">
-  <h2>Credit Spreads</h2>
-  <p>Sell one option, buy a further-out hedge. Caps max loss at strike difference minus premium collected.</p>
+  <h2>Credit Spreads — Selling With a Safety Net</h2>
+  <p>To limit risk when selling options: sell one option AND buy a cheaper option further away as protection. This is a <strong>credit spread</strong>. You still collect premium, but your maximum loss is now capped. For example: sell a call at ₹18,000 strike, buy a call at ₹18,200 strike. The gap between the two is your maximum possible loss, no matter what happens to the market.</p>
   <div class="anim-box">
     <div class="anim-label">Simulator — Option payoff diagram (single leg or credit spread)</div>
     <canvas id="animOptions" width="1120" height="440"></canvas>

@@ -19,11 +19,11 @@
 <div class="wrap">
 <div class="breadcrumb"><a href="index.html">Index</a> / Module 07</div>
 <h1>Supply & Demand</h1>
-<p class="blurb">Zones where a sharp, fast move began — read as a clue that bigger players were active there.</p>
+<p class="blurb">Price zones where big buyers or sellers were active. When price comes back to these zones, something usually happens.</p>
 
 <div class="topic">
-  <h2>Demand Zones</h2>
-  <p>A <strong>demand zone</strong> is a price area where a strong rally began — implying buyers absorbed all available sellers there. When price returns, it often reacts.</p>
+  <h2>Demand Zones — Where Buyers Are Still Waiting</h2>
+  <p>Imagine a huge buyer wanted to buy 10 lakh shares of a stock. He couldn't buy them all at once — too obvious. So he placed buy orders across a price range. Price shot up from that area because of all his buying. A <strong>demand zone</strong> is that price range. When price comes back down to it, his remaining orders may still be there — and price bounces again.</p>
   <div class="anim-box">
     <div class="anim-label">Animation — Price entering a demand zone and bouncing</div>
     <canvas id="animDemand" width="1120" height="440"></canvas>
@@ -31,8 +31,8 @@
 </div>
 
 <div class="topic">
-  <h2>Supply Zones</h2>
-  <p>A <strong>supply zone</strong> is where a sharp decline began — where sellers overwhelmed buyers. The mirror of demand.</p>
+  <h2>Supply Zones — Where Sellers Are Still Waiting</h2>
+  <p>Same idea but reversed. A big seller placed sell orders across a price range. Price dropped sharply from there. A <strong>supply zone</strong> is that range. When price rises back into it, the remaining sell orders may push it back down again. Supply zones are ceilings. Demand zones are floors.</p>
   <div class="anim-box">
     <div class="anim-label">Animation — Price entering a supply zone and rejecting</div>
     <canvas id="animSupply" width="1120" height="440"></canvas>
@@ -40,8 +40,8 @@
 </div>
 
 <div class="topic">
-  <h2>Fresh Zones & Retest</h2>
-  <p>Zones are "fresh" if price hasn't returned since formation. The theory: large institutional orders often can't be filled in one go, leaving unfilled orders behind. A retest either holds (zone valid) or fails through (zone invalidated).</p>
+  <h2>Fresh vs. Used Zones</h2>
+  <p>A zone is <strong>fresh</strong> if price hasn't come back to it since it was created. Fresh zones are stronger — the big orders are likely still there. Once price enters a zone and reacts, the zone gets weaker. If price passes straight through a zone without reacting, the zone is now invalid (the orders have been filled) and should be ignored.</p>
   <div class="anim-box">
     <div class="anim-label">Animation — Fresh zone retest: hold vs. invalidation</div>
     <canvas id="animRetest" width="1120" height="440"></canvas>
