@@ -1289,10 +1289,10 @@ footer{text-align:center;color:var(--t3);font-size:11px;padding:28px 20px 48px;
         <div class="about-header">
           <span class="about-name">Abhinav Chowdary</span>
           <span class="about-sep">/</span>
-          <span class="about-role">Founder &amp; Trader</span>
+          <span class="about-role">Trader</span>
         </div>
         <p class="about-bio">
-          <b>4+ years</b> trading Indian equities, options, and forex.
+          <b>5+ years</b> trading Indian equities, options, and forex.
           Abhinav built <span class="rtt">Read The Tape</span> because most
           trading content sells signals, not understanding &mdash; this is
           the resource every retail trader wishes had existed from day one.
@@ -2040,12 +2040,12 @@ quiz:[
 /* ===== MODULE 19: TRENDLINES ===== */
 {id:'m19',g:'Trendlines',t:'Trendlines — Drawing, Reading & Trading Them',b:'One straight line drawn correctly tells you more than most indicators. Learn how to draw valid trendlines, how many touches confirm them, when a break is real, and how to trade the retest.',
 topics:[
-{h:'What Is a Trendline?',d:'A trendline is a straight line you draw to show the direction price is moving. In an uptrend, draw it connecting the <b>lows</b> (the dips before bouncing back up). In a downtrend, draw it connecting the <b>highs</b> (the peaks before falling back down). The line shows the "floor" or "ceiling" of the move. The most important rule: <b>you need at least 2 points to draw the line, and a 3rd touch to confirm it is real.</b> Two touches is just a guess. Three means the market has respected it.',a:'trendlineSR'},
-{h:'Uptrend Lines vs. Downtrend Lines',d:'<b>Uptrend line</b> — drawn BELOW price, connecting the lows. Acts as a moving support floor. Price keeps bouncing off it. As long as price stays above this line, the uptrend is intact. <b>Downtrend line</b> — drawn ABOVE price, connecting the highs. Acts as a moving resistance ceiling. Price keeps failing at it. As long as price stays below, the downtrend is intact. Trend direction, at a glance, from one line.',a:'drawTrendline'},
+{h:'What Is a Trendline?',d:'A trendline is a straight line you draw to show the direction price is moving. In an uptrend, draw it connecting the <b>lows</b> (the dips before bouncing back up). In a downtrend, draw it connecting the <b>highs</b> (the peaks before falling back down). The line shows the "floor" or "ceiling" of the move. The most important rule: <b>you need at least 2 points to draw the line, and a 3rd touch to confirm it is real.</b> Two touches is just a guess. Three means the market has respected it.',a:'trendCandlesMain'},
+{h:'Uptrend Lines vs. Downtrend Lines',d:'<b>Uptrend line</b> — drawn BELOW price, connecting the lows. Acts as a moving support floor. Price keeps bouncing off it. As long as price stays above this line, the uptrend is intact. <b>Downtrend line</b> — drawn ABOVE price, connecting the highs. Acts as a moving resistance ceiling. Price keeps failing at it. As long as price stays below, the downtrend is intact. Trend direction, at a glance, from one line.',a:'trendCandlesBoth'},
 {h:'The Rule of Touches',d:'<b>2 touches</b> — a line exists, but no confirmation yet. Do not trade off it. <b>3 touches</b> — the line is now valid. Other traders are watching it too. <b>4+ touches</b> — a very strong trendline. More touches = more significance. Also: touches spread over time matter more than bunched-up touches in one day.',a:null},
 {h:'Steep Trendlines Break Faster',d:'The angle of a trendline tells you how sustainable it is. A very steep trendline means price is rising too fast — it cannot maintain that pace and will almost certainly break. A gentle, gradual trendline is more sustainable. When a steep line breaks, price often just slows to a gentler angle rather than fully reversing. Think of it like a sprinter vs. a marathon runner.',a:null},
-{h:'Trendline Break — Valid or False?',d:'When price closes BELOW an uptrend line, the line is broken. But not all breaks are valid. A valid break needs: <b>1.</b> A candle that CLOSES beyond the line (not just a wick). <b>2.</b> Ideally on higher than average volume. <b>3.</b> A decisive close — not a tiny nibble. A single candle that briefly wicks below then closes back above is NOT a break. A trendline break does NOT automatically mean sell — it means the old structure has changed.',a:'channels'},
-{h:'The Retest — Best Entry After a Break',d:'After a trendline breaks, price often does something very useful: it pulls back to test the broken line from the other side. Now the old support trendline acts as resistance. This is called the <b>retest</b>. It is one of the highest-probability setups in all of trading. Traders who missed the initial break use the retest to enter. Entry: at the trendline on the retest. Stop: just beyond the trendline. Target: the next key level below.',a:'trendlineSR'}
+{h:'Trendline Break — Valid or False?',d:'When price closes BELOW an uptrend line, the line is broken. But not all breaks are valid. A valid break needs: <b>1.</b> A candle that CLOSES beyond the line (not just a wick). <b>2.</b> Ideally on higher than average volume. <b>3.</b> A decisive close — not a tiny nibble. A single candle that briefly wicks below then closes back above is NOT a break. A trendline break does NOT automatically mean sell — it means the old structure has changed.',a:'trendCandlesBreak'},
+{h:'The Retest — Best Entry After a Break',d:'After a trendline breaks, price often does something very useful: it pulls back to test the broken line from the other side. Now the old support trendline acts as resistance. This is called the <b>retest</b>. It is one of the highest-probability setups in all of trading. Traders who missed the initial break use the retest to enter. Entry: at the trendline on the retest. Stop: just beyond the trendline. Target: the next key level below.',a:'trendCandlesRetest'}
 ],
 quiz:[
 {q:'How many touches does a trendline need to be considered valid?',o:['1 touch — you only need to draw the line','2 touches — that\'s enough to confirm','At least 3 touches spread over time','10 or more touches'],a:2,e:'Two points make a line but prove nothing. A third touch confirms the market has respected that level — that\'s when other traders start watching and trading off it.'},
@@ -4145,12 +4145,181 @@ x.fillStyle='#C0CAD8';x.font='10px IBM Plex Mono,monospace';
 x.fillText(STEPS[stage],10,H-5);
 t++;},55);},
 
-/* --- GENERIC FALLBACK for any animation key not explicitly defined --- */
-_fallback(el, label){const{x,W,H}=mc(el,520,120);x.clearRect(0,0,W,H);
-x.fillStyle='rgba(140,151,172,.08)';x.fillRect(0,0,W,H);
-x.fillStyle='#C0CAD8';x.font='13px IBM Plex Mono,monospace';x.textAlign='center';
-x.fillText(label||'Concept visualization',W/2,H/2-6);
-x.font='10px IBM Plex Mono,monospace';x.fillText('(interactive animation)',W/2,H/2+14);x.textAlign='left';}
+/* --- TRENDLINES MODULE — candlestick animations --- */
+trendCandlesMain(el){
+  const{x,W,H}=mc(el,520,180);
+  const py=p=>H-12-(p-93)/82*(H-26);
+  const cd=[
+    {o:102,h:109,l:98,c:107},{o:107,h:116,l:105,c:113},{o:113,h:117,l:109,c:111},
+    {o:111,h:119,l:107,c:117},{o:117,h:123,l:114,c:121},{o:121,h:125,l:117,c:119},
+    {o:119,h:123,l:115,c:121},{o:118,h:124,l:114,c:122},
+    {o:122,h:133,l:120,c:131},{o:131,h:135,l:127,c:129},
+    {o:129,h:137,l:125,c:135},{o:135,h:141,l:131,c:139},
+    {o:139,h:143,l:135,c:137},{o:137,h:141,l:133,c:139},
+    {o:137,h:143,l:130,c:141},{o:141,h:151,l:139,c:149},
+    {o:149,h:155,l:145,c:153},{o:153,h:159,l:149,c:157},
+    {o:157,h:163,l:153,c:161},{o:161,h:169,l:157,c:165}
+  ];
+  const gap=24,bw=11,sx=14,n=cd.length;
+  const cxi=i=>sx+i*gap+gap/2;
+  const touches=[{i:0,l:98,lbl:'Touch 1'},{i:7,l:114,lbl:'Touch 2'},{i:14,l:130,lbl:'Touch 3 ✓'}];
+  const tx1=cxi(0),ty1=py(98),tx2=cxi(14),ty2=py(130);
+  let fr=0;
+  const loop=setInterval(()=>{
+    x.clearRect(0,0,W,H);
+    x.strokeStyle='rgba(255,255,255,0.04)';x.lineWidth=0.5;
+    for(let gx=0;gx<W;gx+=60){x.beginPath();x.moveTo(gx,0);x.lineTo(gx,H);x.stroke();}
+    for(let gy=0;gy<H;gy+=36){x.beginPath();x.moveTo(0,gy);x.lineTo(W,gy);x.stroke();}
+    const p=Math.min(fr/95,1),max=Math.floor(p*(n-1));
+    for(let i=0;i<=max;i++){
+      const d=cd[i],bull=d.c>=d.o,col=bull?'#34D6C4':'#FF6B81',cx=cxi(i);
+      x.strokeStyle=col;x.lineWidth=1;x.beginPath();x.moveTo(cx,py(d.h));x.lineTo(cx,py(d.l));x.stroke();
+      x.fillStyle=col;x.fillRect(cx-bw/2,py(Math.max(d.o,d.c)),bw,Math.max(2,Math.abs(py(d.o)-py(d.c))));
+    }
+    if(p>0.3){
+      const al=Math.min((p-0.3)/0.15,1),ex=tx1+(tx2-tx1)*Math.min((p-0.3)/0.7,1);
+      const ey=ty1+(ty2-ty1)*Math.min((p-0.3)/0.7,1);
+      x.strokeStyle=`rgba(74,154,245,${al*0.85})`;x.lineWidth=1.5;x.setLineDash([6,3]);
+      x.beginPath();x.moveTo(tx1-10,ty1-(ty2-ty1)*10/(tx2-tx1));x.lineTo(ex+20,ey+(ty2-ty1)*20/(tx2-tx1));
+      x.stroke();x.setLineDash([]);
+    }
+    touches.forEach(t=>{
+      const ap=t.i/n+0.04;
+      if(p>ap){
+        const al=Math.min((p-ap)/0.06,1),cx=cxi(t.i),cy=py(t.l)-4;
+        x.beginPath();x.arc(cx,cy,5,0,Math.PI*2);x.fillStyle=`rgba(74,154,245,${al})`;x.fill();
+        if(al>0.7){x.fillStyle='rgba(74,154,245,0.9)';x.font='bold 9px Inter,sans-serif';x.fillText(t.lbl,cx-14,cy-9);}
+      }
+    });
+    fr++;if(fr>140){fr=0;}
+  },30);},
+
+trendCandlesBoth(el){
+  const{x,W,H}=mc(el,520,180);
+  const pyU=p=>H-12-(p-92)/60*(H-26),pyD=p=>H-12-(p-90)/66*(H-26);
+  const upC=[
+    {o:100,h:107,l:97,c:105},{o:105,h:111,l:102,c:109},{o:109,h:113,l:105,c:107},
+    {o:107,h:115,l:104,c:113},{o:113,h:119,l:110,c:117},{o:117,h:121,l:113,c:115},
+    {o:115,h:123,l:112,c:121},{o:121,h:129,l:119,c:127},{o:127,h:131,l:123,c:125},
+    {o:125,h:133,l:121,c:131},{o:131,h:137,l:127,c:135},{o:135,h:141,l:131,c:139},
+    {o:139,h:143,l:135,c:137},{o:137,h:145,l:134,c:143}
+  ];
+  const dnC=[
+    {o:148,h:153,l:143,c:145},{o:145,h:149,l:139,c:141},{o:141,h:147,l:137,c:143},
+    {o:143,h:145,l:135,c:137},{o:137,h:142,l:131,c:133},{o:133,h:139,l:127,c:129},
+    {o:129,h:135,l:125,c:131},{o:131,h:133,l:121,c:123},{o:123,h:129,l:117,c:119},
+    {o:119,h:125,l:113,c:115},{o:115,h:121,l:109,c:111},{o:111,h:117,l:105,c:107},
+    {o:107,h:113,l:101,c:103},{o:103,h:109,l:97,c:99}
+  ];
+  const n=14,gap=16,bw=7,sxU=12,sxD=284;
+  const cxU=i=>sxU+i*gap+gap/2,cxD=i=>sxD+i*gap+gap/2;
+  let fr=0;
+  const loop=setInterval(()=>{
+    x.clearRect(0,0,W,H);
+    x.strokeStyle='rgba(255,255,255,0.04)';x.lineWidth=0.5;
+    for(let gx=0;gx<W;gx+=60){x.beginPath();x.moveTo(gx,0);x.lineTo(gx,H);x.stroke();}
+    for(let gy=0;gy<H;gy+=36){x.beginPath();x.moveTo(0,gy);x.lineTo(W,gy);x.stroke();}
+    x.strokeStyle='rgba(255,255,255,0.08)';x.lineWidth=0.5;
+    x.beginPath();x.moveTo(272,10);x.lineTo(272,H-10);x.stroke();
+    const p=Math.min(fr/90,1),idx=Math.floor(p*(n-1));
+    for(let i=0;i<=idx;i++){
+      ['u','d'].forEach(side=>{
+        const d=side==='u'?upC[i]:dnC[i],bull=d.c>=d.o,col=bull?'#34D6C4':'#FF6B81';
+        const cx=side==='u'?cxU(i):cxD(i),py=side==='u'?pyU:pyD;
+        x.strokeStyle=col;x.lineWidth=1;x.beginPath();x.moveTo(cx,py(d.h));x.lineTo(cx,py(d.l));x.stroke();
+        x.fillStyle=col;x.fillRect(cx-bw/2,py(Math.max(d.o,d.c)),bw,Math.max(2,Math.abs(py(d.o)-py(d.c))));
+      });
+    }
+    if(p>0.25){
+      const al=Math.min((p-0.25)/0.2,1);
+      x.strokeStyle=`rgba(52,214,196,${al*0.8})`;x.lineWidth=1.5;x.setLineDash([5,3]);
+      x.beginPath();x.moveTo(cxU(0)-4,pyU(upC[0].l-1));x.lineTo(cxU(idx)+8,pyU(upC[idx].l-1));x.stroke();
+      x.strokeStyle=`rgba(255,107,129,${al*0.8})`;
+      x.beginPath();x.moveTo(cxD(0)-4,pyD(dnC[0].h+1));x.lineTo(cxD(idx)+8,pyD(dnC[idx].h+1));x.stroke();
+      x.setLineDash([]);
+      x.fillStyle=`rgba(52,214,196,${al})`;x.font='bold 8px Inter,sans-serif';x.fillText('Uptrend line (connects lows)',14,H-6);
+      x.fillStyle=`rgba(255,107,129,${al})`;x.fillText('Downtrend line (connects highs)',286,H-6);
+    }
+    fr++;if(fr>130){fr=0;}
+  },30);},
+
+trendCandlesBreak(el){
+  const{x,W,H}=mc(el,520,180);
+  const py=p=>H-12-(p-88)/58*(H-26);
+  const cd=[
+    {o:100,h:107,l:97,c:105},{o:105,h:112,l:102,c:110},{o:110,h:114,l:106,c:108},
+    {o:108,h:116,l:105,c:114},{o:114,h:120,l:111,c:118},{o:118,h:122,l:114,c:116},
+    {o:116,h:124,l:113,c:122},{o:122,h:130,l:120,c:128},{o:128,h:132,l:124,c:126},
+    {o:126,h:134,l:122,c:132},{o:132,h:138,l:128,c:136},{o:136,h:142,l:132,c:140},
+    {o:140,h:144,l:128,c:130},{o:130,h:134,l:120,c:122},{o:122,h:126,l:112,c:114},
+    {o:114,h:118,l:108,c:110},{o:110,h:114,l:104,c:106},{o:106,h:110,l:100,c:102}
+  ];
+  const n=cd.length,gap=26,bw=11,sx=12,cxi=i=>sx+i*gap+gap/2;
+  const tx1=cxi(0),ty1=py(cd[0].l-1),tx2=cxi(11),ty2=py(cd[11].l-1);
+  let fr=0;
+  const loop=setInterval(()=>{
+    x.clearRect(0,0,W,H);
+    x.strokeStyle='rgba(255,255,255,0.04)';x.lineWidth=0.5;
+    for(let gx=0;gx<W;gx+=60){x.beginPath();x.moveTo(gx,0);x.lineTo(gx,H);x.stroke();}
+    for(let gy=0;gy<H;gy+=36){x.beginPath();x.moveTo(0,gy);x.lineTo(W,gy);x.stroke();}
+    const p=Math.min(fr/110,1),idx=Math.floor(p*(n-1));
+    x.strokeStyle='rgba(74,154,245,0.5)';x.lineWidth=1.5;x.setLineDash([6,3]);
+    const extX=cxi(n-1)+20;
+    x.beginPath();x.moveTo(tx1-8,ty1-(ty2-ty1)*8/(tx2-tx1));x.lineTo(extX,ty2+(ty2-ty1)*(extX-tx2)/(tx2-tx1));x.stroke();x.setLineDash([]);
+    for(let i=0;i<=idx;i++){
+      const d=cd[i],bull=d.c>=d.o,col=bull?'#34D6C4':'#FF6B81',cx=cxi(i);
+      x.strokeStyle=col;x.lineWidth=1;x.beginPath();x.moveTo(cx,py(d.h));x.lineTo(cx,py(d.l));x.stroke();
+      x.fillStyle=col;x.fillRect(cx-bw/2,py(Math.max(d.o,d.c)),bw,Math.max(2,Math.abs(py(d.o)-py(d.c))));
+    }
+    if(idx>=12){
+      const al=Math.min((p-0.65)/0.08,1);
+      if(al>0){
+        x.strokeStyle=`rgba(255,107,129,${al*0.9})`;x.lineWidth=1.5;
+        x.beginPath();x.arc(cxi(12),py(cd[12].c)-6,13,0,Math.PI*2);x.stroke();
+        x.fillStyle=`rgba(255,107,129,${al})`;x.font='bold 9px Inter,sans-serif';
+        x.fillText('CLOSE below line = valid BREAK',cxi(12)-58,py(cd[12].c)-22);
+      }
+    }
+    fr++;if(fr>155){fr=0;}
+  },30);},
+
+trendCandlesRetest(el){
+  const{x,W,H}=mc(el,520,180);
+  const py=p=>H-12-(p-88)/52*(H-26);
+  const cd=[
+    {o:100,h:107,l:97,c:105},{o:105,h:112,l:102,c:110},{o:110,h:114,l:106,c:108},
+    {o:108,h:116,l:105,c:114},{o:114,h:120,l:111,c:118},{o:118,h:122,l:114,c:116},
+    {o:116,h:124,l:113,c:122},{o:122,h:130,l:120,c:128},{o:128,h:132,l:124,c:126},
+    {o:126,h:134,l:122,c:132},
+    {o:132,h:136,l:118,c:121},{o:121,h:125,l:112,c:115},{o:115,h:119,l:108,c:111},
+    {o:111,h:115,l:106,c:109},
+    {o:109,h:113,l:106,c:117},{o:117,h:124,l:114,c:121},{o:121,h:126,l:118,c:120},
+    {o:120,h:123,l:115,c:117},
+    {o:117,h:120,l:110,c:113},{o:113,h:116,l:106,c:109},{o:109,h:112,l:102,c:105},
+    {o:105,h:108,l:98,c:101}
+  ];
+  const n=cd.length,gap=22,bw=9,sx=8,cxi=i=>sx+i*gap+gap/2;
+  const tx1=cxi(0),ty1=py(cd[0].l-1),tx2=cxi(9),ty2=py(cd[9].l-1);
+  let fr=0;
+  const loop=setInterval(()=>{
+    x.clearRect(0,0,W,H);
+    x.strokeStyle='rgba(255,255,255,0.04)';x.lineWidth=0.5;
+    for(let gx=0;gx<W;gx+=60){x.beginPath();x.moveTo(gx,0);x.lineTo(gx,H);x.stroke();}
+    for(let gy=0;gy<H;gy+=36){x.beginPath();x.moveTo(0,gy);x.lineTo(W,gy);x.stroke();}
+    const p=Math.min(fr/145,1),idx=Math.floor(p*(n-1));
+    const extX=cxi(n-1)+14;
+    x.strokeStyle='rgba(74,154,245,0.5)';x.lineWidth=1.5;x.setLineDash([6,3]);
+    x.beginPath();x.moveTo(tx1-6,ty1-(ty2-ty1)*6/(tx2-tx1));x.lineTo(extX,ty2+(ty2-ty1)*(extX-tx2)/(tx2-tx1));x.stroke();x.setLineDash([]);
+    for(let i=0;i<=idx;i++){
+      const d=cd[i],bull=d.c>=d.o,col=bull?'#34D6C4':'#FF6B81',cx=cxi(i);
+      x.strokeStyle=col;x.lineWidth=1;x.beginPath();x.moveTo(cx,py(d.h));x.lineTo(cx,py(d.l));x.stroke();
+      x.fillStyle=col;x.fillRect(cx-bw/2,py(Math.max(d.o,d.c)),bw,Math.max(2,Math.abs(py(d.o)-py(d.c))));
+    }
+    if(idx>=11){const al=Math.min((p-0.47)/0.06,1);if(al>0){x.fillStyle=`rgba(255,107,129,${al})`;x.font='bold 8px Inter,sans-serif';x.fillText('① Break',cxi(10)-12,py(cd[10].c)-14);}}
+    if(idx>=16){const al=Math.min((p-0.68)/0.06,1);if(al>0){x.fillStyle=`rgba(242,184,75,${al})`;x.font='bold 8px Inter,sans-serif';x.fillText('② Retest → rejected',cxi(15)-20,py(cd[15].h)+14);}}
+    if(idx>=19){const al=Math.min((p-0.82)/0.06,1);if(al>0){x.fillStyle=`rgba(255,107,129,${al})`;x.font='bold 8px Inter,sans-serif';x.fillText('③ Continues down',cxi(18)-14,py(cd[18].c)-14);}}
+    fr++;if(fr>190){fr=0;}
+  },30);}
 };
 
 /* --- Route animation calls --- */
